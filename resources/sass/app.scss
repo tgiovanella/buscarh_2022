@@ -1,0 +1,68 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+// @import '~bootstrap/scss/bootstrap';
+
+//adicionando novas cores ao bootstrap
+$theme-colors: (
+    "b-white": $b-white,
+    "b-light-gray": $b-light-gray,
+    "b-light-blue": $b-light-blue,
+    "b-violet": $b-violet,
+    "b-yellow": $b-yellow,
+    "b-red": $b-red,
+    "b-blue": $b-blue,
+    "b-gray": $b-gray,
+    "b-gray-black": $b-gray,
+    "b-green": $green
+);
+
+@import "node_modules/bootstrap/scss/bootstrap";
+
+@import "node_modules/slick-carousel/slick/slick";
+
+//padrao
+@import "padrao";
+
+//sobrescreve a margem dos botões
+.btn,
+.form-control {
+    border-radius: 0;
+}
+
+#loader {
+    display: table;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 1051;
+    background: white;
+    opacity: 0.8;
+    padding-top: -25vh;
+
+    .spinner-border {
+        vertical-align: middle;
+        text-align: center;
+        color: black;
+        width: 5rem;
+        height: 5rem;
+    }
+
+    p {
+        color: black;
+    }
+}
+
+//separador
+@media (max-width: 767px) {
+    .divider {
+        height: 1px;
+        margin: 2px 0;
+        overflow: hidden;
+        background-color: #e5e5e5;
+    }
+}
