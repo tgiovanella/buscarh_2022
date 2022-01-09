@@ -11,6 +11,7 @@ use App\Subcategory;
 use App\Category;
 use App\City;
 use App\State;
+use stdClass;
 
 class UserController extends Controller
 {
@@ -43,7 +44,23 @@ class UserController extends Controller
 
         $user->quotations = [];
 
-        return view('user.users.index', compact('user'));
+        $ufs = State::select('id', 'title', 'letter')->orderBy('title')->get();
+        $cities = City::with('state')->get();
+
+        $categories = Category::has('subcategories')
+            ->with(
+                [
+                    'subcategories' => fn ($q) => $q->orderBy('subcategories.name', 'ASC')
+                ]
+            )->orderBy('categories.name')->get();
+
+
+        return view('user.users.index', compact(
+            'user',
+            'categories',
+            'ufs',
+            'cities',
+        ));
     }
 
     public function company()
@@ -61,8 +78,6 @@ class UserController extends Controller
         $operation_ufs =  [];
 
         $operation_cities = [];
-
-
 
         //trás as categorias
         $categories = Category::has('subcategories')
