@@ -42,6 +42,8 @@ Route::prefix('/')->name('user.')->namespace('User')->group(function () {
     Route::get('users/company', 'UserController@company')->name('users.company');
     Route::post('users/company', 'UserController@createCompany')->name('users.company.store');
 
+    Route::post('users/quotation', 'QuotationController@store')->name('users.quotation.store');
+
 
     Route::get('users/company/{company}/edit', 'UserController@editCompany')->name('users.company.edit');
     Route::put('users/company/{company}/edit', 'UserController@updateCompany')->name('users.company.update');

@@ -22,7 +22,6 @@
                     </li>
                 </ul>
 
-
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <hr>
@@ -61,16 +60,91 @@
         </div>
         <!--/col-9-->
     </div>
-
-
-
+    <!-- Modal Form Quotation -->
+    @include('user.users.quotation')
 </div>
 @endsection
 
-@push('styles')
-
-@endpush
-
 @push('scripts')
+
+<script>
+    const fromRefer = document.getElementById('registrationFormQuotation');
+
+    const openModalQuotForm = () => {
+        $('#quot-form-create').modal('show');
+    }
+
+    const closeModalQuotForm = (event) => {
+        $('#quot-form-create').modal('hide');
+        fromRefer.classList.remove("was-validated");
+        //reset selet2 values
+        $('.js-example-basic-multiple').val(null).trigger('change');
+        fromRefer.reset();
+
+    }
+
+    const formValidate = (event, form) => {
+        let errors = false;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        } else {
+            errors = true;
+        }
+        form.classList.add("was-validated");
+        return errors && (!event.detail || event.detail === 1);
+    }
+
+    const saveQuotation = (event) => {
+
+        const form = new FormData(fromRefer);
+
+        if (formValidate(event, fromRefer)) {
+            requestPost('/users/quotation', form).then(resp => {
+
+            }).catch(error => {
+                console.log(error.toString());
+            });
+        }
+    }
+
+    async function requestPost(url, form) {
+        return await fetch(url, {
+            'method': 'POST',
+            'Content-Type': 'multipart/form-data',
+            "headers": {
+                'X-CSRF-TOKEN': form.get('_token'),
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            'body': form
+        }).then(async (resp) => await resp.json());
+    };
+
+    $(function() {
+
+        $('.select2').css('width', '100%');
+
+        $('#quot-form-create').on('shown.bs.modal', function() {
+            $('#operation_uf').on('change', function(e) {
+
+                e.preventDefault();
+                let uf = $(this).val();
+                if (uf.length > 0)
+                    $.ajax({
+                        type: "get",
+                        url: "/api/cities-uf/" + uf,
+                        dataType: "json",
+                        success: function(response) {
+                            let select_city = $("#operation_city");
+                            select_city.empty();
+                            $(response).each(function(index) {
+                                select_city.append('<option value="' + response[index].id + '">' + response[index].title + '</option>');
+                            });
+                        }
+                    });
+            });
+        })
+    });
+</script>
 
 @endpush
