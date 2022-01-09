@@ -13,6 +13,10 @@
 /**
  * Rotas Usuário Comun
  **/
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::prefix('/')->name('user.')->namespace('User')->group(function () {
 
     Auth::routes();
@@ -119,6 +123,7 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function () {
         Route::resource('categories', 'CategoryController');
         Route::resource('subcategories', 'SubcategoryController');
         Route::resource('companies', 'CompanyController');
+        Route::resource('quotations', 'QuotationController');
         Route::put('companies/{company}/highlighted', 'CompanyController@highlighted')->name('companies.highlighted');
 
 

@@ -37,6 +37,7 @@ return [
 
     'title_categories' => 'Cadastro de Premiações/Categorias',
     'title_awards' => 'Cadastro de Premiações',
+    'title_quotation' => 'Cotações',
     'title_grades' => 'Cadastro de Notas',
     'title_isncriptions' => 'Inscrições',
     'title_audition' => 'Audições',

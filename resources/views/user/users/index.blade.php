@@ -3,22 +3,22 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        
+
         <div class="row">
-            
+
             <div class="col-sm-12">
                 <ul class="nav nav-tabs" id="tabUser" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                            aria-controls="home" aria-selected="true">Home</a>
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="company-tab" data-toggle="tab" href="#company" role="tab"
-                            aria-controls="company" aria-selected="false">Empresas</a>
+                        <a class="nav-link" id="company-tab" data-toggle="tab" href="#company" role="tab" aria-controls="company" aria-selected="false">Empresas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="ads-tab" data-toggle="tab" href="#ads" role="tab" aria-controls="ads"
-                            aria-selected="false">Anúncios</a>
+                        <a class="nav-link" id="ads-tab" data-toggle="tab" href="#ads" role="tab" aria-controls="ads" aria-selected="false">Anúncios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="quot-tab" data-toggle="tab" href="#quot" role="tab" aria-controls="quot" aria-selected="false">Cotações</a>
                     </li>
                 </ul>
 
@@ -43,6 +43,13 @@
                         <hr>
                         <h2>Anúncios</h2>
                         @includeIf('user.users.tabs.ads')
+                        <hr>
+                    </div>
+                    <!--/tab-pane-->
+                    <div class="tab-pane" id="quot">
+                        <hr>
+                        <h2>Cotações</h2>
+                        @includeIf('user.users.tabs.quotations')
                         <hr>
                     </div>
 

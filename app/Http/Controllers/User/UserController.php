@@ -29,9 +29,19 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = Auth::guard('user')->user();
+        $_user = Auth::guard('user')->user();
 
+        $user = User::where('id', $_user->id)->with(
+            [
+                'companies' => fn ($m) => $m->with(
+                    [
+                        'city' => fn ($s) => $s->with('state')
+                    ]
+                )
+            ]
+        )->first();
 
+        $user->quotations = [];
 
         return view('user.users.index', compact('user'));
     }
@@ -62,8 +72,16 @@ class UserController extends Controller
 
 
 
-        return view('user.users.company', compact('categories', 'ufs', 'cities', 'company', 'method',
-        'subcategories_selected','operation_ufs','operation_cities'));
+        return view('user.users.company', compact(
+            'categories',
+            'ufs',
+            'cities',
+            'company',
+            'method',
+            'subcategories_selected',
+            'operation_ufs',
+            'operation_cities'
+        ));
     }
 
     public function editCompany(Company $company)
@@ -106,7 +124,7 @@ class UserController extends Controller
 
         return view(
             'user.users.company',
-            compact('categories', 'company', 'method', 'cities', 'ufs', 'subcategories_selected','operation_ufs','operation_cities')
+            compact('categories', 'company', 'method', 'cities', 'ufs', 'subcategories_selected', 'operation_ufs', 'operation_cities')
         );
     }
 
@@ -143,7 +161,7 @@ class UserController extends Controller
         $result = Company::create($data);
 
         //atualiza com o id
-        $result->slug = create_slug_company($data['name'],$data['cpf_cnpj'], $result->id);
+        $result->slug = create_slug_company($data['name'], $data['cpf_cnpj'], $result->id);
         $result->save();
 
         //vincula as subcategorias aa empresa recem criada
@@ -216,7 +234,7 @@ class UserController extends Controller
         $company->responsible = $data['resposible'];
         $company->email = $data['email'];
         $company->owner_id = $data['owner_id'];
-        $company->slug = create_slug_company($data['name'],$data['cpf_cnpj'], $company->id);
+        $company->slug = create_slug_company($data['name'], $data['cpf_cnpj'], $company->id);
 
 
 
@@ -295,7 +313,7 @@ class UserController extends Controller
 
         $request->validate([
             'name'  => 'required',
-            'email'  => 'required|email|unique:users,email,'. $id,
+            'email'  => 'required|email|unique:users,email,' . $id,
 
         ]);
 
@@ -325,12 +343,11 @@ class UserController extends Controller
             $user->save();
 
 
-            if($request->has('token_payment')) {
-                return redirect(route('user.checkout.create',$request->token_payment))->with('success', 'Os dados do usuário foi atualizado com sucesso.');
+            if ($request->has('token_payment')) {
+                return redirect(route('user.checkout.create', $request->token_payment))->with('success', 'Os dados do usuário foi atualizado com sucesso.');
             }
 
-        return redirect(route('user.users.index'))->with('success', __('general.msg_success', ['id' => $user->id]));
-
+            return redirect(route('user.users.index'))->with('success', __('general.msg_success', ['id' => $user->id]));
         } catch (\Exception $e) {
             return redirect(route('user.users.index'))->with('error', __('general.msg_error_exception', ['exception' => $e->getMessage()]));
         }
