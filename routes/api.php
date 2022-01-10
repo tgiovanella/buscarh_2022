@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::get('cities/{uf?}/{id?}', 'Api\City@cities');
+Route::get('cities-uf/{ids?}', 'Api\City@citiesUF');
 Route::get('cities-like/{term?}', 'Api\City@citiesLike');
 
 Route::get('users-like/{term?}', 'Api\UsersController@usersLike');
