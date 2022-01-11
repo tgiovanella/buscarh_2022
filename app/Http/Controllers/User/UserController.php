@@ -42,10 +42,9 @@ class UserController extends Controller
             ]
         )->first();
 
-        $user->quotations = [];
+        $user->quotations = [];//tenho que fazer o model
 
         $ufs = State::select('id', 'title', 'letter')->orderBy('title')->get();
-        $cities = City::with('state')->get();
 
         $categories = Category::has('subcategories')
             ->with(
@@ -59,7 +58,6 @@ class UserController extends Controller
             'user',
             'categories',
             'ufs',
-            'cities',
         ));
     }
 
