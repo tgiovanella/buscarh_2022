@@ -34,7 +34,8 @@ class UserController extends Controller
 
         $user = User::where('id', $_user->id)->with(
             [
-                'companies' => fn ($m) => $m->with(
+                'quotes'       => fn ($c) => $c->withCount('candidates'),
+                'companies'    => fn ($m) => $m->with(
                     [
                         'city' => fn ($s) => $s->with('state')
                     ]
@@ -42,10 +43,7 @@ class UserController extends Controller
             ]
         )->first();
 
-        $user->quotations = [];
-
         $ufs = State::select('id', 'title', 'letter')->orderBy('title')->get();
-        $cities = City::with('state')->get();
 
         $categories = Category::has('subcategories')
             ->with(
@@ -59,7 +57,6 @@ class UserController extends Controller
             'user',
             'categories',
             'ufs',
-            'cities',
         ));
     }
 

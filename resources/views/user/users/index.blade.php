@@ -101,7 +101,9 @@
 
         if (formValidate(event, fromRefer)) {
             requestPost('/users/quotation', form).then(resp => {
-
+                if(resp.type === 'success'){
+                    closeModalQuotForm(event);
+                }
             }).catch(error => {
                 console.log(error.toString());
             });
