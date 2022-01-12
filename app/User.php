@@ -56,6 +56,11 @@ class User extends Authenticatable
         return $this->hasMany(Company::class, 'owner_id', 'id');
     }
 
+    public function quotes()
+    {
+        return $this->hasMany(Quote::class, 'user_id', 'id');
+    }
+
     public function city()
     {
         return $this->belongsTo(City::class);

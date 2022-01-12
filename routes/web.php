@@ -42,8 +42,10 @@ Route::prefix('/')->name('user.')->namespace('User')->group(function () {
     Route::get('users/company', 'UserController@company')->name('users.company');
     Route::post('users/company', 'UserController@createCompany')->name('users.company.store');
 
+
     Route::post('users/quotation', 'QuotationController@store')->name('users.quotation.store');
 
+    Route::get('users/candidate/{quote_id?}', 'QuoteCandidateController@index')->name('candidate');
 
     Route::get('users/company/{company}/edit', 'UserController@editCompany')->name('users.company.edit');
     Route::put('users/company/{company}/edit', 'UserController@updateCompany')->name('users.company.update');
@@ -162,14 +164,12 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function () {
         Route::resource('claims', 'ClaimCompanyController');
         Route::resource('users', 'UserController');
 
-        Route::resource('report/list-contacts','Reports\ContactsReportsController');
-        Route::resource('report/clicks-regions','Reports\RegionsReportsController');
-        Route::get('report/clicks-regions/{id}/detail','Reports\RegionsReportsController@detail')->name('clicks-regions.details');
+        Route::resource('report/list-contacts', 'Reports\ContactsReportsController');
+        Route::resource('report/clicks-regions', 'Reports\RegionsReportsController');
+        Route::get('report/clicks-regions/{id}/detail', 'Reports\RegionsReportsController@detail')->name('clicks-regions.details');
 
-        
-        
-        Route::get('report/list-contacts-export','Reports\ContactsReportsController@export')->name('report.contacts.exp');
 
-        
+
+        Route::get('report/list-contacts-export', 'Reports\ContactsReportsController@export')->name('report.contacts.exp');
     });
 });

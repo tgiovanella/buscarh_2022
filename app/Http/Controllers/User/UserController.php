@@ -34,15 +34,14 @@ class UserController extends Controller
 
         $user = User::where('id', $_user->id)->with(
             [
-                'companies' => fn ($m) => $m->with(
+                'quotes'       => fn ($c) => $c->withCount('candidates'),
+                'companies'    => fn ($m) => $m->with(
                     [
                         'city' => fn ($s) => $s->with('state')
                     ]
                 )
             ]
         )->first();
-
-        $user->quotations = [];//tenho que fazer o model
 
         $ufs = State::select('id', 'title', 'letter')->orderBy('title')->get();
 

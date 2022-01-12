@@ -5,7 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Company;
 use App\Http\Controllers\Controller;
 use App\Mail\SendMailQuotation;
-use App\Quotation;
+use App\Quote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -19,7 +19,7 @@ class NotificationController extends Controller
      */
     public function dispatchQuotation(Request $request)
     {
-        $quot = Quotation::where('id', $request->id)->with(['subcategories', 'cities'])->first();
+        $quot = Quote::where('id', $request->id)->with(['subcategories', 'cities'])->first();
 
         if ($quot) {
             $applicants = Company::whereHas(
