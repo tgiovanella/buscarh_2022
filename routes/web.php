@@ -47,6 +47,8 @@ Route::prefix('/')->name('user.')->namespace('User')->group(function () {
 
     Route::get('users/candidate/{quote_id?}', 'QuoteCandidateController@index')->name('candidate');
 
+    Route::get('candidate/notification/{quote_id?}', 'NotificationController@dispatchQuotation')->name('candidate.notification');
+
     Route::get('users/company/{company}/edit', 'UserController@editCompany')->name('users.company.edit');
     Route::put('users/company/{company}/edit', 'UserController@updateCompany')->name('users.company.update');
     Route::delete('users/company/{company}/edit', 'UserController@destroyCompany')->name('users.company.destroy');

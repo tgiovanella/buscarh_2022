@@ -1,4 +1,5 @@
 @if(count($user->quotes) > 0)
+
 <div class="row">
     <div class="col">
         <button onclick="openModalQuotForm(event)" class="btn btn-primary mb-3 pull-right"><i class="fa fa-plus-circle" aria-hidden="true"></i>

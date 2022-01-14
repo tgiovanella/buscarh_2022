@@ -17,26 +17,39 @@ class NotificationController extends Controller
      * Afim de evitar travamento do browser, fiz como rota API, usada com WorkerProccess com javascript
      * Modificar em caso de usar background process no php
      */
-    public function dispatchQuotation(Request $request)
+    public function dispatchQuotation(int $id)
     {
-        $quot = Quote::where('id', $request->id)->with(['subcategories', 'cities'])->first();
 
-        if ($quot) {
-            $applicants = Company::whereHas(
-                'subcategories',
-                fn ($s) => $s->whereIn('subcategory_id', (array)$quot->subcategories->pluck('id'))
-            )->whereHas(
-                'cities',
-                fn ($c) => $c->whereIn('city_id', (array)$quot->cities->pluck('id'))
+        try {
+            $quot = Quote::where('id', $id)->with(['subcategories', 'cities'])->firstOrFail();
+
+            $cities = array_values(array_column($quot->cities->toArray(), 'id'));
+            $sub = array_values(array_column($quot->subcategories->toArray(), 'id'));
+            //Localiza os prestadores
+            $applicants = Company::with(
+                [
+                    'city' => fn ($m) => $m->whereIn('id', $cities),
+                    'subcategories' => fn ($m) => $m->whereIn('subcategories.id', $sub)
+                ]
             )->get();
-
+            $found = 0;
             foreach ($applicants  as $applicant) {
+                //deve estar em ao menos uma das categoria e uma das cidades
+                if ($applicant->subcategories !== null && $applicant->city !== null) {
+                    /* var_dump($applicant->email); */
+                    ++$found;
 
-                Mail::to($applicant->email)->send(new SendMailQuotation($applicant, $quot->rh));
+                    //envia o email
+                   // Mail::to($applicant->email)->send(new SendMailQuotation($applicant, $quot));
+                }
             }
 
-            return response()->json(['messagem' => 'Email foi disparado com sucesso!']);
+            if ($found === 0) {
+                return response()->json(['type' => 'error', 'message' => "Não foram encontrados prestadoes nas cidades selecionadas!"]);  
+            }
+            return response()->json(['type' => 'success', 'message' => "Notificação foram enviadas com sucesso, {$found} empresas foram notificadas!"]);
+        } catch (\Exception $th) {
+            return response()->json(['type' => 'error', 'message' =>  $th->getMessage()]);
         }
-        return response()->json(['messagem' => __('general.msg_error_exception')]);
     }
 }

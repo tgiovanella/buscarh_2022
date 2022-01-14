@@ -3,10 +3,16 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
+        <div id="flash-message" class="alert alert-dismissible my-2 fade show" role="alert">
+            <span></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <i aria-hidden="true">&times;</i>
+            </button>
+        </div>
         <div class="row">
 
             <div class="col-sm-12">
+
                 <ul class="nav nav-tabs" id="tabUser" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
@@ -95,17 +101,46 @@
         return errors && (!event.detail || event.detail === 1);
     }
 
+    const sendNotification = (event, response) => {
+        $('#quote-sendmail').modal('show');
+
+        return fetch(`/candidate/notification/${response.id}`, {
+                'method': 'GET',
+                "headers": {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(async (resp) => await resp.json())
+            .then(resp => {
+                if (resp.type === 'success') {
+                    sessionStorage.setItem('success', resp.message);
+                    window.location.reload();
+                } else {
+                    flasherror(resp.message);
+                }
+
+            }).finally(() => {
+                $('#quote-sendmail').modal('hide');
+            });
+
+    }
+
     const saveQuotation = (event) => {
 
         const form = new FormData(fromRefer);
-
+        event.target.disabled = true
         if (formValidate(event, fromRefer)) {
             requestPost('/users/quotation', form).then(resp => {
-                if(resp.type === 'success'){
+                if (resp.type === 'success') {
                     closeModalQuotForm(event);
+                    sendNotification(event, resp.data);
+                    return null
                 }
+                flasherror(resp.message);
             }).catch(error => {
                 console.log(error.toString());
+            }).finally(() => {
+                event.target.disabled = false
             });
         }
     }
@@ -121,9 +156,26 @@
             'body': form
         }).then(async (resp) => await resp.json());
     };
+    const flashsuccess = (msg) => {
+        $('#flash-message')
+            .show()
+            .addClass('alert-success')
+            .find('span')
+            .html(`<strong>Sucesso!</strong>${msg}`)
 
+        sessionStorage.removeItem('success');
+    }
+    const flasherror = (msg) => {
+        $('flash-message').show()
+            .addClass('alert-success')
+            .find('span')
+            .html(`<strong>Error!</strong>${msg}`);
+        sessionStorage.removeItem('error');
+    }
     $(function() {
+        let ufs = ''
 
+        $('#flash-message').hide()
         $('.select2').css('width', '100%');
 
         $('#quot-form-create').on('shown.bs.modal', function() {
@@ -131,7 +183,7 @@
 
                 e.preventDefault();
                 let uf = $(this).val();
-                if (uf.length > 0)
+                if (uf.length > 0 && ufs !== uf) {
                     $.ajax({
                         type: "get",
                         url: "/api/cities-uf/" + uf,
@@ -142,10 +194,19 @@
                             $(response).each(function(index) {
                                 select_city.append('<option value="' + response[index].id + '">' + response[index].title + '</option>');
                             });
+                            ufs = '';
                         }
                     });
+                }
+
             });
         })
+        if (sessionStorage.getItem('success')) {
+            flashsuccess(sessionStorage.getItem('success'));
+        }
+        if (sessionStorage.getItem('error')) {
+            flasherror(sessionStorage.getItem('error'));
+        }
     });
 </script>
 
