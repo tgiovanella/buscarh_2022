@@ -1,4 +1,4 @@
-<div class="modal fade" id="quot-form-create" tabindex="-1" aria-labelledby="quotLabel" aria-hidden="true" >
+<div class="modal fade" id="quot-form-create" tabindex="-1" aria-labelledby="quotLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <form role="form" class="form" id="registrationFormQuotation" novalidate>
@@ -36,6 +36,24 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODAL CONFIRME-->
+<div class="modal fade" id="confirmModal" role="dialog" aria-hidden="true" style="display: none; z-index: 1050;">
+    <div class="modal-dialog" role="document">
+
+        <div class="modal-content">
+            <div class='modal-header'>
+                <h4 class="text-danger center">Atenção !</h4>
+            </div>
+            <div class="modal-body" id="confirmMessage">
+            </div>
+            <div class="modal-footer d-flex">
+                <button type="button" class="btn btn-danger" id="confirmCancel">Cancelar</button>
+                <span style="flex:1 1 auto"></span>
+                <button type="button" class="btn btn-primary" id="confirmOk">Ok</button>
             </div>
         </div>
     </div>

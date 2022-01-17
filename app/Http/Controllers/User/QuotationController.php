@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class QuotationController extends Controller
 {
- 
+
 
     public function store(Request $request)
     {
@@ -19,6 +19,7 @@ class QuotationController extends Controller
                 'infos'             => ['required', 'min:25'],
                 'title'             => ['required', 'min:5'],
                 'operation_city'    => ['required'],
+                'company_id'        => ['required'],
                 //'operation_uf'      => ['required'],
                 'subcategory_id'    => ['required'],
             ]);
@@ -26,6 +27,7 @@ class QuotationController extends Controller
             $quot = new Quote();
 
             $quot->title        = $request->title;
+            $quot->company_id   = $request->company_id;
             $quot->description  = strip_tags(trim($request->infos));
             $quot->status       = Quote::STATUS_OPEN;
             $quot->user_id      = Auth::user()->id;
@@ -41,5 +43,18 @@ class QuotationController extends Controller
         } catch (\Exception  $e) {
             return response()->json(['type' => 'error', 'message' => $e->getMessage() . ', Contate o suporte!']);
         }
+    }
+
+    public function delete(Request $request)
+    {
+
+        $quote = Quote::find($request->id);
+        $quote->subcategories()->detach();
+        $quote->cities()->detach();
+        $quote->candidates()->delete();
+
+        $quote->delete();
+
+        return response()->json(['type' => 'success', 'message' => 'Cotação removida com sucesso!'], 200);
     }
 }

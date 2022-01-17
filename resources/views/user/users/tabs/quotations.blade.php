@@ -35,8 +35,8 @@
             </td>
             <td width="80" class="text-center">{{$item->candidates_count}}</td>
             <td width="120" class="text-center">
-                <a href="{{route('user.candidate',[$item->id])}}" class="btn btn-sm btn-info text-white" title="Visualizar Candidatos"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                <a href="#" class="btn btn-sm btn-secondary" title="Encerrar Cotação"><i class="fa fa-close" aria-hidden="true"></i></a>
+                <a href="{{route('user.candidate',[$item->id])}}" class="btn btn-sm btn-info text-white" title="Visualizar Candidatos"><i class="fa fa-eye" aria-hidden="true"></i></a>               
+                <button data-id="{{$item->id}}" onclick="deleteQuote(event)" class="btn btn-sm btn-danger" title="Encerrar Cotação"><i data-id="{{$item->id}}" class="fa fa-trash" aria-hidden="true"></i></button>
             </td>
         </tr>
         @endforeach

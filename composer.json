@@ -31,7 +31,8 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "process-timeout": 0
     },
     "extra": {
         "laravel": {
@@ -46,7 +47,7 @@
             "database/seeds",
             "database/factories"
         ],
-        "files" : [
+        "files": [
             "app/my_helpers.php"
         ]
     },
@@ -58,6 +59,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
+        "start": "@php -S 0.0.0.0:8000 -t public",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

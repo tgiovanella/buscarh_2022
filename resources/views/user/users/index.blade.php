@@ -5,7 +5,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div id="flash-message" class="alert alert-dismissible my-2 fade show" role="alert">
             <span></span>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button onclick="flashclose()" type="button" class="close" aria-label="Close">
                 <i aria-hidden="true">&times;</i>
             </button>
         </div>
@@ -75,7 +75,7 @@
 
 <script>
     const fromRefer = document.getElementById('registrationFormQuotation');
-
+    const csrf = "{{csrf_token()}}";
     const openModalQuotForm = () => {
         $('#quot-form-create').modal('show');
     }
@@ -115,10 +115,9 @@
                 if (resp.type === 'success') {
                     sessionStorage.setItem('success', resp.message);
                     window.location.reload();
-                } else {
-                    flasherror(resp.message);
+                    return null;
                 }
-
+                flasherror(resp.message);
             }).finally(() => {
                 $('#quote-sendmail').modal('hide');
             });
@@ -145,6 +144,21 @@
         }
     }
 
+    const deleteQuote = (event) => {
+        let id = $(event.target).data('id');
+
+        confirmDialog(`<p>[#${id}] Deseja remover essa Cotação</p><p class="text-danger"><b>Atenção!!</b> Essa ação no pode ser desfeita.</p>`, () => {
+            const form = new FormData();
+            form.append('id', id);
+            form.append('_token', csrf);
+            requestPost('/users/quotation/delete', form).then(resp => {
+                sessionStorage.setItem('success', resp.message);
+                window.location.reload();
+            });
+            event.preventDefault();
+        });
+    }
+
     async function requestPost(url, form) {
         return await fetch(url, {
             'method': 'POST',
@@ -166,16 +180,36 @@
         sessionStorage.removeItem('success');
     }
     const flasherror = (msg) => {
-        $('flash-message').show()
-            .addClass('alert-success')
+        $('#flash-message').show()
+            .addClass('alert-danger')
             .find('span')
             .html(`<strong>Error!</strong>${msg}`);
         sessionStorage.removeItem('error');
+    }
+    const flashclose = () => $('#flash-message').hide();
+
+    function confirmDialog(message, onConfirm, config = {
+        confirmText: "Continuar",
+        cancelText: "Cancelar"
+    }) {
+        const {
+            confirmText,
+            cancelText
+        } = config;
+        var fClose = function() {
+            modal.modal("hide");
+        };
+        var modal = $("#confirmModal");
+        modal.modal("show");
+        $("#confirmMessage").empty().append(message);
+        $("#confirmOk").text(confirmText).off().one('click', onConfirm).one('click', fClose);
+        $("#confirmCancel").text(cancelText).off().one("click", fClose);
     }
     $(function() {
         let ufs = ''
 
         $('#flash-message').hide()
+        $('#company_id').select2();
         $('.select2').css('width', '100%');
 
         $('#quot-form-create').on('shown.bs.modal', function() {
