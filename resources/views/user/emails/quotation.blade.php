@@ -188,27 +188,18 @@
                                     <tr>
                                         <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
 
-                                            <h1>Olá, {{ $name }}</h1>
+                                            <h1>Oportunidade de Negócio<h1>
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
-                                                Seu anúncio <strong>{{ $ads->id }}</strong> foi registrado com sucesso.
-                                                A nossa
-                                                equipe estará analisando a sua solicitação
-                                                e em breve estará te encaminhando o link de pagamento.</p>
+                                                A empresa <strong>
+                                                    {{$quote->company->fantasy}}</strong> busca parceiro para serviços
+                                                nas areas de <i>{{ implode(', ',array_column($quote->subcategories->toArray(),'name') ) }}</i>.
 
-                                            <p style="text-align: center;">
-                                                <img src="{{ asset('img/status-ads/1.png') }}" alt=""
-                                                    style="width: 100%; margin: 20px auto; display: block;">
+                                                E sua empresa atende aos requisitos preliminares!
                                             </p>
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
-                                                <a href="{{ url('/') }}" class="link">Clique aqui</a> e acompanhe o
-                                                status do seu
-                                                anúncio.</p>
-
-
-
-
+                                                Para mais informações <a href="{{ url('/') }}" class="link">Clique aqui</a>.</p>
 
                                         </td>
                                     </tr>

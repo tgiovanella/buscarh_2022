@@ -7,11 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Company;
 use App\User;
-use App\Subcategory;
 use App\Category;
 use App\City;
 use App\State;
-use stdClass;
 
 class UserController extends Controller
 {
