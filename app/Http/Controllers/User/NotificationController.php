@@ -22,7 +22,7 @@ class NotificationController extends Controller
     {
 
         try {
-            $quot = Quote::where('id', $id)->with(['subcategories', 'cities'])->firstOrFail();
+            $quot = Quote::where('id', $id)->with(['subcategories', 'cities','company'])->firstOrFail();
 
             $cities = array_values(array_column($quot->cities->toArray(), 'id'));
             $sub = array_values(array_column($quot->subcategories->toArray(), 'id'));
@@ -43,11 +43,12 @@ class NotificationController extends Controller
 
                     $company_founds[] = ['company_id' => $applicant->id, 'quote_id' => $id];
                     //envia o email
-                    // Mail::to($applicant->email)->send(new SendMailQuotation($applicant, $quot));
+                     //Mail::to($applicant->email)->send(new SendMailQuotation($applicant, $quot));
                 }
             }
 
             if ($found === 0) {
+                //$quot->delete(); deleta a cotaçaõ caso não encontre nenhum candidato
                 return response()->json(['type' => 'error', 'message' => "Não foram encontrados prestadores nas cidades selecionadas!"]);
             }
             QuoteCandidateNotification::insert($company_founds);

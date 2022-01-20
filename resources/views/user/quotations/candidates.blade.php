@@ -38,6 +38,7 @@
                                 <td class="text-center">{{$item->first()->company->city->title}} / {{$item->first()->company->uf}} </td>
                                 <td class="text-center">{{$item->first()->company->phone}} </td>
                                 <td class="text-center">{{$item->first()->company->email}} </td>
+                                <!-- link da interacao entre empresa e candidato -->
                                 <td class="text-center"><i class="fa fa-comment" aria-hidden="true"></i> {{$item->count()}} </td>
                                 <td class="text-center">
                                     @if($item->first()->path_file)
@@ -45,11 +46,12 @@
                                         <i class="fa fa-file text-info" aria-hidden="true"></i>
                                     </a>
                                     @else
-                                     - 
+                                    -
                                     @endif
                                 </td>
 
                                 <td width="120" class="text-center">
+                                    <!-- link do formulario aqui -->
                                     <a href="#" class="btn btn-sm btn-info text-white" title="Visualizar Proposta Completa"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                 </td>
                             </tr>

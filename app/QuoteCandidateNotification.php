@@ -24,4 +24,9 @@ class QuoteCandidateNotification extends Model
     {
         return $this->hasMany(Company::class, 'id', 'company_id');
     }
+
+    public function quote()
+    {
+        return $this->hasOne(Quote::class, 'id', 'quote_id');
+    }
 }

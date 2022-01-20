@@ -2,10 +2,10 @@
 
 @section('content')
 
-<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+<div class="col-sm-12">
 
     <nav aria-label="">
-        <!-- {{ $companies->links() }} -->
+
     </nav>
 
     <h4 class="subTitulos">
@@ -19,27 +19,35 @@
             <ul class="listaEmpresa">
                 <li>
                     <h3>
-                        <i class="material-icons">location_city</i>{{ $quote->company->name }}
+                        <i class="material-icons mr-2">location_city</i>{{ $quote->quote->company->fantasy }}
                     </h3>
                 </li>
                 <li>
                     <h5>
-                        <i class="material-icons">info</i>{{ $quote->title }}
+                        {{$quote->quote->title }}
                     </h5>
-                    @foreach($quote->subcategories as $category)
-                    <span class="label label-default">{{ $category->category->name }}:{{ $category->name }}</span>
-                    @endforeach
+
+                    <blockquote class="blockquote">
+                        <p class="mb-0"><i class="material-icons mr-2">info</i> Atuar com</p>
+                        <footer class="blockquote-footer">
+                            @foreach($quote->quote->subcategories as $category)
+                            <span class="label label-default">{{ $category->category->name }}:{{ $category->name }}</span>
+                            @endforeach
+                        </footer>
+                    </blockquote>
+
                 </li>
 
-                <li><i class="material-icons">location_on</i> {{ $quote->company->address }}, {{ $quote->company->number }}
-                    {{ $quote->complement }}.
-                    {{ $quote->district }}. {{ @$quote->company->city->title }} - {{ $quote->company->uf }}
+                <li><i class="material-icons mr-2">location_on</i> {{$quote->quote->company->address }}, {{$quote->quote->company->number }}
+                    {{$quote->quote->complement }}.
+                    {{$quote->quote->district }}. {{$quote->quote->company->city->title }} - {{$quote->quote->company->uf }}
                 </li>
-                <li><i class="material-icons">phone</i> {{ $quote->company->phone }}</li>
+                <li><i class="material-icons mr-2">phone</i> {{$quote->quote->company->phone }}</li>
                 <li>
+                    <!-- Link do formulario aqui, quando navegar pro formulario marca a notificacao como lida-->
                     <a href="#" class="btn btn-more btn-primary">
-                        Demonstrar Interesse
-                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        
+                        <i class="fa fa-plus" aria-hidden="true"></i> Detalhes
                     </a>
                 </li>
             </ul>
@@ -53,20 +61,9 @@
         </li>
         @endforelse
     </ul>
-
-    {{-- <nav aria-label="">
-        {{ $companies->appends(Request::query())->links() }}
-    </nav> --}}
 </div>
 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-    <div class="sticky-top">
-        <div class="subTitulos">
-            <i class="material-icons float-right">bookmarks</i>
-            Destaques
-        </div>
-
-        <banner-slide-sidebar category-id="{{ $categories_sidebar->id ?? null }}"></banner-slide-sidebar>
-    </div>
+    
 </div>
 </div>
 @endsection

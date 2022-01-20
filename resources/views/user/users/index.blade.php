@@ -135,13 +135,14 @@
                     sendNotification(event, resp.data);
                     return null
                 }
-                flasherror(resp.message);
+                handleValidation(resp.message);
             }).catch(error => {
                 console.log(error.toString());
             }).finally(() => {
                 event.target.disabled = false
             });
         }
+        event.target.disabled = false;
     }
 
     const deleteQuote = (event) => {
@@ -205,6 +206,35 @@
         $("#confirmOk").text(confirmText).off().one('click', onConfirm).one('click', fClose);
         $("#confirmCancel").text(cancelText).off().one("click", fClose);
     }
+
+    function handleValidation(messages) {
+        // reset before looping
+        $('.invalid-feedback, .invalid-tooltip').remove();
+        if (typeof messages === "object")
+            for (let i in messages) {
+                let element = $(`[name='${i}']`);
+                if (element.length === 0) {
+                    flasherror(messages[i][0]);
+                    continue;
+                }
+                for (let t in messages[i]) {
+                    element[0]?.setCustomValidity(messages[i][t]);
+                    element.after(`<div class="invalid-tooltip">${messages[i][t]}</div>`)
+                }
+                // remove message if event key press
+                $(`[name='${i}']`).on('keypress', function() {
+                    $(`[name='${i}']`)[0].setCustomValidity("");
+                });
+
+                // remove message if event change
+                $(`[name='${i}']`).on('change', function() {
+                    $(`[name='${i}']`)[0].setCustomValidity("");
+                });
+            }
+        else
+            flasherror(messages);
+    }
+
     $(function() {
         let ufs = ''
 
@@ -218,21 +248,24 @@
                 e.preventDefault();
                 let uf = $(this).val();
                 if (uf.length > 0 && ufs !== uf) {
-                    $.ajax({
-                        type: "get",
-                        url: "/api/cities-uf/" + uf,
-                        dataType: "json",
-                        success: function(response) {
-                            let select_city = $("#operation_city");
-                            select_city.empty();
-                            $(response).each(function(index) {
-                                select_city.append('<option value="' + response[index].id + '">' + response[index].title + '</option>');
-                            });
-                            ufs = '';
-                        }
-                    });
-                }
 
+                    setTimeout(() => {
+                        if (uf.length > 0 && ufs !== uf)
+                            $.ajax({
+                                type: "get",
+                                url: "/api/cities-uf/" + uf,
+                                dataType: "json",
+                                success: function(response) {
+                                    let select_city = $("#operation_city");
+                                    select_city.empty();
+                                    $(response).each(function(index) {
+                                        select_city.append('<option value="' + response[index].id + '">' + response[index].title + '</option>');
+                                    });
+                                    ufs = '';
+                                }
+                            });
+                    }, 500);
+                }
             });
         })
         if (sessionStorage.getItem('success')) {

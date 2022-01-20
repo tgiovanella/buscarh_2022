@@ -20,10 +20,10 @@ class SendMailQuotation extends Mailable
      *
      * @return void
      */
-    public function __construct($applicant,  $rh)
+    public function __construct($applicant,  $quote)
     {
         $this->applicant = $applicant;
-        $this->rh = $rh;
+        $this->quote = $quote;
     }
 
     /**
@@ -39,7 +39,7 @@ class SendMailQuotation extends Mailable
             ->view('user.emails.quotation')
             ->with([
                 'applicant' => $this->applicant,
-                'rh' => $this->rh
+                'quote' => $this->quote
             ]);
     }
 }

@@ -114,7 +114,7 @@
                   
                     @else
                     <li class="nav-item">
-                        <a class="nav-link py-2" href="#" >
+                        <a class="nav-link py-2" href="/users/opportunity" >
                             <span style="top:12px;margin-left:-12px;" class="position-absolute badge rounded-pill bg-danger">{{$notification}}</span>
                             <i class="fa fa-bell" aria-hidden="true"></i>
                             Notificações                        

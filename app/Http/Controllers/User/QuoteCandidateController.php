@@ -24,7 +24,13 @@ class QuoteCandidateController extends Controller
     {
         $candidate = User::where('id', Auth::user()->id)->whereHas('companies')->with('companies')->first();
 
+        $notify = QuoteCandidateNotification::whereIn('company_id', $candidate->companies->pluck('id'))->with(['quote'=>fn($m)=>$m->with('company')])->get();
 
-        return view('user.quotations.index', ['quotes' => []]);
+        return view('user.quotations.index', ['quotes' => $notify]);
+    }
+
+    public function update()
+    {
+        
     }
 }
