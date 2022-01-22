@@ -3,10 +3,16 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
+        <div id="flash-message" class="alert alert-dismissible my-2 fade show" role="alert">
+            <span></span>
+            <button onclick="flashclose()" type="button" class="close" aria-label="Close">
+                <i aria-hidden="true">&times;</i>
+            </button>
+        </div>
         <div class="row">
 
             <div class="col-sm-12">
+
                 <ul class="nav nav-tabs" id="tabUser" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
@@ -69,7 +75,7 @@
 
 <script>
     const fromRefer = document.getElementById('registrationFormQuotation');
-
+    const csrf = "{{csrf_token()}}";
     const openModalQuotForm = () => {
         $('#quot-form-create').modal('show');
     }
@@ -95,19 +101,63 @@
         return errors && (!event.detail || event.detail === 1);
     }
 
+    const sendNotification = (event, response) => {
+        $('#quote-sendmail').modal('show');
+
+        return fetch(`/candidate/notification/${response.id}`, {
+                'method': 'GET',
+                "headers": {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(async (resp) => await resp.json())
+            .then(resp => {
+                if (resp.type === 'success') {
+                    sessionStorage.setItem('success', resp.message);
+                    window.location.reload();
+                    return null;
+                }
+                flasherror(resp.message);
+            }).finally(() => {
+                $('#quote-sendmail').modal('hide');
+            });
+
+    }
+
     const saveQuotation = (event) => {
 
         const form = new FormData(fromRefer);
-
+        event.target.disabled = true
         if (formValidate(event, fromRefer)) {
             requestPost('/users/quotation', form).then(resp => {
-                if(resp.type === 'success'){
+                if (resp.type === 'success') {
                     closeModalQuotForm(event);
+                    sendNotification(event, resp.data);
+                    return null
                 }
+                handleValidation(resp.message);
             }).catch(error => {
                 console.log(error.toString());
+            }).finally(() => {
+                event.target.disabled = false
             });
         }
+        event.target.disabled = false;
+    }
+
+    const deleteQuote = (event) => {
+        let id = $(event.target).data('id');
+
+        confirmDialog(`<p>[#${id}] Deseja remover essa Cotação</p><p class="text-danger"><b>Atenção!!</b> Essa ação no pode ser desfeita.</p>`, () => {
+            const form = new FormData();
+            form.append('id', id);
+            form.append('_token', csrf);
+            requestPost('/users/quotation/delete', form).then(resp => {
+                sessionStorage.setItem('success', resp.message);
+                window.location.reload();
+            });
+            event.preventDefault();
+        });
     }
 
     async function requestPost(url, form) {
@@ -121,9 +171,75 @@
             'body': form
         }).then(async (resp) => await resp.json());
     };
+    const flashsuccess = (msg) => {
+        $('#flash-message')
+            .show()
+            .addClass('alert-success')
+            .find('span')
+            .html(`<strong>Sucesso!</strong>${msg}`)
+
+        sessionStorage.removeItem('success');
+    }
+    const flasherror = (msg) => {
+        $('#flash-message').show()
+            .addClass('alert-danger')
+            .find('span')
+            .html(`<strong>Error!</strong>${msg}`);
+        sessionStorage.removeItem('error');
+    }
+    const flashclose = () => $('#flash-message').hide();
+
+    function confirmDialog(message, onConfirm, config = {
+        confirmText: "Continuar",
+        cancelText: "Cancelar"
+    }) {
+        const {
+            confirmText,
+            cancelText
+        } = config;
+        var fClose = function() {
+            modal.modal("hide");
+        };
+        var modal = $("#confirmModal");
+        modal.modal("show");
+        $("#confirmMessage").empty().append(message);
+        $("#confirmOk").text(confirmText).off().one('click', onConfirm).one('click', fClose);
+        $("#confirmCancel").text(cancelText).off().one("click", fClose);
+    }
+
+    function handleValidation(messages) {
+        // reset before looping
+        $('.invalid-feedback, .invalid-tooltip').remove();
+        if (typeof messages === "object")
+            for (let i in messages) {
+                let element = $(`[name='${i}']`);
+                if (element.length === 0) {
+                    flasherror(messages[i][0]);
+                    continue;
+                }
+                for (let t in messages[i]) {
+                    element[0]?.setCustomValidity(messages[i][t]);
+                    element.after(`<div class="invalid-tooltip">${messages[i][t]}</div>`)
+                }
+                // remove message if event key press
+                $(`[name='${i}']`).on('keypress', function() {
+                    $(`[name='${i}']`)[0].setCustomValidity("");
+                });
+
+                // remove message if event change
+                $(`[name='${i}']`).on('change', function() {
+                    $(`[name='${i}']`)[0].setCustomValidity("");
+                });
+            }
+        else
+            flasherror(messages);
+    }
 
     $(function() {
+        let ufs = ''
 
+        $('#flash-message').hide()
+        $('#company_id').select2();
         $('.select2').css('width', '100%');
 
         $('#quot-form-create').on('shown.bs.modal', function() {
@@ -131,21 +247,33 @@
 
                 e.preventDefault();
                 let uf = $(this).val();
-                if (uf.length > 0)
-                    $.ajax({
-                        type: "get",
-                        url: "/api/cities-uf/" + uf,
-                        dataType: "json",
-                        success: function(response) {
-                            let select_city = $("#operation_city");
-                            select_city.empty();
-                            $(response).each(function(index) {
-                                select_city.append('<option value="' + response[index].id + '">' + response[index].title + '</option>');
+                if (uf.length > 0 && ufs !== uf) {
+
+                    setTimeout(() => {
+                        if (uf.length > 0 && ufs !== uf)
+                            $.ajax({
+                                type: "get",
+                                url: "/api/cities-uf/" + uf,
+                                dataType: "json",
+                                success: function(response) {
+                                    let select_city = $("#operation_city");
+                                    select_city.empty();
+                                    $(response).each(function(index) {
+                                        select_city.append('<option value="' + response[index].id + '">' + response[index].title + '</option>');
+                                    });
+                                    ufs = '';
+                                }
                             });
-                        }
-                    });
+                    }, 500);
+                }
             });
         })
+        if (sessionStorage.getItem('success')) {
+            flashsuccess(sessionStorage.getItem('success'));
+        }
+        if (sessionStorage.getItem('error')) {
+            flasherror(sessionStorage.getItem('error'));
+        }
     });
 </script>
 

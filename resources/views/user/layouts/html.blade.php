@@ -110,7 +110,17 @@
 
                 <ul class="navbar-nav  ml-md-auto  ">
 
-
+                    @guest
+                  
+                    @else
+                    <li class="nav-item">
+                        <a class="nav-link py-2" href="/users/opportunity" >
+                            <span style="top:12px;margin-left:-12px;" class="position-absolute badge rounded-pill bg-danger">{{$notification}}</span>
+                            <i class="fa fa-bell" aria-hidden="true"></i>
+                            Notificações                        
+                        </a>
+                    </li>
+                    @endguest
                     <li role="separator" class="divider"></li>
 
                     <li class="nav-item">
@@ -122,6 +132,7 @@
                     @guest
 
                     @else
+                    
                     <li class="nav-item">
 
                         <a class="nav-link py-2" href="{{ route('user.logout') }}" onclick="event.preventDefault();
@@ -136,28 +147,17 @@
                     </li>
                     @endguest
 
-
                     <a class="btn btn-outline-light d-lg-inline-block mb-3 mb-md-0 ml-md-3 rounded-0"
                         href="{{ route('user.ads.create') }}">Anunciar</a>
                 </ul>
 
-
-
             </div>
 
-
-
-
         </nav>
-
 
         <div id="app">
             @yield('container')
         </div>
-
-
-
-
 
         <div id="footer" class="bg-b-blue">
             <div class="container">

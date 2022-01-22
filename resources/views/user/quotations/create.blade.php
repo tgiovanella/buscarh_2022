@@ -9,7 +9,24 @@
             </div>
             <div class="col-md-12 form-group">
 
-                <label for="cpf_cnpj" class="control-label font-weight-bold">
+                <label for="company_id" class="control-label font-weight-bold">
+                    {{__('Contratante')}}*
+                </label>
+                <select class="form-control" name="company_id" id="company_id" required>
+                    <option value="">--selecione a empresa contratante--</option>
+                    @foreach($user->companies as $company)
+                    <option value="{{ $company->id }}">
+                        {{ $company->fantasy }}  -  {{$company->cpf_cnpj}}
+                    </option>
+                    @endforeach
+                </select>
+                <div class="invalid-feedback">
+                    Por favor, selecione a Empresa Contratante
+                </div>
+            </div>
+            <div class="col-md-12 form-group">
+
+                <label for="subcategory_id" class="control-label font-weight-bold">
                     {{__('Categorias')}}*
                 </label>
                 <select class="js-example-basic-multiple form-control" name="subcategory_id[]" id="subcategory_id" multiple="multiple" required>

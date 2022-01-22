@@ -44,8 +44,12 @@ Route::prefix('/')->name('user.')->namespace('User')->group(function () {
 
 
     Route::post('users/quotation', 'QuotationController@store')->name('users.quotation.store');
+    Route::post('users/quotation/delete', 'QuotationController@delete')->name('users.quotation.delete');
 
     Route::get('users/candidate/{quote_id?}', 'QuoteCandidateController@index')->name('candidate');
+    Route::get('users/opportunity', 'QuoteCandidateController@opportunity')->name('users.opportunity');
+
+    Route::get('candidate/notification/{quote_id?}', 'NotificationController@dispatchQuotation')->name('candidate.notification');
 
     Route::get('users/company/{company}/edit', 'UserController@editCompany')->name('users.company.edit');
     Route::put('users/company/{company}/edit', 'UserController@updateCompany')->name('users.company.update');

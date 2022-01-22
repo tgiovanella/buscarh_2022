@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\QuoteCandidateNotification;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Blade;
@@ -42,10 +45,20 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::component('admin.components.history', 'history');
 
-        if(\App::environment() === 'production') {
+        if (\App::environment() === 'production') {
             $this->app['request']->server->set('HTTPS', true);
             URL::forceScheme('https');
         }
 
+        //Exibe o contador nas notificações no navbar
+        view()->composer('user.layouts.html', function ($view) {
+            $count_notification = 0;
+            if ($user =  Auth::user()) {
+                $candidate = User::where('id', $user->id)->whereHas('companies')->with('companies')->first();
+
+                $count_notification = QuoteCandidateNotification::whereIn('company_id', $candidate->companies->pluck('id'))->count();
+            }
+            $view->with('notification', $count_notification);
+        });
     }
 }
