@@ -79,7 +79,6 @@
     const openModalQuotForm = () => {
         $('#quot-form-create').modal('show');
     }
-
     const closeModalQuotForm = (event) => {
         $('#quot-form-create').modal('hide');
         fromRefer.classList.remove("was-validated");
