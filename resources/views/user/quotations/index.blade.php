@@ -68,7 +68,7 @@
 <div class="modal fade" id="proposal-form-create" tabindex="-1" aria-labelledby="quotLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <form role="form" class="form" action="/users/proposal" id="" method="post">
+            <form role="form" class="form" action="/users/proposal" id="" method="post"  enctype="multipart/form-data">
                 <input type="hidden" name="company_id" value="<?= $quotes[0]->company_id ?>">
                 <input type="hidden" name="quote_id" value="<?= $quotes[0]->quote_id ?>">
                 @csrf

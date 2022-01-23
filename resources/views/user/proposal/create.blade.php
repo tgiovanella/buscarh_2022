@@ -15,7 +15,7 @@
                         <!-- Campo para enexar uma apresentação -->
                         <div class="col-md-6">
                             <label for="">Arquivos</label>
-                            <input type="text" class="form-control" id="" name="" placeholder="" >
+                            <input type="file" class="form-control" name="path_file" >
                         </div>
                         <!-- Valor do serviço -->
                         <div class="col-md-6">
