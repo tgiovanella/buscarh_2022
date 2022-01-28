@@ -16,3 +16,4 @@ Dump/*
 docker-compose.*
 Dockerfile
 /.docker
+.env

@@ -7,8 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Quote;
 use App\QuoteCandidate;
 use App\QuoteCandidateNotification;
+use App\QuoteComment;
 use App\User;
+use Dotenv\Regex\Success;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class QuoteCandidateController extends Controller
 {
@@ -16,21 +19,58 @@ class QuoteCandidateController extends Controller
     public function index(int $quote_id)
     {
 
-        $quotes_avalaibles = Quote::where('id', $quote_id)->with(['candidates' => fn ($m) => $m->with('company')])->first();
+        $quotes_avalaibles = Quote::where('id', $quote_id)->where('status','<>','ACCEPT')->with(['candidates' => fn ($m) => $m->with('company')])->first();
 
         return view('user.quotations.candidates', ['quotes_avalaibles' => $quotes_avalaibles]);
     }
+
     public function opportunity()
     {
         $candidate = User::where('id', Auth::user()->id)->whereHas('companies')->with('companies')->first();
 
-        $notify = QuoteCandidateNotification::whereIn('company_id', $candidate->companies->pluck('id'))->with(['quote'=>fn($m)=>$m->with('company')])->get();
+        $interested = QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('company_id')->toArray();
 
-        return view('user.quotations.index', ['quotes' => $notify]);
+        $notify = QuoteCandidateNotification::whereIn('company_id', $candidate->companies->pluck('id'))->with(['quote' => fn ($m) => $m->with('company')])->get();
+
+        return view('user.quotations.index', ['quotes' => $notify, 'interested' => $interested, 'candidate' => $candidate->companies]);
     }
 
-    public function update()
+    public function info($id)
     {
-        
+        $candidate = QuoteCandidate::where('id', $id)->with('company')->first();
+
+        return view('user.proposal.info', ['candidate' => $candidate]);
+    }
+    //aceita proposta
+    public function acceptProposal(Request $request)
+    {
+        try {
+            DB::transaction(function () use ($request) {
+
+                $quote = Quote::find($request->id);
+
+                $quote->status = 'ACCEPT';
+                $quote->proposal_id = $request->proposal_id;
+                $quote->save();
+
+                $proposal  = QuoteCandidate::find($request->proposal_id);
+
+                $proposal->accepted_proposal = 'ACCEPT';
+                $proposal->save();
+
+                //atualiza ou cria 
+                QuoteComment::updateOrCreate([
+                    'candidate_id' => $proposal->id, 'quote_id' => $quote->id
+                ], [
+                    'finish_quote' => true,
+                    'user_id' => Auth::user()->id,
+                    'comment' => 'Finalizado'
+                ]);
+            });
+
+            return response()->json(['type' => 'success', 'message' => 'Proposta foi aceita com sucesso!']);
+        } catch (\Exception $e) {
+            return response()->json(['type' => 'error', 'message' => $e->getMessage() . " Contate o suporte!"]);
+        }
     }
 }

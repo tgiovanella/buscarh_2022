@@ -16,7 +16,7 @@ class QuoteCandidateNotification extends Model
 
         static::addGlobalScope(function (Builder $builder) {
 
-            $builder->where('is_view', 0);
+            //  $builder->where('is_view', 0);
         });
     }
 
@@ -28,5 +28,10 @@ class QuoteCandidateNotification extends Model
     public function quote()
     {
         return $this->hasOne(Quote::class, 'id', 'quote_id');
+    }
+
+    public function isView()
+    {
+        return $this->is_view === 1;
     }
 }

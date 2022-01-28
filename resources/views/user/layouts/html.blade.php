@@ -60,6 +60,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link href="{{ asset('user/css/stackBorderBox.css') }}" rel="stylesheet" type="text/css">
+   <link href="/user/css/sidebar.css" rel="stylesheet" type="text/css">
 
 
     @stack('styles')

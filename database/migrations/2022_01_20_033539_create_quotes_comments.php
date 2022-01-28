@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCandidateQuotes extends Migration
+class CreateQuotesComments extends Migration
 {
     /**
      * Run the migrations.
@@ -25,7 +25,7 @@ class CreateCandidateQuotes extends Migration
             $table->bigInteger('candidate_id')->unsigned()->nullable();
             $table->foreign('candidate_id')->references('id')->on('candidate_quotes');
 
-            $table->text('comment');
+            $table->text('comment')->nullable();
 
             $table->boolean('finish_quote')->default(true);
 

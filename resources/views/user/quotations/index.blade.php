@@ -24,12 +24,14 @@
                 </li>
                 <li>
                     <h5>
-                        {{$quote->quote->title }}
+                        Prestar serviço na Empresa: {{$candidate->where('id',$quote->company_id)->first()->fantasy}}
                     </h5>
 
                     <blockquote class="blockquote">
                         <p class="mb-0"><i class="material-icons mr-2">info</i> Atuar com</p>
+
                         <footer class="blockquote-footer">
+                            <span class="label">{{$quote->quote->title }}</span>
                             @foreach($quote->quote->subcategories as $category)
                             <span class="label label-default">{{ $category->category->name }}:{{ $category->name }}</span>
                             @endforeach
@@ -44,11 +46,19 @@
                 </li>
                 <li><i class="material-icons mr-2">phone</i> {{$quote->quote->company->phone }}</li>
                 <li>
+                    @if(in_array($quote->company_id,$interested))
+
+                    <a href="#" onclick="openCommets(event)" data-toggle="tooltip" data-placement="top" title="Ver ou iteragir com tomador de serviços" class="btn btn-more btn-success">
+                        <i class="fa fa-comment" aria-hidden="true"></i> Negociação
+                    </a>
+                    @else
                     <!-- Link do formulario aqui, quando navegar pro formulario marca a notificacao como lida-->
-                    <a href="#" onclick="openModalProposal()" class="btn btn-more btn-primary">
+                    <a href="#" data-src="{{$quote}}" onclick="openModalProposal(event)" class="btn btn-more btn-primary">
 
                         <i class="fa fa-plus" aria-hidden="true"></i> Detalhes
                     </a>
+                    @endif
+
                 </li>
             </ul>
         </li>
@@ -68,9 +78,9 @@
 <div class="modal fade" id="proposal-form-create" tabindex="-1" aria-labelledby="quotLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <form role="form" class="form" action="/users/proposal" id="" method="post"  enctype="multipart/form-data">
-                <input type="hidden" name="company_id" value="<?= $quotes[0]->company_id ?>">
-                <input type="hidden" name="quote_id" value="<?= $quotes[0]->quote_id ?>">
+            <form role="form" class="form" action="/users/proposal" id="" method="post" enctype="multipart/form-data">
+                <input id="company_id" type="hidden" name="company_id" value="">
+                <input id="quote_id" type="hidden" name="quote_id" value="">
                 @csrf
                 <div class="modal-body">
                     <div class="col-md-12">
@@ -86,6 +96,24 @@
         </div>
     </div>
 </div>
+<div class="modal fade modal-right" id="comment-modal" tabindex="-1" aria-labelledby="quotLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="col-md-12">
+
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-fixed">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Cancelar"><i class="glyphicon glyphicon-repeat"></i>Cancelar</button>
+                <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i>
+                    Salvar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 @endsection
 
@@ -97,7 +125,17 @@
     /**
      * Método que abre o modal do formulário de proposta.
      */
-    function openModalProposal() {
+    function openModalProposal(event) {
+        //seleciona a proposta
+        const data = $(event.target).data('src');
+        //console.log(data)//JSON object
+        $('#company_id').val(data.company_id);
+        $('#quote_id').val(data.quote_id);
         $('#proposal-form-create').modal();
+    }
+
+    function openCommets(event) {
+
+        $('#comment-modal').modal();
     }
 </script>
