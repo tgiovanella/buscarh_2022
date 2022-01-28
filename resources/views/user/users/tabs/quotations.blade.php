@@ -11,10 +11,10 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Titulo</th>
+            <th>Titulo da Cotação</th>
             <th>Categoria</th>
             <th>Cidades</th>
-            <th>Candidatos</th>
+            <th>Orçamentos</th>
             <th class="text-center">Ação</th>
         </tr>
     </thead>
