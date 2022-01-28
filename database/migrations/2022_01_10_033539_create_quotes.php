@@ -13,6 +13,8 @@ class CreateQuotes extends Migration
      */
     public function up()
     {
+
+        
         Schema::create('quotes', function (Blueprint $table) {
             $table->bigIncrements('id');
 
@@ -22,10 +24,12 @@ class CreateQuotes extends Migration
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
 
+            $table->bigInteger('proposal_id')->unsigned()->nullable();
+
             $table->bigInteger('company_id')->unsigned()->nullable();
             $table->foreign('company_id')->references('id')->on('companies');
 
-            $table->enum('status', ['OPEN', 'CLOSE'])->default('OPEN');
+            $table->enum('status', ['OPEN', 'CLOSE', 'ACCEPT'])->default('OPEN');
 
             //'plan_id', 'status', 'subscribed_at', 'expired_at', 'trial_expired_at'
 

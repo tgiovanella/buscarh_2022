@@ -34,7 +34,7 @@
                         <!-- Despesas de viagem inclusas ou não -->
                         <div class="col-md-4">
                             <label for="name">Despesas inclusas ?</label>
-                            <select class="form-control" name="expenditure" id="" >
+                            <select class="form-control" name="expenditure" id="" required>
                                 <option value="" selected="" disabled="">Selecione</option>
                                 <option value="1" >Sim</option>
                                 <option value="0" >Não</option>
@@ -43,7 +43,7 @@
                         <!-- Prazo estimado para realizar o serviço -->
                         <div class="col-md-4">
                             <label for="">Prazo</label>
-                            <input type="date" class="date-time-picker form-control s-12" id="" name="deadline" value="<?= date('Y-m-d') ?>">
+                            <input type="date" class="date-time-picker form-control s-12" id="" name="deadline" value="<?= date('Y-m-d') ?>" required>
                         </div>
                     </div>
             </div>

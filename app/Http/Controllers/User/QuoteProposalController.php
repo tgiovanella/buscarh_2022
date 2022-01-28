@@ -43,6 +43,8 @@ class QuoteProposalController extends Controller
             return response()->json(['type' => 'error', 'message' => $e->getMessage() . ', Contate o suporte!']);
         }
     }
+
+ 
     /**
      * Método que realiza o upload.
      */

@@ -25,7 +25,7 @@ class CreateCandidateQuotes extends Migration
             $table->bigInteger('quote_id')->unsigned()->nullable();
             $table->foreign('quote_id')->references('id')->on('quotes');
 
-            $table->decimal('price', 15, 2);
+            $table->float('price');
             $table->text('comment');
 
             $table->dateTime('deadline');

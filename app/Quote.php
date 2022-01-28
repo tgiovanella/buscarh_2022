@@ -33,4 +33,8 @@ class Quote extends Model implements Auditable
     {
         return $this->hasOne(Company::class, 'id', 'company_id');
     }
+    public function comments()
+    {
+        return $this->hasMany(QuoteComment::class, 'id', 'quote_id');
+    }
 }

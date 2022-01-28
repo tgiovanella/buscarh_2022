@@ -50,6 +50,10 @@ Route::prefix('/')->name('user.')->namespace('User')->group(function () {
 
     Route::get('users/candidate/{quote_id?}', 'QuoteCandidateController@index')->name('candidate');
     Route::get('users/opportunity', 'QuoteCandidateController@opportunity')->name('users.opportunity');
+    Route::get('users/proposal/{id}', 'QuoteCandidateController@info')->name('users.proposal.info');
+    Route::post('users/accept-proposal', 'QuoteCandidateController@acceptProposal')->name('users.proposal.accept');
+
+    Route::get('users/proposal-viewed/{id}', 'NotificationController@wasViewed')->name('users.proposal.viewed');
 
     Route::get('candidate/notification/{quote_id?}', 'NotificationController@dispatchQuotation')->name('candidate.notification');
 
