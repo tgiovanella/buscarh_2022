@@ -9,6 +9,7 @@ class QuoteCandidateNotification extends Model
 {
 
     protected $fillable = ['company_id', 'quote_id', 'is_view'];
+    public $timestamps = false;
 
     protected static function boot()
     {

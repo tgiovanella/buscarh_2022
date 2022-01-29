@@ -127,7 +127,7 @@
             <div class="modal-footer d-flex">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                 <span style="flex:1"></span>
-                <button type="button" class="btn btn-primary">Iniciar uma negociação</button>
+                <button type="button" class="btn btn-primary" onclick="sendComment(event)">Iniciar uma negociação</button>
 
             </div>
 
@@ -138,21 +138,51 @@
 </div>
 @endsection
 @push('scripts')
-
 <script>
     const info_modal = $('#modal_show_proposal');
     const state = {};
     const csrf = "{{csrf_token()}}";
+
+    const candidates = [{!! $quotes_avalaibles->candidates ??null !!}];
     const showInfo = (event) => {
         info_modal.modal('show');
 
         getInfo(event);
     }
 
+    const sendComment = (event) => {
+
+        event.target.disabled = true
+        const comment = $('#infos').val();
+
+        const form = new FormData();
+        form.append('proposal_id',state.data.id);
+        form.append('company_id',state.data.company_id);
+        form.append('quote_id',state.data.quote_id);
+        form.append('comment',comment);
+        form.append('_token',csrf);
+    
+        requestPost('/users/comment-proposal', form).then(resp => {
+            if (resp.type === 'success') {
+                sessionStorage.setItem('success', resp.message);
+                window.location.reload();
+                return null;
+            }
+            flasherror(resp.message);
+
+        }).finally(() => {
+            event.target.disabled = false;
+            info_modal.modal('close');
+        });
+        event.preventDefault();
+    }
+
     const getInfo = (event) => {
 
         const id = $(event.target).data('id');
         state.id = id;
+        state.data = candidates[0].find((v) => v.id === id);
+
         return fetch(`/users/proposal/${id}`, {
                 'method': 'GET',
                 "headers": {
