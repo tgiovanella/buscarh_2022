@@ -53,6 +53,11 @@ Route::prefix('/')->name('user.')->namespace('User')->group(function () {
     Route::get('users/proposal/{id}', 'QuoteCandidateController@info')->name('users.proposal.info');
     Route::post('users/accept-proposal', 'QuoteCandidateController@acceptProposal')->name('users.proposal.accept');
 
+
+    Route::post('users/comment-proposal', 'QuoteProposalController@addComment')->name('users.proposal.comment');
+    
+    Route::get('users/comment-proposal/{id}/{quote_id}', 'QuoteProposalController@getComments')->name('users.proposal.get.comment');
+
     Route::get('users/proposal-viewed/{id}', 'NotificationController@wasViewed')->name('users.proposal.viewed');
 
     Route::get('candidate/notification/{quote_id?}', 'NotificationController@dispatchQuotation')->name('candidate.notification');

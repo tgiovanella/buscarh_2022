@@ -22,8 +22,11 @@ class CreateQuotesComments extends Migration
             $table->bigInteger('quote_id')->unsigned()->nullable();
             $table->foreign('quote_id')->references('id')->on('quotes');
 
-            $table->bigInteger('candidate_id')->unsigned()->nullable();
-            $table->foreign('candidate_id')->references('id')->on('candidate_quotes');
+            $table->bigInteger('proposal_id')->unsigned()->nullable();
+            $table->foreign('proposal_id')->references('id')->on('candidate_quotes');
+
+            $table->bigInteger('company_id')->unsigned()->nullable();
+            $table->foreign('company_id')->references('id')->on('companies');
 
             $table->text('comment')->nullable();
 

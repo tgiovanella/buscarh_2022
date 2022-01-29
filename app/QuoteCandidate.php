@@ -12,4 +12,9 @@ class QuoteCandidate extends Model
     {
         return $this->hasOne(Company::class, 'id', 'company_id')->with('city');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(QuoteComment::class, 'proposal_id', 'id');
+    }
 }

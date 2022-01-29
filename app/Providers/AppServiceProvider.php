@@ -56,7 +56,7 @@ class AppServiceProvider extends ServiceProvider
             if ($user =  Auth::user()) {
                 $candidate = User::where('id', $user->id)->whereHas('companies')->with('companies')->first();
                 //Valida se existe companies cadastradas para o usuário.
-                $count_notification = $candidate ? QuoteCandidateNotification::whereIn('company_id', $candidate->companies->pluck('id'))->count() : 0;
+                $count_notification = $candidate ? QuoteCandidateNotification::where('is_view', 0)->whereIn('company_id', $candidate->companies->pluck('id'))->count() : 0;
             }
             $view->with('notification', $count_notification);
         });

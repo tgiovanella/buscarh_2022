@@ -68,12 +68,41 @@
     </div>
     <!-- Modal Form Quotation -->
     @include('user.users.quotation')
+
+    <div class="modal  fade" id="modal_show_proposal" role="dialog" aria-labelledby="modal_show_proposal_label" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Proposta</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="text-danger" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body _load">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer d-flex">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <span style="flex:1"></span>
+                </div>
+
+            </div><!-- modal-content -->
+        </div><!-- modal-dialog -->
+        <!-- MODAL CONFIRME-->
+
+    </div>
 </div>
 @endsection
 
 @push('scripts')
 
 <script>
+    const info_modal = $('#modal_show_proposal');
     const fromRefer = document.getElementById('registrationFormQuotation');
     const csrf = "{{csrf_token()}}";
     const openModalQuotForm = () => {
@@ -99,7 +128,21 @@
         form.classList.add("was-validated");
         return errors && (!event.detail || event.detail === 1);
     }
+    const getInfo = (event) => {
+        info_modal.modal('show');
+        const id = $(event.target).data('id');
 
+        return fetch(`/users/proposal/${id}`, {
+                'method': 'GET',
+                "headers": {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(async (resp) => await resp.text())
+            .then(resp => {
+                info_modal.find('div._load').html(resp);
+            })
+    }
     const sendNotification = (event, response) => {
         $('#quote-sendmail').modal('show');
 

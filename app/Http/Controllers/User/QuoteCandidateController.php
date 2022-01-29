@@ -19,7 +19,7 @@ class QuoteCandidateController extends Controller
     public function index(int $quote_id)
     {
 
-        $quotes_avalaibles = Quote::where('id', $quote_id)->where('status','<>','ACCEPT')->with(['candidates' => fn ($m) => $m->with('company')])->first();
+        $quotes_avalaibles = Quote::where('id', $quote_id)->whereNotIn('status', ['ACCEPT'])->with(['candidates' => fn ($m) => $m->with('company')])->first();
 
         return view('user.quotations.candidates', ['quotes_avalaibles' => $quotes_avalaibles]);
     }
@@ -30,7 +30,11 @@ class QuoteCandidateController extends Controller
 
         $interested = QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('company_id')->toArray();
 
-        $notify = QuoteCandidateNotification::whereIn('company_id', $candidate->companies->pluck('id'))->with(['quote' => fn ($m) => $m->with('company')])->get();
+        $notify = QuoteCandidateNotification::whereHas('quote')->whereIn('company_id', $candidate->companies->pluck('id'))
+            ->with([
+                'quote' => fn ($m) => $m>with('company'),
+            ])
+            ->get();
 
         return view('user.quotations.index', ['quotes' => $notify, 'interested' => $interested, 'candidate' => $candidate->companies]);
     }
@@ -41,6 +45,7 @@ class QuoteCandidateController extends Controller
 
         return view('user.proposal.info', ['candidate' => $candidate]);
     }
+
     //aceita proposta
     public function acceptProposal(Request $request)
     {
@@ -60,9 +65,10 @@ class QuoteCandidateController extends Controller
 
                 //atualiza ou cria 
                 QuoteComment::updateOrCreate([
-                    'candidate_id' => $proposal->id, 'quote_id' => $quote->id
+                    'proposal_id' => $proposal->id, 'quote_id' => $quote->id
                 ], [
                     'finish_quote' => true,
+                    'company_id' =>  $proposal->company_id,
                     'user_id' => Auth::user()->id,
                     'comment' => 'Finalizado'
                 ]);
