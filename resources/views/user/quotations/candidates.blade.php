@@ -46,7 +46,7 @@
                                 <td class="text-center">{{$item->company->phone}} </td>
                                 <td class="text-center">{{$item->company->email}} </td>
                                 <!-- link da interacao entre empresa e candidato -->
-                                <td class="text-center"><i class="fa fa-comment" aria-hidden="true"></i> {{$item->count()}} </td>
+                                <td class="text-center"><i class="fa fa-comment" aria-hidden="true"></i> {{$item->comments_count}} </td>
                                 <td class="text-center">
                                     @if($item->path_file)
                                     <a title="Baixar anexo Proposta" href="{{ Storage::disk('public')->url($item->path_file) }}" download>
@@ -59,11 +59,11 @@
 
                                 <td width="120" class="text-center">
                                     <!-- link do formulario aqui -->
-                                    <a href="#" data-id="{{$item->id}}" onclick="showInfo(event)" class="btn btn-sm btn-info text-white" title="Visualizar Proposta Completa">
-                                        <i data-id="{{$item->id}}" class="fa fa-eye" aria-hidden="true"></i>
+                                    <a href="#" data-src="{{$item}}" onclick="showInfo(event)" class="btn btn-sm btn-info text-white" title="Visualizar Proposta Completa">
+                                        <i data-src="{{$item}}" class="fa fa-eye" aria-hidden="true"></i>
                                     </a>
-                                    <a href="#" data-id="{{$item}}" onclick="accept(event)" class="btn btn-sm btn-success text-white" title="Aceitar Proposta">
-                                        <i data-id="{{$item}}" class="fa fa-check" aria-hidden="true"></i>
+                                    <a href="#" data-src="{{$item}}" onclick="accept(event)" class="btn btn-sm btn-success text-white" title="Aceitar Proposta">
+                                        <i data-src="{{$item}}" class="fa fa-check" aria-hidden="true"></i>
                                 </td>
                             </tr>
                             @endforeach
@@ -136,32 +136,65 @@
     <!-- MODAL CONFIRME-->
 
 </div>
+
+<div class="modal fade modal-right" id="comment-modal" tabindex="-1" aria-labelledby="quotLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="_load p-2">
+              
+            </div>
+            <div class="modal-body comment">
+               
+            </div>
+            <div class="resposta p-3" style="margin-bottom:80px">
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label for="comment" class="control-label font-weight-bold">
+                            {{__('Novo Comentário')}}
+                        </label>
+                        <textarea class="form-control" name="comment" id="comment" cols="30" rows="5" required></textarea>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-fixed">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Cancelar"><i class="glyphicon glyphicon-repeat"></i>Cancelar</button>
+                <button class="btn btn-success" onclick="sendComment(event)"><i class="glyphicon glyphicon-ok-sign"></i>
+                    Enviar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
 @push('scripts')
 <script>
-    const info_modal = $('#modal_show_proposal');
+    const info_modal = $('#comment-modal');
     const state = {};
     const csrf = "{{csrf_token()}}";
 
-    const candidates = [{!! $quotes_avalaibles->candidates ??null !!}];
+    const candidates = [{!! $quotes_avalaibles->candidates ?? null !!}];
+
     const showInfo = (event) => {
         info_modal.modal('show');
 
         getInfo(event);
+        openCommets(event);
     }
 
     const sendComment = (event) => {
 
         event.target.disabled = true
-        const comment = $('#infos').val();
+        const comment = $('#comment').val();
 
         const form = new FormData();
-        form.append('proposal_id',state.data.id);
-        form.append('company_id',state.data.company_id);
-        form.append('quote_id',state.data.quote_id);
-        form.append('comment',comment);
-        form.append('_token',csrf);
-    
+        form.append('proposal_id', state.comment.proposal_id);
+        form.append('company_id', state.comment.company_id);
+        form.append('quote_id', state.comment.quote_id);
+        form.append('comment', comment);
+        form.append('_token', csrf);
+
         requestPost('/users/comment-proposal', form).then(resp => {
             if (resp.type === 'success') {
                 sessionStorage.setItem('success', resp.message);
@@ -179,11 +212,11 @@
 
     const getInfo = (event) => {
 
-        const id = $(event.target).data('id');
-        state.id = id;
-        state.data = candidates[0].find((v) => v.id === id);
+        const data = $(event.target).data('src');
+        state.id = data.id;
+        state.data = candidates[0].find((v) => v.id === data.id);
 
-        return fetch(`/users/proposal/${id}`, {
+        return fetch(`/users/proposal/${data.id}`, {
                 'method': 'GET',
                 "headers": {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -196,7 +229,7 @@
     }
 
     const accept = (event) => {
-        const data = $(event.target).data('id');
+        const data = $(event.target).data('src');
         event.target.disabled = true
 
         const form = new FormData();
@@ -223,6 +256,59 @@
         });
 
         event.target.disabled = false;
+    }
+
+    function rederComment(data, company) {
+
+        let content = "";
+
+        for (let index = 0; index < data.length; index++) {
+
+            const element = data[index];
+            const d = new Date(element.created_at).toLocaleDateString('pt-BR');
+
+            if (element.user_id === null)
+                content += `
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">${company} disse:</h5>
+            <small>${d}</small>
+            </div>
+            <p class="mb-1">${element.comment}</p>
+        </a>`;
+            else
+                content += `
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Meu comentário</h5>
+            <small>${d}</small>
+            </div>
+            <p class="mb-1">${element.comment}</p>
+        </a>`;
+        }
+        return content;
+    }
+
+    async function openCommets(event) {
+        const data = $(event.target).data('src');
+        $('#comment-modal').modal('show');
+        $('#comment-modal').find('.comment').html(`<div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>`);
+        await fetch(`/users/comment-proposal/${data.company_id}/${data.quote_id}`)
+            .then(resp => resp.json())
+            .then(json => {
+                if (json.type === 'success' && json.data.length > 0) {
+                    $('.resposta').show();
+                    state.comment = json.data[0];
+                    $('#comment-modal').find('.comment').html(rederComment(json.data, data.company.fantasy))
+                } else {
+                    $('#comment-modal').find('.comment').html('<h4>Não existem comentários<h4>');
+                }
+            });
+
     }
 
     async function requestPost(url, form) {
