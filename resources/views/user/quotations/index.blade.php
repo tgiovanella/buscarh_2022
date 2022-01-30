@@ -106,11 +106,7 @@
         <div class="modal-content">
 
             <div class="modal-body comment">
-                <div class="text-center">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div>
+                
             </div>
             <div class="resposta p-3" style="margin-bottom:80px; display:none">
                 <div class="row">
@@ -161,10 +157,11 @@
         const comment = $('#infos').val();
 
         const form = new FormData();
-        form.append('proposal_id', state.data.id);
+        form.append('proposal_id', state.data.proposal_id);
         form.append('company_id', state.data.company_id);
         form.append('quote_id', state.data.quote_id);
         form.append('comment', comment);
+        form.append('is_candidate',true);
         form.append('_token', csrf);
 
         requestPost('/users/comment-proposal', form).then(resp => {
@@ -216,6 +213,11 @@
     async function openCommets(event) {
         const data = $(event.target).data('src');
         $('#comment-modal').modal('show');
+        $('#comment-modal').find('.comment').html(`<div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>`);
         await fetch(`/users/comment-proposal/${data.company_id}/${data.quote_id}`)
             .then(resp => resp.json())
             .then(json => {

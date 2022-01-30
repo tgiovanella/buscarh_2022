@@ -19,7 +19,12 @@ class QuoteCandidateController extends Controller
     public function index(int $quote_id)
     {
 
-        $quotes_avalaibles = Quote::where('id', $quote_id)->whereNotIn('status', ['ACCEPT'])->with(['candidates' => fn ($m) => $m->with('company')])->first();
+        $quotes_avalaibles = Quote::where('id', $quote_id)->whereNotIn('status', ['ACCEPT'])
+            ->with(
+                [
+                    'candidates' => fn ($m) => $m->with('company')->withCount('comments')
+                ]
+            )->first();
 
         return view('user.quotations.candidates', ['quotes_avalaibles' => $quotes_avalaibles]);
     }
@@ -32,7 +37,7 @@ class QuoteCandidateController extends Controller
 
         $notify = QuoteCandidateNotification::whereHas('quote')->whereIn('company_id', $candidate->companies->pluck('id'))
             ->with([
-                'quote' => fn ($m) => $m>with('company'),
+                'quote' => fn ($m) => $m > with('company'),
             ])
             ->get();
 
