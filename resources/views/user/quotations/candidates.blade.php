@@ -189,9 +189,9 @@
         const comment = $('#comment').val();
 
         const form = new FormData();
-        form.append('proposal_id', state.comment.proposal_id);
-        form.append('company_id', state.comment.company_id);
-        form.append('quote_id', state.comment.quote_id);
+        form.append('proposal_id', state.data.id);
+        form.append('company_id', state.data.company_id);
+        form.append('quote_id', state.data.quote_id);
         form.append('comment', comment);
         form.append('_token', csrf);
 
@@ -302,7 +302,7 @@
             .then(json => {
                 if (json.type === 'success' && json.data.length > 0) {
                     $('.resposta').show();
-                    state.comment = json.data[0];
+                  //  state.data = json.data[0];
                     $('#comment-modal').find('.comment').html(rederComment(json.data, data.company.fantasy))
                 } else {
                     $('#comment-modal').find('.comment').html('<h4>Não existem comentários<h4>');

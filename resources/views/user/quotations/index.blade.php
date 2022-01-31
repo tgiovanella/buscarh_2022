@@ -51,7 +51,7 @@
                 </li>
                 <li><i class="material-icons mr-2">phone</i> {{$quote->quote->company->phone }}</li>
                 <li>
-                    @if(in_array($quote->company_id,$interested))
+                    @if(in_array($quote->quote_id,$interested))
 
                     <a href="#" data-src="{{$quote}}" onclick="openCommets(event)" data-toggle="tooltip" data-placement="top" title="Ver ou iteragir com tomador de serviços" class="btn btn-more btn-success">
                         <i class="fa fa-comment" aria-hidden="true"></i> Negociação
