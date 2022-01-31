@@ -7,8 +7,8 @@
  
     <div class="col-md-12">
         <div class="row">
-            <div class="col-md-12">
-                <h1>{{$candidate->company->fantasy}}</h1>
+            <div class="col-md-12 text-left">
+               Proposta de: <h4>{{$candidate->company->fantasy}}</h4>
             </div>
         </div>
         <div class="row">

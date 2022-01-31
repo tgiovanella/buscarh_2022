@@ -76,7 +76,7 @@ class QuoteProposalController extends Controller
             $quot->quote_id     = $request->quote_id;
             $quot->proposal_id  = $request->proposal_id;
             $quot->finish_quote = false;
-            $quot->user_id      = Auth::user()->id;
+            $quot->user_id      = isset($request->is_candidate) ? null : Auth::user()->id;
 
             $quot->save();
 
