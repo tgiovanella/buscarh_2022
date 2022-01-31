@@ -24,8 +24,6 @@
                                 <th>Preço proposta</th>
                                 <th>Data entrega</th>
                                 <th class="text-center">Cidade</th>
-                                <th class="text-center">Telefone</th>
-                                <th class="text-center">E-mail</th>
                                 <th class="text-center">Observações</th>
                                 <th class="text-center">Anexos</th>
                                 <th class="text-center">Ação</th>
@@ -43,8 +41,6 @@
                                     {{date('d-m-Y',strtotime($item->deadline))}}
                                 </td>
                                 <td class="text-center">{{$item->company->city->title}} / {{$item->company->uf}} </td>
-                                <td class="text-center">{{$item->company->phone}} </td>
-                                <td class="text-center">{{$item->company->email}} </td>
                                 <!-- link da interacao entre empresa e candidato -->
                                 <td class="text-center"><i class="fa fa-comment" aria-hidden="true"></i> {{$item->count()}} </td>
                                 <td class="text-center">
@@ -127,7 +123,7 @@
             <div class="modal-footer d-flex">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                 <span style="flex:1"></span>
-                <button type="button" class="btn btn-primary" onclick="sendComment(event)">Iniciar uma negociação</button>
+                <button type="button" class="btn btn-primary" onclick="sendComment(event)">Enviar</button>
 
             </div>
 
@@ -143,7 +139,7 @@
     const state = {};
     const csrf = "{{csrf_token()}}";
 
-    const candidates = [{!! $quotes_avalaibles->candidates ??null !!}];
+    const candidates = [{!! $quotes_avalaibles->candidates ?? null !!}];
     const showInfo = (event) => {
         info_modal.modal('show');
 

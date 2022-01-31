@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Company;
 use App\City;
+use App\QuoteCandidate;
 
 class User extends Authenticatable
 {
@@ -69,5 +70,10 @@ class User extends Authenticatable
     public function ads()
     {
         return $this->hasMany(Advert::class, 'user_id', 'id');
+    }
+
+    public function accepts()
+    {
+        return $this->hasMany(QuoteCandidate::class, 'user_id', 'id')->where('accepted_proposal','ACCEPT' ); // pode faze o where direto aqui se for fixado
     }
 }

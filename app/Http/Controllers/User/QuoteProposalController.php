@@ -63,19 +63,20 @@ class QuoteProposalController extends Controller
         try {
 
             $this->validate($request, [
-                'comment'             => ['required'],
-                'company_id'             => ['required'],
-                'quote_id'             => ['required'],
-                'proposal_id'             => ['required'],
+                'comment'       => ['required'],
+                'company_id'    => ['required'],
+                'quote_id'      => ['required'],
+                'proposal_id'   => ['required']
             ]);
 
             $quot = new QuoteComment();
 
-            $quot->comment      = $request->comment;
+            $quot->comment  = $request->comment;
             $quot->company_id   = $request->company_id;
             $quot->quote_id     = $request->quote_id;
-            $quot->proposal_id     = $request->proposal_id;
-            $quot->finish_quote   = false;
+            $quot->proposal_id  = $request->proposal_id;
+            $quot->finish_quote = false;
+            $quot->user_id      = Auth::user()->id;
 
             $quot->save();
 

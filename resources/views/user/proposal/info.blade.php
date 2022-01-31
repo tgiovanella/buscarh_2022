@@ -20,10 +20,6 @@
                             <dd class="col-sm-7">R$ {{ number_format($candidate->price,2,',','.')  }}</dd>
                             <dt class="col-sm-5">Data entrega: </dt>
                             <dd class="col-sm-7"> {{date('d-m-Y',strtotime($candidate->deadline))}} </dd>
-                            <dt class="col-sm-5">Telefone: </dt>
-                            <dd class="col-sm-7">{{$candidate->company->phone}} </dd>
-                            <dt class="col-sm-5">E-mail: </dt>
-                            <dd class="col-sm-7">{{$candidate->company->email}}</dd>
                             <dt class="col-sm-12">Descrição: </dt>
                         </dl>
                         <div class="row">

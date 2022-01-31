@@ -79,4 +79,26 @@ class QuoteCandidateController extends Controller
             return response()->json(['type' => 'error', 'message' => $e->getMessage() . " Contate o suporte!"]);
         }
     }
+
+    /**
+     * Retorna todas as propostas aceitas para esse prestador
+     */
+    public function getProposalAccept()
+    {
+        $candidate = User::where('id', Auth::user()->id)->whereHas('companies')->with('companies')->first();
+
+        var_dump($candidate);
+        exit;
+
+        $interested = QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('company_id')->toArray();
+
+        $notify = QuoteCandidateNotification::whereHas('quote')->whereIn('company_id', $candidate->companies->pluck('id'))
+            ->with([
+                'quote' => fn ($m) => $m>with('company'),
+            ])
+            ->get();
+
+        return view('user.quotations.index', ['quotes' => $notify, 'interested' => $interested, 'candidate' => $candidate->companies]);
+    }
+
 }
