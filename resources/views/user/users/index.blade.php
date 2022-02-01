@@ -26,9 +26,9 @@
                     <li class="nav-item">
                         <a class="nav-link" id="quot-tab" data-toggle="tab" href="#quot" role="tab" aria-controls="quot" aria-selected="false">Cotações</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" id="accept-tab" data-toggle="tab" href="#accept" role="tab" aria-controls="accept" aria-selected="false">Propostas Aceitas</a>
-                    </li>
+                    </li> -->
                 </ul>
 
                 <div class="tab-content">

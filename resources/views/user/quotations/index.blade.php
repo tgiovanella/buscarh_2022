@@ -189,22 +189,18 @@
 
             if (element.user_id !== null)
                 content += `
-                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">${company} disse:</h5>
-                    <small>${d}</small>
-                    </div>
-                    <p class="mb-1">${element.comment}</p>
-                </a>`;
+                        <div class="alert alert-primary " role="alert">
+                            <h5 class="alert-heading"><strong>${company}</strong> disse:</h5>
+                            <p>${element.comment}</p>
+                            <small class="badge badge-secondary">${d}</small>
+                        </div>`;
             else
                 content += `
-                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Meu comentário</h5>
-                    <small>${d}</small>
-                    </div>
-                    <p class="mb-1">${element.comment}</p>
-                </a>`;
+                    <div class="alert alert-dark  " role="alert">
+                        <h5 class="alert-heading"><strong>Eu:</strong></h5>
+                        <p>${element.comment}</p>
+                        <small class="badge badge-secondary">${d}</small>
+                    </div>`;
         }
         return content;
     }
