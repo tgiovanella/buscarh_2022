@@ -33,6 +33,9 @@ class QuoteCandidateController extends Controller
     {
         $candidate = User::where('id', Auth::user()->id)->whereHas('companies')->with('companies')->first();
 
+        //Chama uma função, passando o array de propostas, para validar se todas ja foram prenchidas o NPS
+        $accepts = QuoteCandidate::where('accepted_proposal','ACCEPT')->where('user_id', Auth::user()->id)->get();
+
         $interested = QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('quote_id')->toArray();
 
         $notify = QuoteCandidateNotification::whereHas('quote')->whereIn('company_id', $candidate->companies->pluck('id'))
@@ -41,7 +44,7 @@ class QuoteCandidateController extends Controller
             ])
             ->get(); 
 
-        return view('user.quotations.index', ['quotes' => $notify, 'interested' => $interested, 'candidate' => $candidate->companies]);
+        return view('user.quotations.index', ['quotes' => $notify, 'interested' => $interested, 'candidate' => $candidate->companies, 'accepts' => $accepts]);
     }
 
     public function info($id)
@@ -92,9 +95,6 @@ class QuoteCandidateController extends Controller
     {
         $candidate = User::where('id', Auth::user()->id)->whereHas('companies')->with('companies')->first();
 
-        var_dump($candidate);
-        exit;
-
         $interested = QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('company_id')->toArray();
 
         $notify = QuoteCandidateNotification::whereHas('quote')->whereIn('company_id', $candidate->companies->pluck('id'))
@@ -105,5 +105,8 @@ class QuoteCandidateController extends Controller
 
         return view('user.quotations.index', ['quotes' => $notify, 'interested' => $interested, 'candidate' => $candidate->companies]);
     }
+    /**
+     * Função que verifica se o prestador ja respondeu o NPS das propostas aceitas
+     */
 
 }

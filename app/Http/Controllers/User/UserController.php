@@ -31,12 +31,12 @@ class UserController extends Controller
     public function index()
     {
         $_user = Auth::guard('user')->user();
-        $accepts = QuoteCandidate::where('accepted_proposal','ACCEPT')->get();
+        $accepts = QuoteCandidate::where('accepted_proposal','ACCEPT')->where('user_id', $_user->id)->get();
 
         $user = User::where('id', $_user->id)->with(
             [
                 'quotes'       => fn ($c) => $c->withCount('candidates'),
-                //'accepts',
+
                 'companies'    => fn ($m) => $m->with(
                     [
                         'city' => fn ($s) => $s->with('state')
