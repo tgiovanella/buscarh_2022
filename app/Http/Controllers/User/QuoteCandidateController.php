@@ -119,10 +119,9 @@ class QuoteCandidateController extends Controller
 
 
             //Atualiza o campo NPS na tabela candidate_quotes
-            // $candidate = new QuoteCandidate();
-            // $candidate->id = $request->id;
-            // $candidate->nps_answer = '1';
-            // $candidate->update();
+            $candidate = QuoteCandidate::where("id", $request->id)->first();
+            $candidate->nps_answer = '1';
+            $candidate->save();
             return response()->json(['type' => 'success', 'message' => 'Deu bão!!']);
         } catch (\Exception $e) {
             return response()->json(['type' => 'error', 'message' => $e->getMessage() . " Contate o suporte!"]);

@@ -56,7 +56,6 @@
                                 <tr>
                                     <th>Empresa</th>
                                     <th>Cotação</th>
-                                    <th>Pergunta</th>
                                     <th>Comentários</th>
                                 </tr>
                             </thead>
@@ -65,7 +64,6 @@
                                     <tr>
                                         <td>{{ $item->company_id }}</td>
                                         <td>{{ $item->quote_id }}</td>
-                                        <td>{{ $item->answer }}</td>
                                         <td>{{ $item->comment }}</td>
                                     </tr>
                                     @empty
@@ -89,7 +87,5 @@
         </div>
     </div>
 </div>
-
-
 
 @endsection
