@@ -118,7 +118,6 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-
         //faz a validação dos dados
         $request->validate([
             'name' => 'required|max:255|unique:categories,id,'.$category->id,

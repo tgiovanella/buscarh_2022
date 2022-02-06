@@ -31,11 +31,14 @@
                     </span>
                     @endif
                 </a></li>
-
+            <!-- NPS  -->
+            <li>
+                <a href="{{ route('admin.nps.index') }}">
+                    <i class="fa fa-file"></i> <span>Pesquisa de Satisfação(NPS)</span>
+                </a>
+            </li>
 
             <li class="header">SISTEMA DE DENÚNCIAS</li>
-
-
             <li>
                 <a href="{{ route('admin.reports.index') }}">
                     <i class="fa fa-user-times"></i> <span>Denúncias de Empresas</span>
@@ -47,7 +50,6 @@
                     @endif
                 </a>
             </li>
-
             <li>
                 <a href="{{ route('admin.reports.ads') }}">
                     <i class="fa fa-user-times"></i> <span>Denúncias de Anúncios</span>
@@ -59,8 +61,6 @@
                     @endif
                 </a>
             </li>
-
-
 
             {{-- <li><a href=""><i class="fa fa-users"></i> <span>{{ __('teste') }}</span></a></li> --}}
             {{-- <li><a href="{{ route('admin.classifieds.index') }}"><i class="fa fa-line-chart"></i>

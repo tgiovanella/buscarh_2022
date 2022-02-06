@@ -16,9 +16,6 @@
         <li class="nav-item">
             <a class="nav-link active" id="proposal-tab" data-toggle="tab" href="#proposal" role="tab" aria-controls="proposal" aria-selected="true">Oportunidades Prestação Serviços</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" id="accept-tab" data-toggle="tab" href="#accept" role="tab" aria-controls="accept" aria-selected="false">Propostas Aceitas</a>
-        </li>
     </ul>
     <div class="tab-content">
         <!-- Oportunidades de prestação de serviços -->
@@ -81,10 +78,6 @@
                 @endforelse
             </ul>
         </div>
-        <!-- Propostas aceitas -->
-        <div class="tab-pane" id="accept">
-            @includeIf('user.users.tabs.quoteAccept')
-        </div>
     </div>
 
 </div>
@@ -115,7 +108,6 @@
 <div class="modal fade modal-right" id="comment-modal" tabindex="-1" aria-labelledby="quotLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-
             <div class="modal-body comment">
                 
             </div>

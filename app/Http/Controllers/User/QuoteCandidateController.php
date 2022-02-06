@@ -9,6 +9,7 @@ use App\QuoteCandidate;
 use App\QuoteCandidateNotification;
 use App\QuoteComment;
 use App\User;
+use App\QuoteNps;
 use Dotenv\Regex\Success;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -33,9 +34,6 @@ class QuoteCandidateController extends Controller
     {
         $candidate = User::where('id', Auth::user()->id)->whereHas('companies')->with('companies')->first();
 
-        //Chama uma função, passando o array de propostas, para validar se todas ja foram prenchidas o NPS
-        $accepts = QuoteCandidate::where('accepted_proposal','ACCEPT')->where('user_id', Auth::user()->id)->get();
-
         $interested = QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('quote_id')->toArray();
 
         $notify = QuoteCandidateNotification::whereHas('quote')->whereIn('company_id', $candidate->companies->pluck('id'))
@@ -44,7 +42,7 @@ class QuoteCandidateController extends Controller
             ])
             ->get(); 
 
-        return view('user.quotations.index', ['quotes' => $notify, 'interested' => $interested, 'candidate' => $candidate->companies, 'accepts' => $accepts]);
+        return view('user.quotations.index', ['quotes' => $notify, 'interested' => $interested, 'candidate' => $candidate->companies]);
     }
 
     public function info($id)
@@ -108,5 +106,28 @@ class QuoteCandidateController extends Controller
     /**
      * Função que verifica se o prestador ja respondeu o NPS das propostas aceitas
      */
+    public function saveNps(Request $request)
+    {
+        try {
+            $nps = new QuoteNps();
+            $nps->user_id = $request->user_id;
+            $nps->company_id = $request->company_id;
+            $nps->quote_id = $request->quote_id;
+            $nps->comment = $request->comment;
+            $nps->answer = $request->answer;
+            $nps->save();
+
+
+            //Atualiza o campo NPS na tabela candidate_quotes
+            // $candidate = new QuoteCandidate();
+            // $candidate->id = $request->id;
+            // $candidate->nps_answer = '1';
+            // $candidate->update();
+            return response()->json(['type' => 'success', 'message' => 'Deu bão!!']);
+        } catch (\Exception $e) {
+            return response()->json(['type' => 'error', 'message' => $e->getMessage() . " Contate o suporte!"]);
+        }
+        
+    }
 
 }
