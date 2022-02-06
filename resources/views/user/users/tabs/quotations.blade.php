@@ -1,7 +1,7 @@
 @if(count($user->quotes) > 0)
     <div class="row">
         <div class="col">
-            <button onclick="openModalQuotForm(event)" class="btn btn-primary mb-3 pull-right"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+            <button onclick="openModalQuoteForm(event)" class="btn btn-primary mb-3 pull-right"><i class="fa fa-plus-circle" aria-hidden="true"></i>
                 Cadastrar</button>
         </div>
     </div>
@@ -47,6 +47,6 @@
     </table>
 @else
     <div class="alert alert-primary" role="alert">
-        Criar nova Cotação <a href="#" onclick="openModalQuotForm(event)" class="alert-link">Clique aqui</a>
+        Criar nova Cotação <a href="#" onclick="openModalQuoteForm(event)" class="alert-link">Clique aqui</a>
     </div>
 @endif

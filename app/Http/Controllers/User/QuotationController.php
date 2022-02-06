@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Quote;
+use App\Company;
 use Illuminate\Support\Facades\Auth;
 
 class QuotationController extends Controller
@@ -32,6 +33,11 @@ class QuotationController extends Controller
             $quot->status       = Quote::STATUS_OPEN;
             $quot->user_id      = Auth::user()->id;
             $quot->save();
+
+            //Atualiza o saldo de moedas do solicitante.
+            $company = Company::where("id", $request->company_id)->first();
+            $company->used_coins = $company->used_coins + 20;
+            $company->save();
 
             //relacionamentos
             $quot->subcategories()->attach((array)$request->subcategory_id);

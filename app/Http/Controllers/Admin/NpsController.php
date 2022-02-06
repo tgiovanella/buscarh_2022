@@ -22,9 +22,10 @@ class NpsController extends Controller
             return $q;
         })
             ->paginate(config('myconfig.paginate'));
+        
+            $npsNegativo = count(Nps::where('answer', 0)->get());
+            $npsPositivo = count(Nps::where('answer', 1)->get());
 
-
-
-        return view('admin.nps.index', compact('breadcrumb', 'nps'));
+        return view('admin.nps.index', compact('breadcrumb', 'nps', 'npsNegativo', 'npsPositivo'));
     }
 }

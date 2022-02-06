@@ -9,7 +9,7 @@
     <div class="col-lg-4 col-xs-6">
         <div class="small-box bg-aqua">
             <div class="inner">
-                <h3>60</h3>
+                <h3>{{count($nps)}}</h3>
                 <p>Total de Respostas</p>
             </div>
             <div class="icon">
@@ -22,7 +22,7 @@
         <!-- small box -->
         <div class="small-box bg-green">
             <div class="inner">
-                <h3>52</h3>
+                <h3>{{$npsPositivo}}</h3>
                 <p>Respostas Positivas</p>
             </div>
             <div class="icon">
@@ -32,9 +32,9 @@
     </div>
     <!-- Card com as respostas Negativas -->
     <div class="col-lg-4 col-xs-6">
-        <div class="small-box bg-red" title="Termos pesquisados após {{ date('d/m/Y', strtotime("first day of this month")) }}.">
+        <div class="small-box bg-red" title="">
             <div class="inner">
-                <h3>8</h3>
+            <h3>{{$npsNegativo}}</h3>
                 <p>Respostas Negativas</p>
             </div>
             <div class="icon">
@@ -57,14 +57,22 @@
                                     <th>Empresa</th>
                                     <th>Cotação</th>
                                     <th>Comentários</th>
+                                    <th>Resposta</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($nps as $item)
                                     <tr>
-                                        <td>{{ $item->company_id }}</td>
-                                        <td>{{ $item->quote_id }}</td>
+                                        <td>{{ $item->company->name }}</td>
+                                        <td>{{ $item->quote->title }}</td>
                                         <td>{{ $item->comment }}</td>
+                                        <td>
+                                            @if($item->answer)
+                                                <span class="btn-sm btn-info">Sim</span>
+                                            @else
+                                                <span class="btn-sm btn-danger">Não</span>
+                                            @endif
+                                        </td>
                                     </tr>
                                     @empty
                                     <tr>

@@ -4,16 +4,18 @@
     <table class="table table-striped table-hover table-sm">
         <thead>
             <tr>
+                <th>Data Cotação</th>
                 <th>Título da Cotação</th>
-                <th>Categoria</th>
+                <th>Solicitante</th>
                 <th>Pesquisa de Satisfação</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($accepts as $item)
                 <tr>
-                    <td>{{$item->user_id}}</td>
-                    <td>{{$item->comment}}</td>
+                    <td>{{ date('d/m/Y', strtotime($item->quote->created_at)) }}</td>
+                    <td>{{$item->quote->title}}</td>
+                    <td>{{$item->company->name}}</td>
                     <td>
                         @if($item->nps_answer)
                             <button class="btn btn-sm btn-secondary text-white" title="Formulário Respondido">
@@ -74,7 +76,7 @@
     </div>
 @else
     <div class="alert alert-primary" role="alert">
-        xxxxxxxxxxxx
+        Não existem informações a serem exibidas.
     </div>
 @endif
 <script>
