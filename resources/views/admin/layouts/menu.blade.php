@@ -31,6 +31,8 @@
                     </span>
                     @endif
                 </a></li>
+                <li><a href="/admin/quotes"><i class="fa fa-building"></i>
+                    <span>{{ __('Cotações') }}</span></a></li>
 
 
             <li class="header">SISTEMA DE DENÚNCIAS</li>

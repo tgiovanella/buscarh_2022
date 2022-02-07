@@ -105,7 +105,7 @@
     const info_modal = $('#modal_show_proposal');
     const fromRefer = document.getElementById('registrationFormQuotation');
     const csrf = "{{csrf_token()}}";
-    const openModalQuotForm = () => {
+    function openModalQuotForm() {
         $('#quot-form-create').modal('show');
     }
     const closeModalQuotForm = (event) => {

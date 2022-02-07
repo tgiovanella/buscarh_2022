@@ -152,9 +152,8 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function () {
 
 
         Route::get('reports-ads', 'ReportController@indexAds')->name('reports.ads');
-
-
-
+        Route::get('quotes', 'QuoteController@index')->name('quotes.index');
+        Route::post('quotes/search', 'QuoteController@search')->name('quotes.search');
 
 
         Route::resource('pages', 'PageController');
