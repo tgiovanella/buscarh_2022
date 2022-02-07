@@ -6,7 +6,6 @@
 @php($method_field = method_field('PUT'))
 @endif
 
-
 @push('scripts')
 <script>
     $(document).ready(function() {
@@ -75,15 +74,56 @@
 @endpush
 
 
-
-
 <form data-toggle="validator" role="form" method="POST" action="{{$action}}" enctype="multipart/form-data">
     {{ csrf_field() }}
     {{ $method_field }}
 
+    <!-- Moedas -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>R$ {{ old('name', $company->coins) }}</h3>
+                    <p>Recarga Moedas</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>R$ {{ old('name', $company->used_coins) }}</h3>
+                    <p>Moedas Utilizadas</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>R$ {{ old('name', ($company->coins - $company->used_coins) ) }}</h3>
+                    <p>Saldo Moedas</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-
+    <hr>
+    <!-- Recarga de moedas -->
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="coins">Recarga de Moedas</label>
+            <input type="number" name="coins" id="coins" class="form-control" value="{{ old('name', $company->coins) }}">
+            <input type="hidden" name="used_coins" id="used_coins" class="form-control" value="{{ old('name', $company->used_coins) }}">
+        </div>
+    </div>
     <div class="row">
         <div class="form-group col-md-6 @if($errors->has('name')) has-error @endif">
             <label for="name">{{ __('general.name') }}</label>
@@ -110,8 +150,6 @@
             <div class="help-block with-errors">{{ $errors->first('cpf_cnpj') }}</div>
         </div>
     </div>
-
-
 
 
     <div class="row">
@@ -315,8 +353,6 @@
             <div class="help-block with-errors">{{ $errors->first('responsible') }}</div>
         </div>
     </div>
-
-
 
     <div class="row">
         <div class="form-group col-md-12">

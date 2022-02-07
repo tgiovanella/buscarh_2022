@@ -219,9 +219,6 @@ class CompanyController extends Controller
                 return $query->orderBy('subcategories.name', 'ASC');
             }])->orderBy('categories.name')->get();
 
-
-
-
         return view('admin.companies.edit', compact('company', 'planes', 'ufs','operation_cities','operation_ufs', 'cities', 'categories', 'subcategories_selected', 'method', 'breadcrumb'));
     }
 
@@ -261,7 +258,9 @@ class CompanyController extends Controller
                 'complement',
                 'email',
                 'owner_id',
-                'responsible'
+                'responsible',
+                'coins',
+                'used_coins'
             );
 
 
@@ -271,7 +270,6 @@ class CompanyController extends Controller
 
 
             $dados['slug'] = create_slug_company($dados['name'],$dados['cpf_cnpj'], $company->id);
-
 
             $company->name = $dados['name'];
             $company->slug = $dados['slug'];
@@ -288,6 +286,7 @@ class CompanyController extends Controller
             $company->complement = $dados['complement'];
             $company->email = $dados['email'];
             $company->responsible = $dados['responsible'];
+            $company->coins = $dados['coins'];
 
             $company->save();
 
@@ -348,7 +347,6 @@ class CompanyController extends Controller
         }
     }
 
-
     public function highlighted(Request $request, Company $company)
     {
         $request->validate([
@@ -367,9 +365,6 @@ class CompanyController extends Controller
                 $company->highlighted = true;
                 $company->save();
             }
-
-
-
 
             //se tudo ocorreu
             return redirect(route('admin.companies.index'))->with('success', __('general.msg_success', ['id' => $company->id]));

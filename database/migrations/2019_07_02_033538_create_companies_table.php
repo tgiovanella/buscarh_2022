@@ -42,6 +42,11 @@ class CreateCompaniesTable extends Migration
             //colocar o tipo aqui
             $table->string('responsible',100)->nullable(); //responsavel
             $table->string('email')->nullable();
+
+            //moedas
+            $table->float('coins')->nullable();
+            $table->float('used_coins')->nullable();
+
             $table->timestamps();
         });
     }

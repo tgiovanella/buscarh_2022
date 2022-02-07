@@ -26,6 +26,11 @@
                     <li class="nav-item">
                         <a class="nav-link" id="quot-tab" data-toggle="tab" href="#quot" role="tab" aria-controls="quot" aria-selected="false">Cotações</a>
                     </li>
+                    @if(count($accepts) > 0)
+                        <li class="nav-item">
+                            <a class="nav-link" id="accept-tab" data-toggle="tab" href="#accept" role="tab" aria-controls="accept" aria-selected="false">Propostas Aceitas</a>
+                        </li>
+                    @endif
                 </ul>
 
                 <div class="tab-content">
@@ -56,6 +61,9 @@
                         <h2>Cotações</h2>
                         @includeIf('user.users.tabs.quotations')
                         <hr>
+                    </div>
+                    <div class="tab-pane" id="accept">
+                        @includeIf('user.users.tabs.quoteAccept')
                     </div>
 
                 </div>

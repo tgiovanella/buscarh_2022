@@ -6,8 +6,7 @@
             <div class="pull-left image">
 
 
-                <img src="{{ get_gravatar(\Illuminate\Support\Facades\Auth::user()->email) }}" class="img-circle"
-                    alt="User Image">
+                <img src="{{ get_gravatar(\Illuminate\Support\Facades\Auth::user()->email) }}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
                 <p>{{ \Illuminate\Support\Facades\Auth::user()->name }}</p>
@@ -26,43 +25,41 @@
                     <i class="fa fa-photo"></i> <span>Anúncios</span>
                     @if(App\Report::where('status',App\Advert::STATUS_PENDING)->count() > 0)
                     <span class="pull-right-container">
-                        <small
-                            class="label pull-right bg-yellow">{{ App\Advert::where([['status',App\Report::STATUS_PENDING]])->count() }}</small>
+                        <small class="label pull-right bg-yellow">{{ App\Advert::where([['status',App\Report::STATUS_PENDING]])->count() }}</small>
                     </span>
                     @endif
                 </a></li>
-                <li><a href="/admin/quotes"><i class="fa fa-building"></i>
+            <li><a href="/admin/quotes"><i class="fa fa-building"></i>
                     <span>{{ __('Cotações') }}</span></a></li>
 
+            <!-- NPS  -->
+            <li>
+                <a href="{{ route('admin.nps.index') }}">
+                    <i class="fa fa-file"></i> <span>Pesquisa de Satisfação(NPS)</span>
+                </a>
+            </li>
 
             <li class="header">SISTEMA DE DENÚNCIAS</li>
-
-
             <li>
                 <a href="{{ route('admin.reports.index') }}">
                     <i class="fa fa-user-times"></i> <span>Denúncias de Empresas</span>
                     @if(App\Report::where('status',App\Report::STATUS_PENDING)->count() > 0)
                     <span class="pull-right-container">
-                        <small
-                            class="label pull-right bg-red">{{ App\Report::where([['status',App\Report::STATUS_PENDING],['company_id','<>','null']])->count() }}</small>
+                        <small class="label pull-right bg-red">{{ App\Report::where([['status',App\Report::STATUS_PENDING],['company_id','<>','null']])->count() }}</small>
                     </span>
                     @endif
                 </a>
             </li>
-
             <li>
                 <a href="{{ route('admin.reports.ads') }}">
                     <i class="fa fa-user-times"></i> <span>Denúncias de Anúncios</span>
                     @if(App\Report::where('status',App\Report::STATUS_PENDING)->count() > 0)
                     <span class="pull-right-container">
-                        <small
-                            class="label pull-right bg-red">{{ App\Report::where([['status',App\Report::STATUS_PENDING],['advert_id','<>','null']])->count() }}</small>
+                        <small class="label pull-right bg-red">{{ App\Report::where([['status',App\Report::STATUS_PENDING],['advert_id','<>','null']])->count() }}</small>
                     </span>
                     @endif
                 </a>
             </li>
-
-
 
             {{-- <li><a href=""><i class="fa fa-users"></i> <span>{{ __('teste') }}</span></a></li> --}}
             {{-- <li><a href="{{ route('admin.classifieds.index') }}"><i class="fa fa-line-chart"></i>

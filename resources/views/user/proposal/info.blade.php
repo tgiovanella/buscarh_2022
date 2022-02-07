@@ -6,34 +6,35 @@
     </form>
  
     <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-12 text-left">
-               Proposta de: <h4>{{$candidate->company->fantasy}}</h4>
+        <div class="card">
+            <div class="card-header">
+                <h4>Proposta de: {{$candidate->company->fantasy}}<strong></h4>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <dl class="row">
-                            <dt class="col-sm-5">Valor proposta: </dt>
-                            <dd class="col-sm-7">R$ {{ number_format($candidate->price,2,',','.')  }}</dd>
-                            <dt class="col-sm-5">Data entrega: </dt>
-                            <dd class="col-sm-7"> {{date('d-m-Y',strtotime($candidate->deadline))}} </dd>
-                            <dt class="col-sm-5">Telefone: </dt>
-                            <dd class="col-sm-7">{{$candidate->company->phone}} </dd>
-                            <dt class="col-sm-5">E-mail: </dt>
-                            <dd class="col-sm-7">{{$candidate->company->email}}</dd>
-                            <dt class="col-sm-12">Descrição: </dt>
-                        </dl>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
                         <div class="row">
-                            <div class="col">
-                                <p>{{$candidate->comment}}</p>
+                            <div class="col-sm-5">
+                                <p>Valor proposta: <strong>R$ {{ number_format($candidate->price,2,',','.')  }}</strong></p>
+                            </div>
+                            <div class="col-sm-7">
+                                <p>Data entrega: <strong>{{date('d-m-Y',strtotime($candidate->deadline))}}</strong></p>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <p>Impostos inclusos? <strong>{{ $candidate->taxes ==1 ? 'Sim' : 'Não'  }}</strong></p>
+                            </div>
+                            <div class="col-sm-7">
+                                <p>Despesas inclusas? <strong>{{ $candidate->expenditure ==1 ? 'Sim' : 'Não' }}</strong></p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <p>Descrição: <strong>{{$candidate->comment}}</strong></p>
+                    </li>
+                </ul>
         </div>
     </div>
 </div>

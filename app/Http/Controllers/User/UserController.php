@@ -10,6 +10,8 @@ use App\User;
 use App\Category;
 use App\City;
 use App\State;
+use App\QuoteCandidate;
+
 
 class UserController extends Controller
 {
@@ -29,10 +31,12 @@ class UserController extends Controller
     public function index()
     {
         $_user = Auth::guard('user')->user();
+        $accepts = QuoteCandidate::where('accepted_proposal','ACCEPT')->where('user_id', $_user->id)->get();
 
         $user = User::where('id', $_user->id)->with(
             [
                 'quotes'       => fn ($c) => $c->withCount('candidates'),
+
                 'companies'    => fn ($m) => $m->with(
                     [
                         'city' => fn ($s) => $s->with('state')
@@ -55,6 +59,7 @@ class UserController extends Controller
             'user',
             'categories',
             'ufs',
+            'accepts'
         ));
     }
 

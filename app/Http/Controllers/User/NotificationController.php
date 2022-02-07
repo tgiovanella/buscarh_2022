@@ -47,7 +47,7 @@ class NotificationController extends Controller
 
                     $company_founds[] = ['company_id' => $applicant->id, 'quote_id' => $id];
                     //envia o email
-                    //Mail::to($applicant->email)->send(new SendMailQuotation($applicant, $quot));
+                    Mail::to($applicant->email)->send(new SendMailQuotation($applicant, $quot));
                 }
             }
 
