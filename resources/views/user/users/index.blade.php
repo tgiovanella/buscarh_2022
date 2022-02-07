@@ -27,9 +27,9 @@
                         <a class="nav-link" id="quot-tab" data-toggle="tab" href="#quot" role="tab" aria-controls="quot" aria-selected="false">Cotações</a>
                     </li>
                     @if(count($accepts) > 0)
-                        <li class="nav-item">
-                            <a class="nav-link" id="accept-tab" data-toggle="tab" href="#accept" role="tab" aria-controls="accept" aria-selected="false">Propostas Aceitas</a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="accept-tab" data-toggle="tab" href="#accept" role="tab" aria-controls="accept" aria-selected="false">Propostas Aceitas</a>
+                    </li>
                     @endif
                 </ul>
 
@@ -113,7 +113,11 @@
     const info_modal = $('#modal_show_proposal');
     const fromRefer = document.getElementById('registrationFormQuotation');
     const csrf = "{{csrf_token()}}";
-    function openModalQuoteForm() {
+
+    function openModalNps() {
+        $('#modalNps').modal();
+    }
+    const openModalQuoteForm = () => {
         $('#quot-form-create').modal('show');
     }
     const closeModalQuotForm = (event) => {
@@ -123,6 +127,34 @@
         $('.js-example-basic-multiple').val(null).trigger('change');
         fromRefer.reset();
 
+    }
+    const sendNps = (event) => {
+        event.target.disabled = true
+
+        const form = new FormData();
+        form.append('user_id', $('#user_id').val());
+        form.append('company_id', $('#company_id').val());
+        form.append('quote_id', $('#quote_id').val());
+        form.append('comment', $('#comment').val());
+        form.append('answer', $('#answer').val());
+        form.append('id', $('#id').val());
+
+
+        requestPost('/users/quotes-nps', form).then(resp => {
+            if (resp.type === 'success') {
+                $('#modalNps').modal('hide');
+                sessionStorage.setItem('success', resp.message);
+                flashsuccess(sessionStorage.getItem('success'));
+                window.location.reload();
+                return null;
+            }
+            flasherror(resp.message);
+
+        }).finally(() => {
+            event.target.disabled = false;
+            $('#comment-modal').modal('close');
+        });
+        event.preventDefault();
     }
 
     const formValidate = (event, form) => {
@@ -195,7 +227,7 @@
         event.target.disabled = false;
     }
 
-    const deleteQuote = (event) => {
+    function deleteQuote(event) {
         let id = $(event.target).data('id');
 
         confirmDialog(`<p>[#${id}] Deseja remover essa Cotação</p><p class="text-danger"><b>Atenção!!</b> Essa ação no pode ser desfeita.</p>`, () => {
@@ -291,7 +323,6 @@
         $('#flash-message').hide()
         $('#company_id').select2();
         $('.select2').css('width', '100%');
-
         $('#quot-form-create').on('shown.bs.modal', function() {
             $('#operation_uf').on('change', function(e) {
 
