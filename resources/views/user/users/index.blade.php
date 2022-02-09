@@ -114,7 +114,8 @@
     const fromRefer = document.getElementById('registrationFormQuotation');
     const csrf = "{{csrf_token()}}";
 
-    function openModalNps() {
+    function openModalNps(quoteId) {
+        $('#quote_id').val(quoteId);
         $('#modalNps').modal();
     }
     const openModalQuoteForm = () => {

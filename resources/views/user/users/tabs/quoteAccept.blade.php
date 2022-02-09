@@ -22,7 +22,7 @@
                                 <span>Enviado</span>
                             </button>
                         @else
-                            <button onclick="openModalNps()" class="btn btn-sm btn-success text-white" title="Responder Formulário">
+                            <button onclick="openModalNps('{{$item->quote_id}}')" class="btn btn-sm btn-success text-white" title="Responder Formulário">
                                 <span>Responder</span>
                             </button>
                         @endif
@@ -41,7 +41,7 @@
                 <div class="modal-body" id="">
                 <input type="hidden" id="user_id" value="{{$item->user_id}}">
                     <input type="hidden" id="company_id" value="{{$item->company_id}}">
-                    <input type="hidden" id="quote_id" value="{{$item->quote_id}}">
+                    <input type="hidden" id="quote_id" value="">
                     <input type="hidden" id="id" value="{{$item->id}}">
                     <div class="row">
                         <div class="col-md-12">
