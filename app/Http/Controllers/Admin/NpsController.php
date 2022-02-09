@@ -23,9 +23,10 @@ class NpsController extends Controller
         })
             ->paginate(config('myconfig.paginate'));
         
-            $npsNegativo = count(Nps::where('answer', 0)->get());
-            $npsPositivo = count(Nps::where('answer', 1)->get());
+            $promotor = count(Nps::where('answer', '>=8')->get() ) ? count( Nps::where('answer', '>=8')->get()) : 0 ;
+            $neutro = count(Nps::where('answer', '>= 6')->where('answer', '<= 7')->get() ) ? count( Nps::where('answer', '>= 6')->where('answer', '<= 7')->get()) : 0;
+            $detrator = count(Nps::where('answer', '< 6')->get() ) ? count( Nps::where('answer', '< 6')->get()) : 0;
 
-        return view('admin.nps.index', compact('breadcrumb', 'nps', 'npsNegativo', 'npsPositivo'));
+        return view('admin.nps.index', compact('breadcrumb', 'nps', 'promotor', 'neutro', 'detrator'));
     }
 }

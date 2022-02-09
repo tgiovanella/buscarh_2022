@@ -48,7 +48,80 @@
                             <h6>Você recomendaria este processo de cotação do site BuscaRHweb para outras empresas/profissionais de RH ?</h6>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="form-row">
+                        <div class="form-group col-md-1 "></div>
+                        <div class="form-group col-md-1 ">
+                            <label for="inputEmail4" class="col-form-label">1</label><br>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="opcao1" name="answer" class="custom-control-input" value="1" required>
+                                <label class="custom-control-label m-0" for="opcao1"><h4><strong> </strong></h4></label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1 ">
+                            <label for="inputEmail4" class="col-form-label">2</label><br>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="opcao2" name="answer" class="custom-control-input" value="2" required>
+                                <label class="custom-control-label m-0" for="opcao2"><h4><strong> </strong></h4></label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1 ">
+                            <label for="inputEmail4" class="col-form-label">3</label><br>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="opcao3" name="answer" class="custom-control-input" value="3" required>
+                                <label class="custom-control-label m-0" for="opcao3"><h4><strong> </strong></h4></label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1 ">
+                            <label for="inputEmail4" class="col-form-label">4</label><br>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="opcao4" name="answer" class="custom-control-input" value="4" required>
+                                <label class="custom-control-label m-0" for="opcao4"><h4><strong> </strong></h4></label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1 ">
+                            <label for="inputEmail4" class="col-form-label">5</label><br>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="opcao5" name="answer" class="custom-control-input" value="5" required>
+                                <label class="custom-control-label m-0" for="opcao5"><h4><strong> </strong></h4></label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1 ">
+                            <label for="inputEmail4" class="col-form-label">6</label><br>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="opcao6" name="answer" class="custom-control-input" value="6" required>
+                                <label class="custom-control-label m-0" for="opcao6"><h4><strong> </strong></h4></label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1 ">
+                            <label for="inputEmail4" class="col-form-label">7</label><br>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="opcao7" name="answer" class="custom-control-input" value="7" required>
+                                <label class="custom-control-label m-0" for="opcao7"><h4><strong> </strong></h4></label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1 ">
+                            <label for="inputEmail4" class="col-form-label">8</label><br>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="opcao8" name="answer" class="custom-control-input" value="8" required>
+                                <label class="custom-control-label m-0" for="opcao8"><h4><strong> </strong></h4></label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1 ">
+                            <label for="inputEmail4" class="col-form-label">9</label><br>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="opcao9" name="answer" class="custom-control-input" value="9" required>
+                                <label class="custom-control-label m-0" for="opcao9"><h4><strong> </strong></h4></label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1 ">
+                            <label for="inputEmail4" class="col-form-label">10</label><br>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="opcao10" name="answer" class="custom-control-input" value="10" required>
+                                <label class="custom-control-label m-0" for="opcao10"><h4><strong> </strong></h4></label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
                         <div class="col-md-4"></div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="answer" id="answer" value="1">
@@ -58,7 +131,7 @@
                             <input class="form-check-input" type="radio" name="answer" id="answer" value="0">
                             <label class="form-check-label" for="inlineRadio2">Não</label>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <label class="" for="inlineRadio1">Comentários</label>

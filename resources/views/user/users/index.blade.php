@@ -136,9 +136,9 @@
         form.append('company_id', $('#company_id').val());
         form.append('quote_id', $('#quote_id').val());
         form.append('comment', $('#comment').val());
-        form.append('answer', $('#answer').val());
+        form.append('answer', $("input[type='radio'][name='answer']:checked").val() );
         form.append('id', $('#id').val());
-
+        form.append('_token', csrf);
 
         requestPost('/users/quotes-nps', form).then(resp => {
             if (resp.type === 'success') {
