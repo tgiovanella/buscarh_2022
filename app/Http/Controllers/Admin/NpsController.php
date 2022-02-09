@@ -27,6 +27,10 @@ class NpsController extends Controller
             $neutro = count(Nps::where('answer', '>= 6')->where('answer', '<= 7')->get() ) ? count( Nps::where('answer', '>= 6')->where('answer', '<= 7')->get()) : 0;
             $detrator = count(Nps::where('answer', '< 6')->get() ) ? count( Nps::where('answer', '< 6')->get()) : 0;
 
+            ############################
+            # FALTA CAUCULAR AS MÉDIAS #
+            ############################
+
         return view('admin.nps.index', compact('breadcrumb', 'nps', 'promotor', 'neutro', 'detrator'));
     }
 }
