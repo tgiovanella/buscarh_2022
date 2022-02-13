@@ -119,7 +119,7 @@ class QuoteCandidateController extends Controller
 
 
             //Atualiza o campo NPS na tabela candidate_quotes
-            $candidate = QuoteCandidate::where("id", $request->id)->first();
+            $candidate = QuoteCandidate::where("quote_id", $request->quote_id)->first();
             $candidate->nps_answer = '1';
             $candidate->save();
             return response()->json(['type' => 'success', 'message' => 'Deu bão!!']);

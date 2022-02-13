@@ -26,7 +26,7 @@ class CreateQuotesNps extends Migration
             $table->foreign('company_id')->references('id')->on('companies');
 
             $table->text('comment')->nullable();
-            $table->char('answer', 1)->default(0);
+            $table->bigInteger('answer', 1)->default(0);
 
 
 
