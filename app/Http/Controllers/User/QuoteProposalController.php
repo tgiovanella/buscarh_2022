@@ -48,6 +48,7 @@ class QuoteProposalController extends Controller
     {
         $comment = QuoteComment::where('company_id', $request->id)
             ->where('quote_id', $request->quote_id)
+            ->orderBy('id','DESC')
             ->get();
 
         $notification =  QuoteCandidateNotification::where('company_id', $request->id)

@@ -117,6 +117,33 @@
 
                 <div class="row">
                     <div class="col-md-12">
+                        <div class="row text-left">
+                            <div class="col-md-4">
+                                <button id="ex" class="btn btn-default bg-green" onclick="exportToExcel(event)" disabled> Exporta Excel</button>
+                                <button id="pd" class="btn btn-default bg-red" onclick="exportToPdf(event)" disabled> Baixar PDF</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="table_search" class="table table-striped table-hover table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Titulo da Cotação</th>
+                                            <th>Data</th>
+                                            <th>Categorias</th>
+                                            <th>Cidades</th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <!-- /.row -->
@@ -140,23 +167,121 @@
 @push('scripts')
 
 <script>
-    function startSearch(event) {
+    const bt1 = $('#ex');
+    const bt2 = $('#pd');
+
+    function renderTableResult(data) {
+
+        let content = '';
+        for (let index = 0; index < data.length; index++) {
+            const element = data[index];
+            let subcateg = element.subcategories.map(v => `<span class="label label-default">${v.name}</span>`);
+            let cities = element.cities.map(v => `<span class="label label-default">${v.title}</span>`);
+            let candidates = element.candidates.map(v => `<tr><td> ${element.id} </td><td> ${v.company.name}</td><td> ${Number(v.price).toFixed(2)}</td></tr>`);
+            content += `
+                <tr>
+                    <td>${element.id}</td>
+                    <td>${element.title}</td>
+                    <td>${new Date(element.created_at).toLocaleDateString('pt-BR')}</td>
+                    <td>${subcateg}</td>
+                    <td>${cities}</td>
+                    
+                </tr>
+                <tr>
+                <td colspan="7">
+                    <table style="width:100%;">
+                    <tr>
+                    <th></th>
+                    <th>Candidatos</th>
+                    <th>Valor Proposta</th>
+                    </tr>
+                    ${candidates}
+                    </table>
+                </td>
+                </tr>
+            `;
+        }
+        if (content.length > 0) {
+            bt1.attr('disabled', false)
+            bt2.attr('disabled', false)
+            return content;
+
+        }
+        return '<tr><td class="text-center" colspan="7">Nenhum resultado encontrado!</td></tr>';
+
+    }
+
+    function download(response, config) {
+        //Convert the Byte Data to BLOB object.
+        var blob = new Blob([response], {
+            type: config.type
+        });
+
+        //Check the Browser type and download the File.
+        var isIE = false || !!document.documentMode;
+        if (isIE) {
+            window.navigator.msSaveBlob(blob, config.file);
+        } else {
+            var url = window.URL || window.webkitURL;
+            link = url.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.setAttribute("download", config.file);
+            a.setAttribute("href", link);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    };
+
+    function exportToExcel(event) {
 
         const formref = document.getElementById('formfilter');
         const form = new FormData(formref);
 
         event.target.disabled = true;
 
+        requestPost('/admin/quotes/excel', form).then(async (resp) => await resp.blob()).then(resp => {
+            download(resp, {
+                type: "application/octetstream",
+                file: "cotacoes.xlsx"
+            });
+        }).finally(() => {
+            event.target.disabled = false
+        });
+
+    }
+
+    function exportToPdf(event) {
+
+        const formref = document.getElementById('formfilter');
+        const form = new FormData(formref);
+
+        event.target.disabled = true;
+
+        requestPost('/admin/quotes/pdf', form).then(async (resp) => await resp.blob()).then(resp => {
+            download(resp, {
+                type: "application/pdf",
+                file: "cotacoes.pdf"
+            });
+        }).finally(() => {
+            event.target.disabled = false
+        });
+
+    }
+
+    function startSearch(event) {
+
+        const formref = document.getElementById('formfilter');
+        const form = new FormData(formref);
+        const table = $('#table_search tbody');
+
+        event.target.disabled = true;
+
         if (formValidate(event, formref)) {
-            requestPost('/admin/quotes/search', form).then(resp => {
-                if (resp.type === 'success') {
-                    closeModalQuotForm(event);
-                    sendNotification(event, resp.data);
-                    return null
-                }
-                handleValidation(resp.message);
-            }).catch(error => {
-                console.log(error.toString());
+            table.html(`<tr><td colspan="7"><h4>Buscando...</h4></td></tr>`)
+            requestPost('/admin/quotes/search', form).then(async (resp) => await resp.json()).then(resp => {
+                console.log(resp);
+                table.html(renderTableResult(resp));
             }).finally(() => {
                 event.target.disabled = false
             });
@@ -185,7 +310,7 @@
                 'X-Requested-With': 'XMLHttpRequest',
             },
             'body': form
-        }).then(async (resp) => await resp.json());
+        });
     };
 
     $(function() {
