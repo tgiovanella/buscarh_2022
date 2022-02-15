@@ -262,7 +262,7 @@
             const element = data[index];
             const d = new Date(element.created_at).toLocaleDateString('pt-BR');
 
-            if (element.user_id !== null)
+            if (element.user_id === null)
                 content += `
                         <div class="alert alert-primary " role="alert">
                             <h5 class="alert-heading"><strong>${company}</strong> disse:</h5>
