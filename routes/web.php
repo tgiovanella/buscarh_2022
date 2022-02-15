@@ -146,6 +146,7 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function () {
         Route::resource('companies', 'CompanyController');
         Route::resource('quotations', 'QuotationController');
         Route::resource('nps', 'NpsController');
+        Route::get('config-coins', 'NpsController@indexCoins');
         Route::put('companies/{company}/highlighted', 'CompanyController@highlighted')->name('companies.highlighted');
 
 
