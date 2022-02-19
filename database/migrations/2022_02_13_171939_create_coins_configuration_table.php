@@ -15,7 +15,7 @@ class CreateCoinsConfiguration extends Migration
     {
 
         
-        Schema::create('conis_configuration', function (Blueprint $table) {
+        Schema::create('coins_configuration', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->string('title');
@@ -34,6 +34,6 @@ class CreateCoinsConfiguration extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('conis_configuration');
+        Schema::dropIfExists('coins_configuration');
     }
 }

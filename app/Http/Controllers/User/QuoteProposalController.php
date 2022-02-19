@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\QuoteCandidate;
 use App\QuoteCandidateNotification;
 use App\QuoteComment;
+use App\CoinsConfiguration;
+use App\QuoteCandidateParticipate;
 use Illuminate\Support\Facades\Auth;
 
 class QuoteProposalController extends Controller
@@ -14,13 +16,15 @@ class QuoteProposalController extends Controller
     public function store(Request $request)
     {
         try {
+            $quot           = new QuoteCandidate();
+            $participatePay = new  QuoteCandidateParticipate();
 
             $this->validate($request, [
                 'comment'             => ['required'],
                 'price'             => ['required']
             ]);
-
-            $quot = new QuoteCandidate();
+            //Tratativas para salvar a proposta.
+           
 
             $quot->comment      = $request->comment;
             $quot->price        = $request->price;
@@ -32,10 +36,15 @@ class QuoteProposalController extends Controller
             $quot->quote_id     = $request->quote_id;
 
             $upload = $this->_uploadFile($request);
-
             $quot->path_file = $upload;
-
             $quot->save();
+
+            //Atualiza a tabela de pagamento de participação da cotação
+            $participatePay->user_id = Auth::user()->id;
+            $participatePay->quote_id = $request->quote_id;
+            $participatePay->comapny_id = $request->company_id;
+            $participatePay->is_pay = 1;
+            $participatePay->save();
 
             return redirect('/users');
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -90,7 +99,6 @@ class QuoteProposalController extends Controller
             return response()->json(['type' => 'error', 'message' => $e->getMessage() . ', Contate o suporte!']);
         }
     }
-
 
     /**
      * Método que realiza o upload.

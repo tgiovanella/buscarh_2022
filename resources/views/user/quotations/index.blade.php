@@ -22,57 +22,56 @@
         <div class="tab-pane fade show active" id="proposal" role="tabpanel" aria-labelledby="proposal-tab">
             <ul class="list-group list-group-flush" id="ulEmpresas">
                 @forelse($quotes->filter(fn($q) => $q->quote->proposal_id === null) as $quote)
-                <li class="list-group-item">
-                    <ul class="listaEmpresa">
-                        <li>
-                            <h3>
-                                <i class="material-icons mr-2">location_city</i>Solicitante: <strong>{{ $quote->quote->company->fantasy }}</strong>
-                            </h3>
-                        </li>
-                        <li>
-                            <h5>
-                                Prestadora: <strong>{{$candidate->where('id',$quote->company_id)->first()->fantasy}}</strong>
-                            </h5>
+                    <li class="list-group-item">
+                        <ul class="listaEmpresa">
+                            <li>
+                                <h3>
+                                    <i class="material-icons mr-2">location_city</i>Solicitante: <strong>{{ $quote->quote->company->fantasy }}</strong>
+                                </h3>
+                            </li>
+                            <li>
+                                <h5>
+                                    Prestadora: <strong>{{$candidate->where('id',$quote->company_id)->first()->fantasy}}</strong>
+                                </h5>
 
-                            <blockquote class="blockquote">
-                                <p class="mb-0"><i class="material-icons mr-2">info</i> Atuar com</p>
+                                <blockquote class="blockquote">
+                                    <p class="mb-0"><i class="material-icons mr-2">info</i> Atuar com</p>
 
-                                <footer class="blockquote-footer">
-                                    <span class="label">{{$quote->quote->title }}</span>
-                                    @foreach($quote->quote->subcategories as $category)
-                                    <span class="label label-default">{{ $category->category->name }}:{{ $category->name }}</span>
-                                    @endforeach
-                                </footer>
-                            </blockquote>
+                                    <footer class="blockquote-footer">
+                                        <span class="label">{{$quote->quote->title }}</span>
+                                        @foreach($quote->quote->subcategories as $category)
+                                        <span class="label label-default">{{ $category->category->name }}:{{ $category->name }}</span>
+                                        @endforeach
+                                    </footer>
+                                </blockquote>
 
-                        </li>
+                            </li>
 
-                        <li><i class="material-icons mr-2">location_on</i> {{$quote->quote->company->address }}, {{$quote->quote->company->number }}
-                            {{$quote->quote->complement }}.
-                            {{$quote->quote->district }}. {{$quote->quote->company->city->title }} - {{$quote->quote->company->uf }}
-                        </li>
-                        <li>
-                            <!-- Valida se o usuário ja pagou pra ver essa cotação -->
-                            @if($participate->is_pay)
-                                @if(in_array($quote->quote_id,$interested))-->
-                                    <a href="#" data-src="{{$quote}}" onclick="openCommets(event)" data-toggle="tooltip" data-placement="top" title="Ver ou iteragir com tomador de serviços" class="btn btn-more btn-success">
-                                        <i class="fa fa-comment" aria-hidden="true"></i> Negociação
-                                    </a>
+                            <li><i class="material-icons mr-2">location_on</i> {{$quote->quote->company->address }}, {{$quote->quote->company->number }}
+                                {{$quote->quote->complement }}.
+                                {{$quote->quote->district }}. {{$quote->quote->company->city->title }} - {{$quote->quote->company->uf }}
+                            </li>
+                            <li>
+                                <!-- Valida se o usuário ja pagou pra ver essa cotação -->
+                                @if($participate)
+                                    @if(in_array($quote->quote_id,$interested))-->
+                                        <a href="#" data-src="{{$quote}}" onclick="openCommets(event)" data-toggle="tooltip" data-placement="top" title="Ver ou iteragir com tomador de serviços" class="btn btn-more btn-success">
+                                            <i class="fa fa-comment" aria-hidden="true"></i> Negociação
+                                        </a>
+                                    @else
+                                        <!-- Link do formulario aqui, quando navegar pro formulario marca a notificacao como lida-->
+                                        <a href="#" data-src="{{$quote}}" onclick="openModalProposal(event)" class="btn btn-more btn-primary">
+                                            <i class="fa fa-plus" aria-hidden="true"></i> Detalhes
+                                        </a>
+                                    @endif
                                 @else
-                                    <!-- Link do formulario aqui, quando navegar pro formulario marca a notificacao como lida-->
-                                    <a href="#" data-src="{{$quote}}" onclick="openModalProposal(event)" class="btn btn-more btn-primary">
-                                        <i class="fa fa-plus" aria-hidden="true"></i> Detalhes
+                                    <a href="#" onclick="openModalParticipate()" data-toggle="tooltip" data-placement="top" title="Participar da cotação" class="btn btn-more btn-secondary">
+                                        <i class="fa fa-home" aria-hidden="true"></i> Participar
                                     </a>
-                                @endif
-                            @else
-                                <a href="#" onclick="openModalParticipate()" data-toggle="tooltip" data-placement="top" title="Participar da cotação" class="btn btn-more btn-secondary">
-                                    <i class="fa fa-home" aria-hidden="true"></i> Participar
-                                </a>
-                            @endif                             
-                        </li>
-                    </ul>
-                </li>
-
+                                @endif                             
+                            </li>
+                        </ul>
+                    </li>
                 @empty
                 <li class="list-group-item">
                     @alert(['type' => 'warning'])
@@ -137,38 +136,34 @@
         </div>
     </div>
 </div>
-<!-- MODAL DE PROPOSTA PARA A COTAÇÃO -->
+<!-- MODAL QUE MOSTRA O SALDO DE MOEDAS E CONFIRMA SE O USUÁRIO VAI PARTICIPAR DA COTAÇÃO -->
 <div class="modal fade" id="quote-participate" tabindex="-1" aria-labelledby="quotLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog ">
         <div class="modal-content">
             <form role="form" class="form" id="" method="post">
                 @csrf
+                <div class="modal-header">
+                    <h5>O valor de cada transação é de <strong>${{$coins->price_quote}} WebMoedas</strong> </h5>
+                </div>
                 <div class="modal-body">
                     <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>O valor de cada transação é de <strong>R$ 50 Moedas</strong> </h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <!-- Se tiver saldo mostra a opção de ir para o formulário de proposta -->
-                                        @if($candidate[0]->balance_coins >= 50)
-                                            {{$candidate[0]->balance_coins}}
-                                        @else
-                                        <!-- Se não tiver saldo mostra o link para comprar as moedas -->
-                                            sai fora 
-                                        @endif
-                                    </div>
-                                </div>
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <!-- Se tiver saldo mostra a opção de ir para o formulário de proposta -->
+                                @if($candidate[0]->balance_coins >= 50)
+                                    <h4>Seu saldo é de <strong>R$ {{$candidate[0]->balance_coins}}</strong></h4>
+                                @else
+                                <!-- Se não tiver saldo mostra o link para comprar as moedas -->
+                                    sai fora 
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Cancelar"><i class="glyphicon glyphicon-repeat"></i>Cancelar</button>
-                    <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i>
-                        Enviar</button>
+                    <button class="btn btn-success" data-src="{{$quote}}" onclick="closeModalParticipate(), openModalProposal(event)" type="button"><i class="glyphicon glyphicon-ok-sign"></i>
+                        Confirma</button>
                 </div>
             </form>
         </div>
@@ -188,16 +183,21 @@
         function openModalProposal(event) {
             //seleciona a proposta
             const data = $(event.target).data('src');
-            //console.log(data)//JSON object
             $('#company_id').val(data.company_id);
             $('#quote_id').val(data.quote_id);
             $('#proposal-form-create').modal();
         }
         /**
-         * Método que abr eo modal para participar da contação
+         * Método que abre o modal para participar da contação
          */
          function openModalParticipate() {
              $('#quote-participate').modal();
+         }
+         /**
+          * Fecha modal de participação de da cotação 
+          */
+         function closeModalParticipate() {
+             $('#quote-participate').modal('hide');
          }
 
         const csrf = "{{csrf_token()}}";

@@ -27,12 +27,16 @@
     <div class="box-body">
         <!-- Recarga de moedas -->
         <div class="row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label for="coins">Valor do Pacote</label>
                 <input type="number" name="" id="" class="form-control" value="">
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label for="coins">Moedas por Pacote</label>
+                <input type="number" name="" id="" class="form-control" value="">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="coins">Moedar por Cotação</label>
                 <input type="number" name="" id="" class="form-control" value="">
             </div>
         </div>
