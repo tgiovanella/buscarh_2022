@@ -44,8 +44,9 @@ class CreateCompaniesTable extends Migration
             $table->string('email')->nullable();
 
             //moedas
-            $table->float('coins')->nullable();
-            $table->float('used_coins')->nullable();
+            $table->integer('coins')->nullable();
+            $table->integer('used_coins')->nullable();
+            $table->integer('balance_coins')->nullable();
 
             $table->timestamps();
         });
