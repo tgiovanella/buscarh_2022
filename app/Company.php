@@ -60,7 +60,8 @@ class Company extends Model implements Auditable
         'owner_id',
         'status', //ativo e inativo (boolean)
         'highlighted',
-        'slug'
+        'slug',
+        'balance_coins'
     ];
 
     /**

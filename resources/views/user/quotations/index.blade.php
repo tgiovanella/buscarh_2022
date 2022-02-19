@@ -54,7 +54,7 @@
                             <li>
                                 <!-- Valida se o usuário ja pagou pra ver essa cotação -->
                                 @if($participate)
-                                    @if(in_array($quote->quote_id,$interested))-->
+                                    @if(in_array($quote->quote_id,$interested))
                                         <a href="#" data-src="{{$quote}}" onclick="openCommets(event)" data-toggle="tooltip" data-placement="top" title="Ver ou iteragir com tomador de serviços" class="btn btn-more btn-success">
                                             <i class="fa fa-comment" aria-hidden="true"></i> Negociação
                                         </a>
@@ -143,7 +143,7 @@
             <form role="form" class="form" id="" method="post">
                 @csrf
                 <div class="modal-header">
-                    <h5>O valor de cada transação é de <strong>${{$coins->price_quote}} WebMoedas</strong> </h5>
+                    <h5>Para participar da cotação será cobrado <strong class="text-primary">${{$coins->price_quote}} WebMoedas</strong> </h5>
                 </div>
                 <div class="modal-body">
                     <div class="col-md-12">
@@ -151,7 +151,7 @@
                             <div class="col-md-12 text-center">
                                 <!-- Se tiver saldo mostra a opção de ir para o formulário de proposta -->
                                 @if($candidate[0]->balance_coins >= 50)
-                                    <h4>Seu saldo é de <strong>R$ {{$candidate[0]->balance_coins}}</strong></h4>
+                                    <h4>Seu saldo é de <strong>R$ {{number_format($candidate[0]->balance_coins, 2, ',', '.')}}</strong></h4>
                                 @else
                                 <!-- Se não tiver saldo mostra o link para comprar as moedas -->
                                     sai fora 

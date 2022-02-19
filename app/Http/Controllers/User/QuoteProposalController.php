@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Company;
 use App\QuoteCandidate;
 use App\QuoteCandidateNotification;
 use App\QuoteComment;
@@ -18,14 +19,18 @@ class QuoteProposalController extends Controller
         try {
             $quot           = new QuoteCandidate();
             $participatePay = new  QuoteCandidateParticipate();
+            $coins          = CoinsConfiguration::first();
+            $company        = Company::where('id', $request->company_id)->first();
+
+            // echo'<pre>';
+            // print_r($coins);
+            // exit;
 
             $this->validate($request, [
                 'comment'             => ['required'],
                 'price'             => ['required']
             ]);
             //Tratativas para salvar a proposta.
-           
-
             $quot->comment      = $request->comment;
             $quot->price        = $request->price;
             $quot->taxes        = $request->taxes;
@@ -42,10 +47,15 @@ class QuoteProposalController extends Controller
             //Atualiza a tabela de pagamento de participação da cotação
             $participatePay->user_id = Auth::user()->id;
             $participatePay->quote_id = $request->quote_id;
-            $participatePay->comapny_id = $request->company_id;
+            $participatePay->company_id = $request->company_id;
             $participatePay->is_pay = 1;
             $participatePay->save();
 
+            //Atualiza o saldo de moedas do usuário
+            $company->balance_coins = $company->balance_coins - $coins->price_quote;
+            $company->used_coins = $company->used_coins + $coins->price_quote;
+            $company->save();
+ 
             return redirect('/users');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['type' => 'error', 'message' => $e->errors()]);
