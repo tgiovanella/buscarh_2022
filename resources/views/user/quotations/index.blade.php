@@ -146,24 +146,33 @@
                     <h5>Para participar da cotação será cobrado <strong class="text-primary">${{$coins->price_quote}} WebMoedas</strong> </h5>
                 </div>
                 <div class="modal-body">
-                    <div class="col-md-12">
+                    <!-- Se tiver saldo mostra a opção de ir para o formulário de proposta -->
+                    @if($candidate[0]->balance_coins >= 50)
                         <div class="row">
-                            <div class="col-md-12 text-center">
-                                <!-- Se tiver saldo mostra a opção de ir para o formulário de proposta -->
-                                @if($candidate[0]->balance_coins >= 50)
-                                    <h4>Seu saldo é de <strong>R$ {{number_format($candidate[0]->balance_coins, 2, ',', '.')}}</strong></h4>
-                                @else
-                                <!-- Se não tiver saldo mostra o link para comprar as moedas -->
-                                    sai fora 
-                                @endif
+                            <div class="col-md-12">
+                                <h4>Seu saldo é de <strong>R$ {{number_format($candidate[0]->balance_coins, 2, ',', '.')}}</strong></h4>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-danger" role="alert">
+                                    <h6><strong>$ {{$candidate[0]->balance_coins}} WEbMoedas </strong>- Saldo Insuficiente para participar da cotação!</h6>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Cancelar"><i class="glyphicon glyphicon-repeat"></i>Cancelar</button>
-                    <button class="btn btn-success" data-src="{{$quote}}" onclick="closeModalParticipate(), openModalProposal(event)" type="button"><i class="glyphicon glyphicon-ok-sign"></i>
+                    @if($candidate[0]->balance_coins >= 50)
+                        <button class="btn btn-success" data-src="{{$quote}}" onclick="closeModalParticipate(), openModalProposal(event)" type="button"><i class="glyphicon glyphicon-ok-sign"></i>
                         Confirma</button>
+                    @else
+                    <button class="btn btn-primary" onclick="closeModalParticipate()" type="button"><i class="glyphicon glyphicon-ok-sign"></i>
+                        Comprar WebCoins</button>
+                    @endif
+                    
                 </div>
             </form>
         </div>
