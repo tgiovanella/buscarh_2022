@@ -53,7 +53,7 @@
                             </li>
                             <li>
                                 <!-- Valida se o usuário ja pagou pra ver essa cotação -->
-                                @if($participate)
+                                @if($quote->is_pay)
                                     @if(in_array($quote->quote_id,$interested))
                                         <a href="#" data-src="{{$quote}}" onclick="openCommets(event)" data-toggle="tooltip" data-placement="top" title="Ver ou iteragir com tomador de serviços" class="btn btn-more btn-success">
                                             <i class="fa fa-comment" aria-hidden="true"></i> Negociação
@@ -65,7 +65,7 @@
                                         </a>
                                     @endif
                                 @else
-                                    <a href="#" onclick="openModalParticipate()" data-toggle="tooltip" data-placement="top" title="Participar da cotação" class="btn btn-more btn-secondary">
+                                    <a href="#" data-src="{{$quote}}" onclick="openModalParticipate(event)" data-toggle="tooltip" data-placement="top" title="Participar da cotação" class="btn btn-more btn-secondary">
                                         <i class="fa fa-home" aria-hidden="true"></i> Participar
                                     </a>
                                 @endif                             
@@ -141,6 +141,8 @@
     <div class="modal-dialog ">
         <div class="modal-content">
             <form role="form" class="form" id="" method="post">
+                <input type="hidden" id="recebeQuoteID">
+                <input type="hidden" id="recebeCompanyID">
                 @csrf
                 <div class="modal-header">
                     <h5>Para participar da cotação será cobrado <strong class="text-primary">${{$coins->price_quote}} WebMoedas</strong> </h5>
@@ -167,9 +169,9 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Cancelar"><i class="glyphicon glyphicon-repeat"></i>Cancelar</button>
                     @if($candidate[0]->balance_coins >= 50)
                         <button class="btn btn-success" data-src="{{$quote}}" onclick="closeModalParticipate(), openModalProposal(event)" type="button"><i class="glyphicon glyphicon-ok-sign"></i>
-                        Confirma</button>
+                        Participar</button>
                     @else
-                    <button class="btn btn-primary" onclick="closeModalParticipate()" type="button"><i class="glyphicon glyphicon-ok-sign"></i>
+                    <button class="btn btn-primary" data-src="{{$quote}}" onclick="closeModalParticipate(event)" type="button"><i class="glyphicon glyphicon-ok-sign"></i>
                         Comprar WebCoins</button>
                     @endif
                     
@@ -190,16 +192,18 @@
         * Método que abre o modal do formulário de proposta.
         */
         function openModalProposal(event) {
-            //seleciona a proposta
-            const data = $(event.target).data('src');
-            $('#company_id').val(data.company_id);
-            $('#quote_id').val(data.quote_id);
+
+            $('#company_id').val($('#recebeCompanyID').val());
+            $('#quote_id').val($('#recebeQuoteID').val());
             $('#proposal-form-create').modal();
         }
         /**
          * Método que abre o modal para participar da contação
          */
          function openModalParticipate() {
+            const data = $(event.target).data('src');
+            $('#recebeQuoteID').val(data.quote_id);
+            $('#recebeCompanyID').val(data.company_id);
              $('#quote-participate').modal();
          }
          /**

@@ -9,7 +9,6 @@ use App\QuoteCandidate;
 use App\QuoteCandidateNotification;
 use App\QuoteComment;
 use App\CoinsConfiguration;
-use App\QuoteCandidateParticipate;
 use Illuminate\Support\Facades\Auth;
 
 class QuoteProposalController extends Controller
@@ -18,7 +17,6 @@ class QuoteProposalController extends Controller
     {
         try {
             $quot           = new QuoteCandidate();
-            $participatePay = new  QuoteCandidateParticipate();
             $coins          = CoinsConfiguration::first();
             $company        = Company::where('id', $request->company_id)->first();
 
@@ -45,11 +43,13 @@ class QuoteProposalController extends Controller
             $quot->save();
 
             //Atualiza a tabela de pagamento de participação da cotação
-            $participatePay->user_id = Auth::user()->id;
-            $participatePay->quote_id = $request->quote_id;
-            $participatePay->company_id = $request->company_id;
-            $participatePay->is_pay = 1;
-            $participatePay->save();
+            $statusPay =  QuoteCandidateNotification::where('company_id', $request->company_id)->where('quote_id', $request->quote_id)->first();
+
+            $statusPay->is_pay = 1;
+            $statusPay->is_view = 1;
+
+
+            $statusPay->save();
 
             //Atualiza o saldo de moedas do usuário
             $company->balance_coins = $company->balance_coins - $coins->price_quote;

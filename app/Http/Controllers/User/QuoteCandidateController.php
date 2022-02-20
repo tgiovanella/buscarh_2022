@@ -10,7 +10,6 @@ use App\QuoteCandidateNotification;
 use App\QuoteComment;
 use App\User;
 use App\QuoteNps;
-use App\QuoteCandidateParticipate;
 use App\CoinsConfiguration;
 use Dotenv\Regex\Success;
 use Illuminate\Support\Facades\Auth;
@@ -38,20 +37,16 @@ class QuoteCandidateController extends Controller
         $coins = CoinsConfiguration::get()[0];
         $candidate      = User::where('id', Auth::user()->id)->whereHas('companies')->with('companies')->first();
         $interested     = QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('quote_id')->toArray();
-        $participate    = QuoteCandidateParticipate::where('user_id', Auth::user()->id)->where('company_id', $candidate->companies->pluck('id')[0])->first();
         $notify         = QuoteCandidateNotification::whereHas('quote')->whereIn('company_id', $candidate->companies->pluck('id'))
             ->with([
                 'quote' => fn ($m) => $m > with('company'),
             ])
             ->get(); 
-        
-            #TENTAR FAZER UM FOREACH PARA VALIDAR AS COTAÇÕES QUE JA FORAM PAGAS
 
         return view('user.quotations.index', [
             'quotes'        => $notify, 
             'interested'    => $interested, 
             'candidate'     => $candidate->companies,
-            'participate'   => $participate,
             'coins'         => $coins
         ]);
     }
