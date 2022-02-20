@@ -149,7 +149,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Se tiver saldo mostra a opção de ir para o formulário de proposta -->
-                    @if($candidate[0]->balance_coins >= 50)
+                    @if($candidate[0]->balance_coins >= $coins->price_quote)
                         <div class="row">
                             <div class="col-md-12">
                                 <h4>Seu saldo é de <strong>R$ {{number_format($candidate[0]->balance_coins, 2, ',', '.')}}</strong></h4>
@@ -167,14 +167,69 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Cancelar"><i class="glyphicon glyphicon-repeat"></i>Cancelar</button>
-                    @if($candidate[0]->balance_coins >= 50)
+                    @if($candidate[0]->balance_coins >= $coins->price_quote)
                         <button class="btn btn-success" data-src="{{$quote}}" onclick="closeModalParticipate(), openModalProposal(event)" type="button"><i class="glyphicon glyphicon-ok-sign"></i>
                         Participar</button>
                     @else
-                    <button class="btn btn-primary" data-src="{{$quote}}" onclick="closeModalParticipate(event)" type="button"><i class="glyphicon glyphicon-ok-sign"></i>
+                    <button class="btn btn-primary" data-src="{{$quote}}" onclick="openModalBuyCoins()" type="button"><i class="glyphicon glyphicon-ok-sign"></i>
                         Comprar WebCoins</button>
                     @endif
                     
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- MODAL COM FORMULÁRIO DE COMPRA DE MOEDAS -->
+<div class="modal fade" id="buy-coins" tabindex="-1" aria-labelledby="quotLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form role="form" class="form" id="" method="post">
+                <input type="hidden" id="coins-CompanyId">
+                @csrf
+                <div class="modal-header">
+                    <h5><strong class="text-primary" >Comprar WebMoedas</strong></h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="name">Valor do Pacote</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                <div class="input-group-text">R$</div>
+                                </div>
+                                <input type="text" class="form-control" id="price-pack" title="Preço do Pacote de moedas" value="{{number_format($coins->price_quote, 2, ',', '.')}}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="name">Moedas por Pacote</label>
+                            <input type="number" class="form-control" id="coins-pack" name="" value="{{$coins->amount_coins}}" title="Quantidade de Moedas por Pacote" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="name">Quantidade</label>
+                            <input type="number" onchange="calculateBuyCoins()" step="1" class="form-control" id="amount-coins" name="" title="Valor da proposta" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="name">Valor Total</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                <div class="input-group-text">R$</div>
+                                </div>
+                                <input type="text" class="form-control" id="total-price" title="Preço total" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="name">Total Moedas</label>
+                            <input type="number" class="form-control" id="total-coins" name="" title="Quantidade Total de Moedas" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Cancelar"><i class="glyphicon glyphicon-repeat"></i>Cancelar</button>
+                    <button class="btn btn-primary"type="button"><i class="glyphicon glyphicon-ok-sign"></i>
+                        Comprar WebCoins</button>
                 </div>
             </form>
         </div>
@@ -205,6 +260,25 @@
             $('#recebeQuoteID').val(data.quote_id);
             $('#recebeCompanyID').val(data.company_id);
              $('#quote-participate').modal();
+         }
+         /**
+          * Abre o modal de comprar moedas.
+          */
+         function openModalBuyCoins() {
+            $('#quote-participate').modal('hide');
+            $('#buy-coins').modal();
+         }
+         /**
+          * Calcula os valor e quantidades referentes a compra de moedas
+          */
+         function calculateBuyCoins() {
+            var pricePack   = parseFloat($('#price-pack').val());
+            var coinsPack   = parseInt($('#coins-pack').val());  
+            var amountCoins = parseInt($('#amount-coins').val());         
+
+            $('#total-price').val(pricePack * amountCoins);
+            $('#total-coins').val(coinsPack * amountCoins);
+            
          }
          /**
           * Fecha modal de participação de da cotação 

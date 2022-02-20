@@ -42,7 +42,10 @@ class QuoteCandidateController extends Controller
                 'quote' => fn ($m) => $m > with('company'),
             ])
             ->get(); 
-
+        
+            // echo '<pre>';
+            // print_r($coins);
+            // exit;
         return view('user.quotations.index', [
             'quotes'        => $notify, 
             'interested'    => $interested, 
