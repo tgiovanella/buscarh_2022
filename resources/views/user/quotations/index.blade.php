@@ -362,7 +362,6 @@
             if (resp.type === 'success') {
                 $('#modalNps').modal('hide');
                 sessionStorage.setItem('success', resp.message);
-                flashsuccess(sessionStorage.getItem('success'));
                 window.location.reload();
                 return null;
             }

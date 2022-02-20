@@ -38,7 +38,7 @@
 
                     <button data-id="{{$item->id}}" onclick="deleteQuote(event)" class="btn btn-sm btn-danger" title="Encerrar Cotação"><i data-id="{{$item->id}}" class="fa fa-trash" aria-hidden="true"></i></button>
                     @else
-                    <button data-id="{{$item->id}}" onclick="getInfo(event)" class="btn btn-sm btn-success text-white" title="Proposta aceita"><i class="fa fa-check" aria-hidden="true"></i> Aceita</button>
+                    <button data-id="{{$item->proposal_id}}" onclick="getInfo(event)" class="btn btn-sm btn-success text-white" title="Proposta aceita"><i class="fa fa-check" aria-hidden="true"></i> Aceita</button>
                     @endif
                 </td>
             </tr>

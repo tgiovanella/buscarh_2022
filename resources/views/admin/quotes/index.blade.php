@@ -18,18 +18,18 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="formfilter" class="form form-search">
+                        <form id="formfilter" class="form form-search" novalidate>
                             @csrf
                             <strong>Filtros</strong>
                             <div>
                                 <div class="col">
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-12">
-                                            <label for="initial" class="control-label font-weight-bold">{{ __('Periodo Inicial') }}</label>
+                                            <label for="initial" class="control-label font-weight-bold">{{ __('Periodo Inicial') }}*</label>
                                             <input type="date" class="form-control" name="initial" id="initial" required />
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-12">
-                                            <label for="end" class="control-label font-weight-bold">{{ __('Periodo FInal') }}</label>
+                                            <label for="end" class="control-label font-weight-bold">{{ __('Periodo Final') }}*</label>
                                             <input type="date" class="form-control" name="end" id="end" required />
                                         </div>
 
@@ -164,6 +164,7 @@
 </div>
 
 @endsection
+
 @push('scripts')
 
 <script>
@@ -348,4 +349,93 @@
     });
 </script>
 
+@endpush
+@push('styles')
+<style>
+    .form-control.is-valid,
+    .was-validated .form-control:valid {
+        border-color: var(--primary);
+        padding-right: calc(1.5em + .75rem);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2397d700' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: center right calc(.375em + .1875rem);
+        background-size: calc(.75em + .375rem) calc(.75em + .375rem)
+    }
+
+    .form-control.is-valid:focus,
+    .was-validated .form-control:valid:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 .2rem rgba(125, 200, 85, .25)
+    }
+
+    .form-control.is-valid~.valid-feedback,
+    .form-control.is-valid~.valid-tooltip,
+    .was-validated .form-control:valid~.valid-feedback,
+    .was-validated .form-control:valid~.valid-tooltip {
+        display: block
+    }
+
+    .was-validated textarea.form-control:valid,
+    textarea.form-control.is-valid {
+        padding-right: calc(1.5em + .75rem);
+        background-position: top calc(.375em + .1875rem) right calc(.375em + .1875rem)
+    }
+
+    .was-validated select.form-control:invalid+.select2-container>span.selection>span.select2-selection {
+        border-color: var(--danger);
+    }
+
+    .was-validated select.form-control:invalid+.select2-container--focus>span.selection>span.select2-selection {
+        border-color: var(--danger);
+        box-shadow: 0 0 0 .2rem rgba(237, 85, 100, .25);
+    }
+
+    .was-validated select.form-control:valid+.select2-container>span.selection>span.select2-selection {
+        border-color: var(--primary);
+    }
+
+    .was-validated select.form-control:valid+.select2-container--focus>span.selection>span.select2-selection {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 .2rem rgba(125, 200, 85, .25)
+    }
+
+    .custom-select.is-valid,
+    .was-validated .custom-select:valid {
+        border-color: var(--success);
+        padding-right: calc((1em + .75rem) * 3 / 4 + 1.75rem);
+        background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px, url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2397d700' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") var(--white) no-repeat center right 1.75rem/calc(.75em + .375rem) calc(.75em + .375rem)
+    }
+
+    .custom-select.is-valid:focus,
+    .was-validated .custom-select:valid:focus {
+        border-color: var(--success);
+        box-shadow: 0 0 0 .2rem rgba(125, 200, 85, .25)
+    }
+
+    .custom-select.is-valid~.valid-feedback,
+    .custom-select.is-valid~.valid-tooltip,
+    .was-validated .custom-select:valid~.valid-feedback,
+    .was-validated .custom-select:valid~.valid-tooltip {
+        display: block
+    }
+
+    .form-control-file.is-valid~.valid-feedback,
+    .form-control-file.is-valid~.valid-tooltip,
+    .was-validated .form-control-file:valid~.valid-feedback,
+    .was-validated .form-control-file:valid~.valid-tooltip {
+        display: block
+    }
+
+    .form-check-input.is-valid~.form-check-label,
+    .was-validated .form-check-input:valid~.form-check-label {
+        color: var(--primary)
+    }
+
+    .form-check-input.is-valid~.valid-feedback,
+    .form-check-input.is-valid~.valid-tooltip,
+    .was-validated .form-check-input:valid~.valid-feedback,
+    .was-validated .form-check-input:valid~.valid-tooltip {
+        display: block
+    }
+</style>
 @endpush
