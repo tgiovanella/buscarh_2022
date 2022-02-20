@@ -21,4 +21,8 @@ class QuoteCandidate extends Model
     {
         return $this->hasOne(Quote::class, 'id', 'quote_id');
     }
+    public function quoteParticipate()
+    {
+        return $this->hasOne(Quote::class, 'id', 'quote_id');
+    }
 }

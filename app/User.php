@@ -31,7 +31,9 @@ class User extends Authenticatable
         'cep',
         'cpf',
         'birth',
-        'city_name', 'uf'
+        'city_name', 
+        'uf',
+        'id'
     ];
 
     /**

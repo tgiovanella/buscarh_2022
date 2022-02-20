@@ -38,7 +38,12 @@
                     <i class="fa fa-file"></i> <span>Pesquisa de Satisfação(NPS)</span>
                 </a>
             </li>
-
+             <!-- Configurações de moedas  -->
+             <li>
+                <a href="/admin/config-coins">
+                    <i class="fa fa-cogs"></i> <span>Configuração de WebMoedas</span>
+                </a>
+            </li>
             <li class="header">SISTEMA DE DENÚNCIAS</li>
             <li>
                 <a href="{{ route('admin.reports.index') }}">

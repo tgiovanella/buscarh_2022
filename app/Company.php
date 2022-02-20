@@ -34,10 +34,12 @@ class Company extends Model implements Auditable
         'owner_id', #usuário dono da empresa (para administrar)
         'status', //ativo e inativo (boolean)
         'highlighted',
-        'slug'
+        'slug',
+        'id',
+        'balance_coins'
     ];
 
-    /**
+    /**s
      * Dados que serão auditados/log
      */
     protected $auditInclude = [
@@ -58,7 +60,8 @@ class Company extends Model implements Auditable
         'owner_id',
         'status', //ativo e inativo (boolean)
         'highlighted',
-        'slug'
+        'slug',
+        'balance_coins'
     ];
 
     /**

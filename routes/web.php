@@ -54,6 +54,7 @@ Route::prefix('/')->name('user.')->namespace('User')->group(function () {
     Route::post('users/accept-proposal', 'QuoteCandidateController@acceptProposal')->name('users.proposal.accept');
 
     Route::post('users/quotes-nps', 'QuoteCandidateController@saveNps');
+    Route::post('users/quotes-buy-coins', 'QuoteCandidateController@saveBuyCoins');
 
 
     Route::post('users/comment-proposal', 'QuoteProposalController@addComment')->name('users.proposal.comment');
@@ -146,6 +147,7 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function () {
         Route::resource('companies', 'CompanyController');
         Route::resource('quotations', 'QuotationController');
         Route::resource('nps', 'NpsController');
+        Route::get('config-coins', 'NpsController@indexCoins');
         Route::put('companies/{company}/highlighted', 'CompanyController@highlighted')->name('companies.highlighted');
 
 
