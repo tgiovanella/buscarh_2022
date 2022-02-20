@@ -62,4 +62,8 @@ class NotificationController extends Controller
             return response()->json(['type' => 'error', 'message' =>  $th->getMessage()]);
         }
     }
+    /**
+     * Dispara  um email para o Marcelo para ele gerar o boleto e enviar para o cliente.
+     */
+    
 }

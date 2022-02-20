@@ -43,9 +43,6 @@ class QuoteCandidateController extends Controller
             ])
             ->get(); 
         
-            // echo '<pre>';
-            // print_r($coins);
-            // exit;
         return view('user.quotations.index', [
             'quotes'        => $notify, 
             'interested'    => $interested, 
@@ -114,6 +111,31 @@ class QuoteCandidateController extends Controller
     }
     /**
      * Função que verifica se o prestador ja respondeu o NPS das propostas aceitas
+     */
+    public function saveNps(Request $request)
+    {
+        try {
+            $nps = new QuoteNps();
+            $nps->user_id = $request->user_id;
+            $nps->company_id = $request->company_id;
+            $nps->quote_id = $request->quote_id;
+            $nps->comment = $request->comment;
+            $nps->answer = $request->answer;
+            $nps->save();
+
+
+            //Atualiza o campo NPS na tabela candidate_quotes
+            $candidate = QuoteCandidate::where("quote_id", $request->quote_id)->first();
+            $candidate->nps_answer = '1';
+            $candidate->save();
+            return response()->json(['type' => 'success', 'message' => 'Deu bão!!']);
+        } catch (\Exception $e) {
+            return response()->json(['type' => 'error', 'message' => $e->getMessage() . " Contate o suporte!"]);
+        }
+        
+    }
+    /**
+     * Função que salva as informações da compra das moedas
      */
     public function saveNps(Request $request)
     {

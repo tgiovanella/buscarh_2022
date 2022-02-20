@@ -345,6 +345,36 @@
             return content;
         }
 
+        /**
+         * Salva a compra de moedas.
+         */
+        const sendNps = (event) => {
+        event.target.disabled = true
+
+        const form = new FormData();
+        form.append('company_id', $('#recebeCompanyID').val());
+        form.append('quote_id', $('#recebeQuoteID').val());
+        form.append('amount_coins', $('#amount-coins').val());
+        form.append('total_price', $('#total-price').val() );
+        form.append('_token', csrf);
+
+        requestPost('/users/quotes-nps', form).then(resp => {
+            if (resp.type === 'success') {
+                $('#modalNps').modal('hide');
+                sessionStorage.setItem('success', resp.message);
+                flashsuccess(sessionStorage.getItem('success'));
+                window.location.reload();
+                return null;
+            }
+            flasherror(resp.message);
+
+        }).finally(() => {
+            event.target.disabled = false;
+            $('#comment-modal').modal('close');
+        });
+        event.preventDefault();
+    }
+
         async function openCommets(event) {
             const data = $(event.target).data('src');
             $('#comment-modal').modal('show');
