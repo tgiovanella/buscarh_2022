@@ -8,6 +8,7 @@ use App\Quote;
 use App\QuoteCandidate;
 use App\QuoteCandidateNotification;
 use App\QuoteComment;
+use App\CandidateBuyCoins;
 use App\User;
 use App\QuoteNps;
 use App\CoinsConfiguration;
@@ -128,7 +129,7 @@ class QuoteCandidateController extends Controller
             $candidate = QuoteCandidate::where("quote_id", $request->quote_id)->first();
             $candidate->nps_answer = '1';
             $candidate->save();
-            return response()->json(['type' => 'success', 'message' => 'Deu bão!!']);
+            return response()->json(['type' => 'success', 'message' => 'Dados salvos com sucesso']);
         } catch (\Exception $e) {
             return response()->json(['type' => 'error', 'message' => $e->getMessage() . " Contate o suporte!"]);
         }
@@ -137,23 +138,19 @@ class QuoteCandidateController extends Controller
     /**
      * Função que salva as informações da compra das moedas
      */
-    public function saveNps(Request $request)
+    public function buyCoins(Request $request)
     {
         try {
-            $nps = new QuoteNps();
-            $nps->user_id = $request->user_id;
-            $nps->company_id = $request->company_id;
-            $nps->quote_id = $request->quote_id;
-            $nps->comment = $request->comment;
-            $nps->answer = $request->answer;
-            $nps->save();
 
+            $candidateBuyCoins = new CandidateBuyCoins();
+            $candidateBuyCoins->company_id      = $request->company_id;
+            $candidateBuyCoins->quote_id        = $request->quote_id;
+            $candidateBuyCoins->total_coins     = $request->total_coins;
+            $candidateBuyCoins->amount_coins    = $request->amount_coins;
+            $candidateBuyCoins->total_price     = $request->total_price;
+            $candidateBuyCoins->save();
 
-            //Atualiza o campo NPS na tabela candidate_quotes
-            $candidate = QuoteCandidate::where("quote_id", $request->quote_id)->first();
-            $candidate->nps_answer = '1';
-            $candidate->save();
-            return response()->json(['type' => 'success', 'message' => 'Deu bão!!']);
+            return response()->json(['type' => 'success', 'message' => 'Dados salvos com sucesso!']);
         } catch (\Exception $e) {
             return response()->json(['type' => 'error', 'message' => $e->getMessage() . " Contate o suporte!"]);
         }

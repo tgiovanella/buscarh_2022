@@ -228,7 +228,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Cancelar"><i class="glyphicon glyphicon-repeat"></i>Cancelar</button>
-                    <button class="btn btn-primary"type="button"><i class="glyphicon glyphicon-ok-sign"></i>
+                    <button class="btn btn-primary"type="button"  onclick="saveBuyCoins(event)"><i class="glyphicon glyphicon-ok-sign"></i>
                         Comprar WebCoins</button>
                 </div>
             </form>
@@ -348,7 +348,7 @@
         /**
          * Salva a compra de moedas.
          */
-        const sendNps = (event) => {
+        const saveBuyCoins = (event) => {
         event.target.disabled = true
 
         const form = new FormData();
@@ -356,11 +356,12 @@
         form.append('quote_id', $('#recebeQuoteID').val());
         form.append('amount_coins', $('#amount-coins').val());
         form.append('total_price', $('#total-price').val() );
+        form.append('total_coins', $('#total-coins').val() );
         form.append('_token', csrf);
 
-        requestPost('/users/quotes-nps', form).then(resp => {
+        requestPost('/users/quotes-buy-coins', form).then(resp => {
             if (resp.type === 'success') {
-                $('#modalNps').modal('hide');
+                $('#quote-participate').modal('hide');
                 sessionStorage.setItem('success', resp.message);
                 flashsuccess(sessionStorage.getItem('success'));
                 window.location.reload();
@@ -370,7 +371,7 @@
 
         }).finally(() => {
             event.target.disabled = false;
-            $('#comment-modal').modal('close');
+            $('#quote-participate').modal('hide');
         });
         event.preventDefault();
     }
