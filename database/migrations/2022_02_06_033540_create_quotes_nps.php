@@ -32,6 +32,11 @@ class CreateQuotesNps extends Migration
 
             $table->timestamps();
         });
+
+        Schema::table('candidate_quotes', function (Blueprint $table) {
+            
+            $table->char('nps_answer', 1)->default(0);
+        });
     }
 
     /**
@@ -41,6 +46,11 @@ class CreateQuotesNps extends Migration
      */
     public function down()
     {
+        if (Schema::hasColumn('candidate_quotes', 'nps_answer')) {
+            Schema::table('candidate_quotes', function (Blueprint $table) {
+                $table->dropColumn('nps_answer');
+            });
+        }
         Schema::dropIfExists('quotes_nps');
     }
 }
