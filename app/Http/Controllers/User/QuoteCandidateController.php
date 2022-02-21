@@ -35,7 +35,7 @@ class QuoteCandidateController extends Controller
     public function opportunity()
     {
 
-        $coins = CoinsConfiguration::get()[0];
+        $coins = CoinsConfiguration::first();
         $candidate      = User::where('id', Auth::user()->id)->whereHas('companies')->with('companies')->first();
         $interested     = QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('quote_id')->toArray();
         $notify         = QuoteCandidateNotification::whereHas('quote')->whereIn('company_id', $candidate->companies->pluck('id'))

@@ -322,7 +322,7 @@
         let ufs = ''
 
         $('#flash-message').hide()
-        $('#company_id').select2();
+
         $('.select2').css('width', '100%');
         $('#quot-form-create').on('shown.bs.modal', function() {
             $('#operation_uf').on('change', function(e) {

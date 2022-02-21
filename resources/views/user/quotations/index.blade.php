@@ -363,7 +363,6 @@
             if (resp.type === 'success') {
                 $('#quote-participate').modal('hide');
                 sessionStorage.setItem('success', resp.message);
-                flashsuccess(sessionStorage.getItem('success'));
                 window.location.reload();
                 return null;
             }
