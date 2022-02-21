@@ -62,26 +62,32 @@
                     <thead>
                         <tr>
                             <th>Empresa</th>
+                            <th>E-mail</th>
                             <th>Pacotes</th>
+                            <th>Preço Pacote</th>
                             <th>Total Moedas</th>
+                            <th>Valor Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($candidateBuyCoins as $candidateBuyCoin)
                             <tr>
                                 <td>{{$candidateBuyCoin->company->name}}</td>
+                                <td>{{$candidateBuyCoin->company->email}}</td>
                                 <td>{{$candidateBuyCoin->amount_coins}}</td>
+                                <td>R$ {{number_format($candidateBuyCoin->total_coins, 2, ',', '.')}}</td>
                                 <td>{{$candidateBuyCoin->total_coins}}</td>
+                                <td>R$ {{number_format($candidateBuyCoin->total_coins, 2, ',', '.')}}</td>
                             </tr>
                         @empty
-                        <tr class="list-group-item">
-                            <td colspan="3">
-                            @alert(['type' => 'warning'])
-                                Sem informações a serem exibidas.
-                            @endalert
-                            </td>
-                        </tr>
-                @endforelse
+                            <tr class="">
+                                <td colspan="6" class="text-center">
+                                    @alert(['type' => ''])
+                                        Sem informações a serem exibidas.
+                                    @endalert
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
