@@ -55,6 +55,7 @@ Route::prefix('/')->name('user.')->namespace('User')->group(function () {
 
     Route::post('users/quotes-nps', 'QuoteCandidateController@saveNps');
     Route::post('users/quotes-buy-coins', 'QuoteCandidateController@buyCoins');
+    Route::post('users/config-buy-coins', 'QuoteCandidateController@configBuyCoins');
 
 
     Route::post('users/comment-proposal', 'QuoteProposalController@addComment')->name('users.proposal.comment');

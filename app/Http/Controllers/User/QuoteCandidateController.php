@@ -156,5 +156,22 @@ class QuoteCandidateController extends Controller
         }
         
     }
+    /**
+     * Função que salva as informações da compra das moedas
+     */
+    public function configBuyCoins(Request $request)
+    {
+        try {
+            $confiCoins = CoinsConfiguration::first();
+            $confiCoins->price_coins    = $request->price_coins;
+            $confiCoins->price_quote    = $request->price_quote;
+            $confiCoins->amount_coins   = $request->amount_coins;
+            $confiCoins->save();
 
+            return response()->json(['type' => 'success', 'message' => 'Dados salvos com sucesso!']);
+        } catch (\Exception $e) {
+            return response()->json(['type' => 'error', 'message' => $e->getMessage() . " Contate o suporte!"]);
+        }
+        
+    }
 }
