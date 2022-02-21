@@ -11,7 +11,7 @@ class CandidateBuyCoinsTableSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('candidate_buy_coins')->insert([
+        \DB::table('coins_configuration')->insert([
             [
                 'id' => 1,
                 'price_coins' => 59.90,

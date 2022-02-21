@@ -18,7 +18,8 @@ class CreateQuotesCandidatesNotificationTable extends Migration
 
             $table->bigInteger('quote_id')->unsigned()->nullable();
             $table->bigInteger('company_id')->unsigned()->nullable();
-            $table->char('is_view', 1)->default(0); //notitificacao visualizada
+            $table->char('is_view', 1)->default(0);
+            $table->char('is_pay', 1)->default(0); 
 
             $table->foreign('quote_id')->references('id')->on('quotes')->onDelete('cascade');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
