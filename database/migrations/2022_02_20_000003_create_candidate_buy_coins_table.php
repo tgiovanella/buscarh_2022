@@ -20,6 +20,7 @@ class CreateCandidateBuyCoinsTable extends Migration
             $table->integer('total_coins')->default(0);
             $table->integer('amount_coins')->default(0);
             $table->decimal('total_price')->default(0);
+            $table->char('is_pay', 1)->default(0); 
 
             $table->foreign('quote_id')->references('id')->on('quotes')->onDelete('cascade');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');

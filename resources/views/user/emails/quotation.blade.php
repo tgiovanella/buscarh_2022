@@ -188,7 +188,7 @@
                                     <tr>
                                         <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
 
-                                            <h1>Oportunidade de Negócio<h1>
+                                            <h1>Oportunidade de Prestação de serviço<h1>
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
                                                 A empresa <strong>
@@ -196,6 +196,7 @@
                                                 nas areas de <i>{{ implode(', ',array_column($quote->subcategories->toArray(),'name') ) }}</i>.
 
                                                 E sua empresa atende aos requisitos preliminares!
+                                                Para mais informações Clique aqui ou faça login no site <a href="http://www.Buscarhweb.com.br"></a> para ter acesso a notificação do serviço solicitado
                                             </p>
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">

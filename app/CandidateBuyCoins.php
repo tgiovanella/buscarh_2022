@@ -8,4 +8,8 @@ class CandidateBuyCoins extends Model
 {
     protected $table = 'candidate_buy_coins';
 
+    public function company()
+    {
+        return $this->hasOne(Company::class, 'id', 'company_id');
+    }
 }

@@ -137,7 +137,7 @@
     </div>
 </div>
 <!-- MODAL QUE MOSTRA O SALDO DE MOEDAS E CONFIRMA SE O USUÁRIO VAI PARTICIPAR DA COTAÇÃO -->
-@if($quote)
+@if(isset($quote))
     <div class="modal fade" id="quote-participate" tabindex="-1" aria-labelledby="quotLabel" aria-hidden="true">
         <div class="modal-dialog ">
             <div class="modal-content">
@@ -351,31 +351,31 @@
          * Salva a compra de moedas.
          */
         const saveBuyCoins = (event) => {
-        event.target.disabled = true
+            event.target.disabled = true
 
-        const form = new FormData();
-        form.append('company_id', $('#recebeCompanyID').val());
-        form.append('quote_id', $('#recebeQuoteID').val());
-        form.append('amount_coins', $('#amount-coins').val());
-        form.append('total_price', $('#total-price').val() );
-        form.append('total_coins', $('#total-coins').val() );
-        form.append('_token', csrf);
+            const form = new FormData();
+            form.append('company_id', $('#recebeCompanyID').val());
+            form.append('quote_id', $('#recebeQuoteID').val());
+            form.append('amount_coins', $('#amount-coins').val());
+            form.append('total_price', $('#total-price').val() );
+            form.append('total_coins', $('#total-coins').val() );
+            form.append('_token', csrf);
 
-        requestPost('/users/quotes-buy-coins', form).then(resp => {
-            if (resp.type === 'success') {
+            requestPost('/users/quotes-buy-coins', form).then(resp => {
+                if (resp.type === 'success') {
+                    $('#quote-participate').modal('hide');
+                    sessionStorage.setItem('success', resp.message);
+                    window.location.reload();
+                    return null;
+                }
+                flasherror(resp.message);
+
+            }).finally(() => {
+                event.target.disabled = false;
                 $('#quote-participate').modal('hide');
-                sessionStorage.setItem('success', resp.message);
-                window.location.reload();
-                return null;
-            }
-            flasherror(resp.message);
-
-        }).finally(() => {
-            event.target.disabled = false;
-            $('#quote-participate').modal('hide');
-        });
-        event.preventDefault();
-    }
+            });
+            event.preventDefault();
+        }
 
         async function openCommets(event) {
             const data = $(event.target).data('src');

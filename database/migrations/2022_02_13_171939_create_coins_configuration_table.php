@@ -23,7 +23,8 @@ class CreateCoinsConfigurationTable extends Migration
             $table->float('price_coins')->unsigned()->nullable();
             $table->integer('amount_coins')->unsigned()->nullable();
             $table->integer('price_quote')->unsigned()->nullable();
-
+            $table->char('is_pay', 1)->default(0); 
+            $table->string('email')->nullable();
             $table->foreign('quote_id')->references('id')->on('quotes')->onDelete('cascade');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
 

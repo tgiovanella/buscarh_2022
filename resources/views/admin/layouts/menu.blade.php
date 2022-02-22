@@ -29,15 +29,6 @@
                     </span>
                     @endif
                 </a></li>
-            <li><a href="/admin/quotes"><i class="fa fa-building"></i>
-                    <span>{{ __('Cotações') }}</span></a></li>
-
-            <!-- NPS  -->
-            <li>
-                <a href="{{ route('admin.nps.index') }}">
-                    <i class="fa fa-file"></i> <span>Pesquisa de Satisfação(NPS)</span>
-                </a>
-            </li>
              <!-- Configurações de moedas  -->
              <li>
                 <a href="/admin/config-coins">
@@ -125,6 +116,8 @@
             <li class="header">RELATÓRIOS</li>
             <li><a href="{{ route('admin.list-contacts.index') }}"><i class="fa fa-file"></i> <span>Lista de Contatos</span></a></li>
             <li><a href="{{ route('admin.clicks-regions.index') }}"><i class="fa fa-file"></i> <span>Regiões e Cliques</span></a></li>
+            <li><a href="/admin/quotes"><i class="fa fa-building"></i><span>{{ __('Cotações') }}</span></a></li>
+            <li><a href="{{ route('admin.nps.index') }}"><i class="fa fa-file"></i> <span>Pesquisa de Satisfação(NPS)</span></a></li>
 
 
 
