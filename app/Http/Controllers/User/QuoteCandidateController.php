@@ -11,30 +11,30 @@ use App\QuoteComment;
 use App\CandidateBuyCoins;
 use App\User;
 use App\QuoteNps;
+use App\Company;
 use App\CoinsConfiguration;
+use App\Mail\SendMailBuyCoins;
 use Dotenv\Regex\Success;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class QuoteCandidateController extends Controller
 {
 
     public function index(int $quote_id)
     {
-
         $quotes_avalaibles = Quote::where('id', $quote_id)->whereNotIn('status', ['ACCEPT'])
             ->with(
                 [
                     'candidates' => fn ($m) => $m->with('company')->withCount('comments')
                 ]
             )->first();
-
         return view('user.quotations.candidates', ['quotes_avalaibles' => $quotes_avalaibles]);
     }
 
     public function opportunity()
     {
-
         $coins = CoinsConfiguration::first();
         $candidate      = User::where('id', Auth::user()->id)->whereHas('companies')->with('companies')->first();
         $interested     = QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('quote_id')->toArray();
@@ -55,7 +55,6 @@ class QuoteCandidateController extends Controller
     public function info($id)
     {
         $candidate = QuoteCandidate::where('id', $id)->with('company')->first();
-
         return view('user.proposal.info', ['candidate' => $candidate]);
     }
 
@@ -99,9 +98,7 @@ class QuoteCandidateController extends Controller
     public function getProposalAccept()
     {
         $candidate = User::where('id', Auth::user()->id)->whereHas('companies')->with('companies')->first();
-
         $interested = QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('company_id')->toArray();
-
         $notify = QuoteCandidateNotification::whereHas('quote')->whereIn('company_id', $candidate->companies->pluck('id'))
             ->with([
                 'quote' => fn ($m) => $m>with('company'),
@@ -141,6 +138,9 @@ class QuoteCandidateController extends Controller
     public function buyCoins(Request $request)
     {
         try {
+            $company        = Company::where('id', $request->company_id)->first();
+            $coins          = CoinsConfiguration::first();
+
             $candidateBuyCoins = new CandidateBuyCoins();
             $candidateBuyCoins->company_id      = $request->company_id;
             $candidateBuyCoins->quote_id        = $request->quote_id;
@@ -148,6 +148,8 @@ class QuoteCandidateController extends Controller
             $candidateBuyCoins->amount_coins    = $request->amount_coins;
             $candidateBuyCoins->total_price     = $request->total_price;
             $candidateBuyCoins->save();
+            //envia o email
+            Mail::to('thyhanry@hotmail.com')->send(new SendMailBuyCoins($coins->email, $company, $candidateBuyCoins));
 
             return response()->json(['type' => 'success', 'message' => 'Dados salvos com sucesso!']);
         } catch (\Exception $e) {
