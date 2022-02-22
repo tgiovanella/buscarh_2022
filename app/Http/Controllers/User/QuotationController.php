@@ -14,7 +14,6 @@ class QuotationController extends Controller
 
     public function store(Request $request)
     {
-
         try {
             $this->validate($request, [
                 'infos'             => ['required', 'min:25'],

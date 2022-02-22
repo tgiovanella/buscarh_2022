@@ -2,28 +2,26 @@
 
 namespace App\Mail;
 
-use App\Advert;
-use App\OrderPayment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendMailQuotation extends Mailable
+class SendMailBuyCoins extends Mailable
 {
     use Queueable, SerializesModels;
-
     private $applicant;
-    private $rh;
+    private $company;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($applicant,  $quote)
+    public function __construct($email,  $company, $candidateBuyCoins)
     {
-        $this->applicant = $applicant;
-        $this->quote = $quote;
+        $this->applicant = $email;
+        $this->company = $company;
+        $this->info = $candidateBuyCoins;
     }
 
     /**
@@ -34,12 +32,13 @@ class SendMailQuotation extends Mailable
     public function build()
     {
         return $this
-            ->subject('Cotação Serviço - Busca RH Web')
+            ->subject('Solicitação de compra Web Moedas - Busca RH Web')
             ->from(config('myconfig.email_no_reply'))
-            ->view('user.emails.quotation')
+            ->view('user.emails.buyCoins')
             ->with([
                 'applicant' => $this->applicant,
-                'quote' => $this->quote
+                'company'   => $this->company,
+                'info'=> $this->info
             ]);
     }
 }

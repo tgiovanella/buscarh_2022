@@ -188,19 +188,14 @@
                                     <tr>
                                         <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
 
-                                            <h1>Oportunidade de Negócio<h1>
+                                            <h1>Solicitação de compra de Web Moedas<h1>
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
-                                                A empresa <strong>
-                                                    </strong> busca parceiro para serviços
-                                                nas areas de <i>{{ implode(', ',array_column($quote->subcategories->toArray(),'name') ) }}</i>.
-
-                                                E sua empresa atende aos requisitos preliminares!
+                                                A empresa <strong>{{$company->name}}</strong> solicita a compra de {{$info->amount_coins}} pacotes de moedas, totalizando {{$info->total_coins}} WebCoins.
                                             </p>
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
-                                                Para mais informações <a href="#" class="link">Clique aqui</a>.</p>
-
+                                                Para mais informações <a href="{{ url('/') }}" class="link">Clique aqui</a>.</p>
                                         </td>
                                     </tr>
                                 </table>

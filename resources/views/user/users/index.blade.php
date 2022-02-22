@@ -208,7 +208,6 @@
     }
 
     const saveQuotation = (event) => {
-
         const form = new FormData(fromRefer);
         event.target.disabled = true
         if (formValidate(event, fromRefer)) {

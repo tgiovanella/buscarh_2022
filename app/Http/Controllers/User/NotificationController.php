@@ -24,7 +24,6 @@ class NotificationController extends Controller
      */
     public function dispatchQuotation(int $id)
     {
-
         try {
             $quot = Quote::where('id', $id)->with(['subcategories', 'cities', 'company'])->firstOrFail();
 
