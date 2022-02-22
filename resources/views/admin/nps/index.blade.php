@@ -81,7 +81,7 @@
                                     @forelse($nps as $item)
                                         <tr>
                                             <td>{{ $item->company->name }}</td>
-                                            <td>{{ $item->quote->title }}</td>
+                                            <td>{{ $item->title }}</td>
                                             <td>{{ $item->comment }}</td>
                                             <td>
                                                 @if($item->answer >= 8)

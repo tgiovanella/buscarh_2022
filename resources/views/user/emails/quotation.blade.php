@@ -188,7 +188,7 @@
                                     <tr>
                                         <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
 
-                                            <h1>Oportunidade de Negócio<h1>
+                                            <h1>Oportunidade de Prestação de serviço<h1>
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
                                                 A empresa <strong>

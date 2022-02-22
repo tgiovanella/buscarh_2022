@@ -141,7 +141,6 @@ class QuoteCandidateController extends Controller
     public function buyCoins(Request $request)
     {
         try {
-
             $candidateBuyCoins = new CandidateBuyCoins();
             $candidateBuyCoins->company_id      = $request->company_id;
             $candidateBuyCoins->quote_id        = $request->quote_id;
@@ -168,6 +167,24 @@ class QuoteCandidateController extends Controller
             $confiCoins->amount_coins   = $request->amount_coins;
             $confiCoins->save();
 
+            return response()->json(['type' => 'success', 'message' => 'Dados salvos com sucesso!']);
+        } catch (\Exception $e) {
+            return response()->json(['type' => 'error', 'message' => $e->getMessage() . " Contate o suporte!"]);
+        }
+        
+    }
+    /**
+     * Função que atualiza o status do pedido de compra de moedas
+     */
+    public function saveStatusBuyCoin(Request $request)
+    {
+        try {
+            //Pegar email que esta na configuração das coins
+            $confiCoins = CoinsConfiguration::first();
+            
+            $candidateBuyCoins = CandidateBuyCoins::get('id', $request->id)->first();
+            $candidateBuyCoins->is_pay  = '1';
+            
             return response()->json(['type' => 'success', 'message' => 'Dados salvos com sucesso!']);
         } catch (\Exception $e) {
             return response()->json(['type' => 'error', 'message' => $e->getMessage() . " Contate o suporte!"]);
