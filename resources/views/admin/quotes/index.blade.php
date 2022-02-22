@@ -57,9 +57,9 @@
                                                 <div class="col-md-12 form-group">
 
                                                     <label for="subcategory_id" class="control-label font-weight-bold">
-                                                        {{__('Categorias')}}*
+                                                        {{__('Categorias')}}
                                                     </label>
-                                                    <select class="js-example-basic-multiple form-control" name="subcategory_id[]" id="subcategory_id" multiple="multiple" required>
+                                                    <select class="js-example-basic-multiple form-control" name="subcategory_id[]" id="subcategory_id" multiple="multiple">
 
                                                         @forelse($categories as $subcategories)
                                                         <optgroup label="{{$subcategories->name}}">
@@ -78,8 +78,8 @@
 
                                             <div class="row">
                                                 <div class="col-md-12 form-group">
-                                                    <label for="operation_uf" class="control-label font-weight-bold">{{ __('UF(s) de Atuação') }}*</label>
-                                                    <select class="js-example-basic-multiple form-control" name="operation_uf[]" id="operation_uf" multiple="multiple" required>
+                                                    <label for="operation_uf" class="control-label font-weight-bold">{{ __('UF(s) de Atuação') }}</label>
+                                                    <select class="js-example-basic-multiple form-control" name="operation_uf[]" id="operation_uf" multiple="multiple">
                                                         @foreach($ufs as $item)
                                                         <option value="{{ $item->id }}">{{ $item->letter }}</option>
                                                         @endforeach
@@ -89,8 +89,8 @@
 
                                             <div class="row">
                                                 <div class="col-md-12 form-group">
-                                                    <label for="operation_city" class="control-label font-weight-bold">{{ __('Cidades de Atuação') }}*</label>
-                                                    <select class="js-example-basic-multiple form-control" name="operation_city[]" id="operation_city" multiple="multiple" required>
+                                                    <label for="operation_city" class="control-label font-weight-bold">{{ __('Cidades de Atuação') }}</label>
+                                                    <select class="js-example-basic-multiple form-control" name="operation_city[]" id="operation_city" multiple="multiple">
                                                         <option value="">
                                                             -- selecione as cidades --
                                                         </option>
@@ -125,22 +125,23 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <table id="table_search" class="table table-striped table-hover table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Titulo da Cotação</th>
-                                            <th>Data</th>
-                                            <th>Categorias</th>
-                                            <th>Cidades</th>
-                                            <th></th>
+                                <div class="table-responsive">
+                                    <table id="table_search" class="table table-striped table-hover table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Titulo da Cotação</th>
+                                                <th>Data</th>
+                                                <th>Categorias</th>
+                                                <th>Cidades</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
 
@@ -149,13 +150,7 @@
                 <!-- /.row -->
             </div>
             <!-- ./box-body -->
-            <div class="box-footer">
-                <div class="row">
-                    <div class="col-md-4 text-left"></div>
-                    <div class="col-md-7 text-right paginate-count"></div>
-                </div>
-                <!-- /.row -->
-            </div>
+
             <!-- /.box-footer -->
         </div>
         <!-- /.box -->
@@ -186,10 +181,9 @@
                     <td>${new Date(element.created_at).toLocaleDateString('pt-BR')}</td>
                     <td>${subcateg}</td>
                     <td>${cities}</td>
-                    
                 </tr>
                 <tr>
-                <td colspan="7">
+                <td colspan="4">
                     <table style="width:100%;">
                     <tr>
                     <th></th>

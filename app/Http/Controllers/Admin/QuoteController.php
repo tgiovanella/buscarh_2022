@@ -38,8 +38,20 @@ class QuoteController extends Controller
 
         $quote = Quote::where('user_id', Auth::user()->id)
             ->with(['subcategories', 'cities', 'company', 'candidates' => fn ($q) => $q->with('company')])
-            ->whereHas('subcategories', fn ($query) => $query->whereIn('subcategory_id', $request->subcategory_id))
-            ->whereHas('cities', fn ($query) => $query->whereIn('city_id', $request->operation_city))
+            ->when(
+                isset($request->subcategory_id) && !empty($request->subcategory_id),
+                fn ($model) => $model->whereHas(
+                    'subcategories',
+                    fn ($query) => $query->whereIn('subcategory_id', $request->subcategory_id)
+                )
+            )
+            ->when(
+                isset($request->subcategory_id) && !empty($request->subcategory_id),
+                fn ($model) => $model->whereHas(
+                    'cities',
+                    fn ($query) => $query->whereIn('city_id', $request->operation_city)
+                )
+            )
             ->whereBetween('created_at', [date('Y-m-d 00:00:00', strtotime($request->initial)), date('Y-m-d 23:59:59', strtotime($request->end))])
             ->whereIn('status', isset(self::STATUS[$request->inlineRadioOptions]) ? [self::STATUS[$request->inlineRadioOptions]] : self::STATUS)
             ->get();
