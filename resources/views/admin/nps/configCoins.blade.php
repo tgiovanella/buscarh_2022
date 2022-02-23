@@ -28,17 +28,21 @@
         <form role="form" class="form" id="" method="post">
             <!-- Recarga de moedas -->
             <div class="row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                     <label for="coins">Valor do Pacote</label>
                     <input type="number" name="" id="price-coins" class="form-control" value="{{$configCoins->price_coins}}">
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                     <label for="coins">Moedas por Cotação</label>
                     <input type="number" name="" id="price-quote" class="form-control" value="{{$configCoins->price_quote}}">
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                     <label for="coins">Moedas por Pacote</label>
                     <input type="number" name="" id="amount-coins" class="form-control" value="{{$configCoins->amount_coins}}">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="coins">Receber as solicitações de compra</label>
+                    <input type="text" name="" id="email" class="form-control" value="{{$configCoins->email}}">
                 </div>
             </div>
             <div class="row float-left">
@@ -181,6 +185,7 @@
             form.append('price_coins', $('#price-coins').val());
             form.append('price_quote', $('#price-quote').val());
             form.append('amount_coins', $('#amount-coins').val());
+            form.append('email', $('#email').val());
             form.append('_token', csrf);
 
             requestPost('/users/config-buy-coins', form).then(resp => {
