@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class CandidateBuyCoins extends Model
 {
     protected $table = 'candidate_buy_coins';
+    public $timestamps = false;
 
     public function company()
     {
