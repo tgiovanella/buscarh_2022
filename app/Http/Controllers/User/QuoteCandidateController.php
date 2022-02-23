@@ -167,6 +167,7 @@ class QuoteCandidateController extends Controller
             $confiCoins->price_coins    = $request->price_coins;
             $confiCoins->price_quote    = $request->price_quote;
             $confiCoins->amount_coins   = $request->amount_coins;
+            $confiCoins->email          = $request->email;
             $confiCoins->save();
 
             return response()->json(['type' => 'success', 'message' => 'Dados salvos com sucesso!']);
