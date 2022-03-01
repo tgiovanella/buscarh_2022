@@ -93,7 +93,7 @@ class QuoteCandidateController extends Controller
     }
 
     /**
-     * Retorna todas as propostas aceitas para esse prestador
+     * Retorna todas as propostas aceitas para esse prestador.
      */
     public function getProposalAccept()
     {
@@ -108,7 +108,7 @@ class QuoteCandidateController extends Controller
         return view('user.quotations.index', ['quotes' => $notify, 'interested' => $interested, 'candidate' => $candidate->companies]);
     }
     /**
-     * Função que verifica se o prestador ja respondeu o NPS das propostas aceitas
+     * Função que verifica se o prestador ja respondeu o NPS das propostas aceitas.
      */
     public function saveNps(Request $request)
     {
@@ -133,7 +133,7 @@ class QuoteCandidateController extends Controller
         
     }
     /**
-     * Função que salva as informações da compra das moedas
+     * Função que salva as informações da compra das moedas.
      */
     public function buyCoins(Request $request)
     {
@@ -158,7 +158,7 @@ class QuoteCandidateController extends Controller
         
     }
     /**
-     * Função que salva as informações da compra das moedas
+     * Função que salva as informações da compra das moedas.
      */
     public function configBuyCoins(Request $request)
     {
@@ -177,7 +177,7 @@ class QuoteCandidateController extends Controller
         
     }
     /**
-     * Função que atualiza o status do pedido de compra de moedas
+     * Função que atualiza o status do pedido de compra de moedas.
      */
     public function saveStatusBuyCoin(Request $request)
     {
