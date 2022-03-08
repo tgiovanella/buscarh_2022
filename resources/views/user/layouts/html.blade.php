@@ -220,6 +220,7 @@
     <script src="{{ asset('user/bower_components/slick-carousel/slick/slick.js') }}"></script>
     <script src="{{ asset('user/bower_components/bootstrap-validator/dist/validator.min.js') }}"></script>
     <script src="{{ asset('user/bower_components/select2/dist/js/select2.min.js') }}"></script>
+    < <script src="{{ asset('user/bower_components/ckeditor/ckeditor.js') }}"></script>
 
     <script>
         // In your Javascript (external .js resource or <script> tag)
