@@ -83,7 +83,7 @@
                 <label for="infos" class="control-label font-weight-bold">
                     {{__('Informações Adicionais')}}
                 </label>
-                <textarea class="form-control" name="infos" id="infos" cols="30" rows="10" required></textarea>
+                <textarea class="form-control ckeditor" name="infos" id="infos" cols="30" rows="10" required></textarea>
 
             </div>
         </div>
