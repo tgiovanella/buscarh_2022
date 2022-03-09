@@ -146,11 +146,11 @@
                     <input type="hidden" id="recebeCompanyID">
                     @csrf
                     <div class="modal-header">
-                        <h5>Para participar da cotação será cobrado <strong class="text-primary">${{$coins->price_quote}} WebMoedas</strong> </h5>
+                        <h5>Para participar da cotação será cobrado <strong class="text-primary">${{$coins->price_quote ?? 0}} WebMoedas</strong> </h5>
                     </div>
                     <div class="modal-body">
                         <!-- Se tiver saldo mostra a opção de ir para o formulário de proposta -->
-                        @if($candidate[0]->balance_coins >= $coins->price_quote)
+                        @if($coins && $candidate[0]->balance_coins >= $coins->price_quote)
                             <div class="row">
                                 <div class="col-md-12">
                                     <h4>Seu saldo é de <strong>R$ {{number_format($candidate[0]->balance_coins, 2, ',', '.')}}</strong></h4>
@@ -168,7 +168,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Cancelar"><i class="glyphicon glyphicon-repeat"></i>Cancelar</button>
-                        @if($candidate[0]->balance_coins >= $coins->price_quote)
+                        @if($coins && $candidate[0]->balance_coins >= $coins->price_quote)
                             <button class="btn btn-success" data-src="{{$quote}}" onclick="closeModalParticipate(), openModalProposal(event)" type="button"><i class="glyphicon glyphicon-ok-sign"></i>
                             Participar</button>
                         @else
