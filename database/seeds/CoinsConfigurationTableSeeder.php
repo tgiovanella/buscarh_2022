@@ -17,7 +17,7 @@ class CoinsConfigurationTableSeeder extends Seeder
                 'price_coins' => '89.9',
                 'price_quote' => '50',
                 'amount_coins' => '500',
-                'email'=> 'thyhanry@hotmail.com'
+                'email'=> 'marcelodpn@gmail.com'
             ]
         ]);
     }
