@@ -25,11 +25,6 @@ class CreateCandidateBuyCoinsTable extends Migration
             $table->foreign('quote_id')->references('id')->on('quotes')->onDelete('cascade');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
-
-        Schema::table('companies', function (Blueprint $table) {
-
-            $table->integer('balance_coins')->default(0);
-        });
     }
 
     /**
@@ -39,11 +34,6 @@ class CreateCandidateBuyCoinsTable extends Migration
      */
     public function down()
     {
-        if (Schema::hasColumn('companies', 'balance_coins')) {
-            Schema::table('companies', function (Blueprint $table) {
-                $table->dropColumn('balance_coins');
-            });
-        }
         Schema::dropIfExists('candidate_buy_coins');
     }
 }
