@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class CandidateBuyCoinsTableSeeder extends Seeder
+class CoinsConfigurationTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,9 +14,10 @@ class CandidateBuyCoinsTableSeeder extends Seeder
         \DB::table('coins_configuration')->insert([
             [
                 'id' => 1,
-                'price_coins' => 59.90,
-                'price_quote' => 80,
-                'amount_coins' => 500
+                'price_coins' => '89.9',
+                'price_quote' => '50',
+                'amount_coins' => '500',
+                'email'=> 'marcelodpn@gmail.com'
             ]
         ]);
     }

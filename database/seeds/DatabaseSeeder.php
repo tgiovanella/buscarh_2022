@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SubcategoryTableSeeder::class);
         $this->call(CompanyTableSeeder::class);
         $this->call(PagesTableSeeder::class);
+        $this->call(CoinsConfigurationTableSeeder::class);
 
         //atualiza os seeds
         $this->call(UpdateSlugCompanySeeder::class); //UpdateSlugCompanySeeder
