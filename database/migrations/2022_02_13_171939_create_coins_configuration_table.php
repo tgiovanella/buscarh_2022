@@ -21,6 +21,8 @@ class CreateCoinsConfigurationTable extends Migration
             $table->integer('price_quote')->unsigned()->nullable();
             $table->integer('amount_coins')->unsigned()->nullable();
             $table->string('email')->nullable();
+
+            $table->timestamps();
         });
     }
 

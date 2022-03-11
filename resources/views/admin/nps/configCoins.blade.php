@@ -29,7 +29,7 @@
             <!-- Recarga de moedas -->
             <div class="row">
                 <div class="form-group col-md-3">
-                    <label for="coins">Valor do Pacote</label>
+                    <label for="coins">Valor do Pacote (R$)</label>
                     <input type="number" name="" id="price-coins" class="form-control" value="{{$configCoins->price_coins}}">
                 </div>
                 <div class="form-group col-md-3">
@@ -68,7 +68,6 @@
                             <th>Empresa</th>
                             <th>E-mail</th>
                             <th>Pacotes</th>
-                            <th>Preço Pacote</th>
                             <th>Total Moedas</th>
                             <th>Valor Total</th>
                             <th>Status</th>
@@ -80,9 +79,8 @@
                                 <td>{{$candidateBuyCoin->company->name}}</td>
                                 <td>{{$candidateBuyCoin->company->email}}</td>
                                 <td>{{$candidateBuyCoin->amount_coins}}</td>
-                                <td>R$ {{number_format($candidateBuyCoin->total_coins, 2, ',', '.')}}</td>
                                 <td>{{$candidateBuyCoin->total_coins}}</td>
-                                <td>R$ {{number_format($candidateBuyCoin->total_coins, 2, ',', '.')}}</td>
+                                <td>R$ {{number_format($candidateBuyCoin->total_price, 2, ',', '.')}}</td>
                                 <td>
                                     <div class="btn-group">
                                         <a href="#" class="btn btn-xs <?= $candidateBuyCoin->is_pay ? 'btn-success' : 'btn-warning' ?>" onclick="openModalUpdateStatusBuyCoin({{$candidateBuyCoin->id}}, '{{$candidateBuyCoin->company->name}}', '{{$candidateBuyCoin->is_pay}}')"><i class="fa fa-edit"></i></a>

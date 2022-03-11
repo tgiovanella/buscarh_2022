@@ -182,11 +182,9 @@ class QuoteCandidateController extends Controller
     public function saveStatusBuyCoin(Request $request)
     {
         try {
-            //Pegar email que esta na configuração das coins
-            $confiCoins = CoinsConfiguration::first();
-            
             $candidateBuyCoins = CandidateBuyCoins::get('id', $request->id)->first();
             $candidateBuyCoins->is_pay  = '1';
+            $candidateBuyCoins->save();
             
             return response()->json(['type' => 'success', 'message' => 'Dados salvos com sucesso!']);
         } catch (\Exception $e) {
