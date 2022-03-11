@@ -37,17 +37,18 @@ class QuoteCandidateController extends Controller
     {
         $coins = CoinsConfiguration::first();
         $candidate      = User::where('id', Auth::user()->id)->whereHas('companies')->with('companies')->first();
-        $interested     = QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('quote_id')->toArray();
-        $notify         = QuoteCandidateNotification::whereHas('quote')->whereIn('company_id', $candidate->companies->pluck('id'))
+        $interested     = $candidate ? QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('quote_id')->toArray() : 0;
+
+        $notify         = $candidate ? QuoteCandidateNotification::whereHas('quote')->whereIn('company_id', $candidate->companies->pluck('id'))
             ->with([
                 'quote' => fn ($m) => $m > with('company'),
             ])
-            ->get(); 
+            ->get() : 0; 
             
         return view('user.quotations.index', [
             'quotes'        => $notify, 
             'interested'    => $interested, 
-            'candidate'     => $candidate->companies,
+            'candidate'     => $candidate ? $candidate->companies : 0,
             'coins'         => $coins
         ]);
     }
@@ -148,6 +149,7 @@ class QuoteCandidateController extends Controller
             $candidateBuyCoins->amount_coins    = $request->amount_coins;
             $candidateBuyCoins->total_price     = $request->total_price;
             $candidateBuyCoins->save();
+
             //envia o email
             Mail::to('thyhanry@hotmail.com')->send(new SendMailBuyCoins($coins->email, $company, $candidateBuyCoins));
 
@@ -182,10 +184,9 @@ class QuoteCandidateController extends Controller
     public function saveStatusBuyCoin(Request $request)
     {
         try {
-            $candidateBuyCoins = CandidateBuyCoins::get('id', $request->id)->first();
+            $candidateBuyCoins = CandidateBuyCoins::find($request->id);
             $candidateBuyCoins->is_pay  = '1';
             $candidateBuyCoins->save();
-            
             return response()->json(['type' => 'success', 'message' => 'Dados salvos com sucesso!']);
         } catch (\Exception $e) {
             return response()->json(['type' => 'error', 'message' => $e->getMessage() . " Contate o suporte!"]);
