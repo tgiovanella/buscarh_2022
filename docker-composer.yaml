@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+
+  app:
+    build:
+      context: .
+      args:
+        user: user
+        uid: 1000
+    container_name: app.buscarh
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    environment:
+      - PHP_IDE_CONFIG=serverName=XdebugServer
+    volumes:
+      - .:/var/www
+    ports:
+      - "8000:8000"
+    networks:
+      - rh-network
+
+   #MySQL Service
+  db:
+    image: mysql:5.7.22
+    container_name: db.buscarh
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: your_mysql_root_password
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - rh-network
+
+#Docker Networks
+networks:
+  rh-network:
+    driver: bridge
