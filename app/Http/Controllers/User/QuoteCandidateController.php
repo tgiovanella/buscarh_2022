@@ -148,6 +148,7 @@ class QuoteCandidateController extends Controller
             $candidateBuyCoins->amount_coins    = $request->amount_coins;
             $candidateBuyCoins->total_price     = $request->total_price;
             $candidateBuyCoins->save();
+
             //envia o email
             Mail::to('thyhanry@hotmail.com')->send(new SendMailBuyCoins($coins->email, $company, $candidateBuyCoins));
 
@@ -182,10 +183,9 @@ class QuoteCandidateController extends Controller
     public function saveStatusBuyCoin(Request $request)
     {
         try {
-            $candidateBuyCoins = CandidateBuyCoins::get('id', $request->id)->first();
+            $candidateBuyCoins = CandidateBuyCoins::find($request->id);
             $candidateBuyCoins->is_pay  = '1';
             $candidateBuyCoins->save();
-            
             return response()->json(['type' => 'success', 'message' => 'Dados salvos com sucesso!']);
         } catch (\Exception $e) {
             return response()->json(['type' => 'error', 'message' => $e->getMessage() . " Contate o suporte!"]);
