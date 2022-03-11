@@ -37,17 +37,18 @@ class QuoteCandidateController extends Controller
     {
         $coins = CoinsConfiguration::first();
         $candidate      = User::where('id', Auth::user()->id)->whereHas('companies')->with('companies')->first();
-        $interested     = QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('quote_id')->toArray();
-        $notify         = QuoteCandidateNotification::whereHas('quote')->whereIn('company_id', $candidate->companies->pluck('id'))
+        $interested     = $candidate ? QuoteCandidate::whereIn('company_id', $candidate->companies->pluck('id'))->pluck('quote_id')->toArray() : 0;
+
+        $notify         = $candidate ? QuoteCandidateNotification::whereHas('quote')->whereIn('company_id', $candidate->companies->pluck('id'))
             ->with([
                 'quote' => fn ($m) => $m > with('company'),
             ])
-            ->get(); 
+            ->get() : 0; 
             
         return view('user.quotations.index', [
             'quotes'        => $notify, 
             'interested'    => $interested, 
-            'candidate'     => $candidate->companies,
+            'candidate'     => $candidate ? $candidate->companies : 0,
             'coins'         => $coins
         ]);
     }
