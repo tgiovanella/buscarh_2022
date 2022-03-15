@@ -1,0 +1,22 @@
+{
+  "name": "Matheus Flauzino",
+  "homepage": "https://github.com/matheusflauzino/busca-rh-bh",
+  "authors": [
+    "Matheus Flauzino <matheus@melsolucoes.net>"
+  ],
+  "description": "Layout Busca RH",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "parallax.js": "^1.5.0",
+    "slick-carousel": "^1.8.1"
+  }
+}
