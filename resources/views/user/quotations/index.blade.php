@@ -124,7 +124,7 @@
                             <label for="infos" class="control-label font-weight-bold">
                                 {{__('Novo Comentário')}}
                             </label>
-                            <textarea class="form-control" name="infos" id="infos" cols="30" rows="5" required></textarea>
+                            <textarea class="form-control" name="comments" id="comments" cols="30" rows="5" required></textarea>
 
                         </div>
                     </div>
@@ -299,7 +299,7 @@
         const sendComment = (event) => {
 
             event.target.disabled = true
-            const comment = $('#infos').val();
+            const comment = $('#comments').val();
 
             const form = new FormData();
             form.append('proposal_id', state.data.proposal_id);

@@ -9,15 +9,6 @@
 
 @push('scripts')
 <script src="{{ asset('adm/bower_components/admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
-<script>
-    $(document).ready(function() {
-        // Replace the <textarea id="editor1"> with a CKEditor
-        // instance, using default configuration.
-        // CKEDITOR.replace('body')
-        //bootstrap WYSIHTML5 - text editor
-        $('#body').wysihtml5()
-    });
-</script>
 @endpush
 
 @push('styles')

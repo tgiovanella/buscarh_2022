@@ -65,6 +65,12 @@
 
     @stack('styles')
 
+    <script type="text/javascript">
+      window.onload = function()  {
+        CKEDITOR.replace( 'infos' );
+      };
+    </script>
+
 
 
 </head>
