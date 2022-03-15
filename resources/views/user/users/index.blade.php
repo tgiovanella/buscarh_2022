@@ -137,7 +137,7 @@
         form.append('company_id', $('#company_id').val());
         form.append('quote_id', $('#quote_id').val());
         form.append('comment', $('#comment').val());
-        form.append('answer', $("input[type='radio'][name='answer']:checked").val() );
+        form.append('answer', $("input[type='radio'][name='answer']:checked").val());
         form.append('id', $('#id').val());
         form.append('_token', csrf);
 
@@ -211,6 +211,7 @@
         const form = new FormData(fromRefer);
         event.target.disabled = true
         if (formValidate(event, fromRefer)) {
+            form.append('infos', CKEDITOR.instances.infos.getData());
             requestPost('/users/quotation', form).then(resp => {
                 if (resp.type === 'success') {
                     closeModalQuotForm(event);
