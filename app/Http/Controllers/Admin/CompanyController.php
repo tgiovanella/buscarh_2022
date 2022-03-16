@@ -286,6 +286,8 @@ class CompanyController extends Controller
             $company->complement = $dados['complement'];
             $company->email = $dados['email'];
             $company->responsible = $dados['responsible'];
+            $company->balance_coins = $dados['coins'];
+            $company->used_coins = $dados['used_coins'];
             $company->coins = $dados['coins'];
 
             $company->save();
